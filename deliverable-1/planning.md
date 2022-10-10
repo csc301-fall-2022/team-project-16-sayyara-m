@@ -1,5 +1,25 @@
 # 'MERN>MEAN' - Team #16 Partner Project with Sayyara
 
+<!-- TOC -->
+* ['MERN>MEAN' - Team #16 Partner Project with Sayyara](#-mern--mean---team-#16-partner-project-with-sayyara)
+  * [Table of Contents](#table-of-contents)
+  * [Product Details](#product-details)
+    * [Q1: What are you planning to build?](#q1--what-are-you-planning-to-build)
+    * [Q2: Who are your target users?](#q2--who-are-your-target-users)
+    * [Q3: Why would your users choose your product? What are they using today to solve their problem/need?](#q3--why-would-your-users-choose-your-product-what-are-they-using-today-to-solve-their-problemneed)
+    * [Q4: How will you build it?](#q4--how-will-you-build-it)
+    * [Q5: What are the user stories that make up the MVP?](#q5--what-are-the-user-stories-that-make-up-the-mvp)
+  * [Intellectual Property Confidentiality Agreement](#intellectual-property-confidentiality-agreement)
+  * [Process Details](#process-details)
+    * [Q6: What are the roles & responsibilities on the team?](#q6--what-are-the-roles--responsibilities-on-the-team)
+    * [Q7: What operational events will you have as a team?](#q7--what-operational-events-will-you-have-as-a-team)
+        * [Meetings with project partner: <br />](#meetings-with-project-partner--br-)
+    * [Q8: What artifacts will you use to self-organize?](#q8--what-artifacts-will-you-use-to-self-organize)
+    * [Q9: What are the rules regarding how your team works?](#q9--what-are-the-rules-regarding-how-your-team-works)
+  * [Highlights](#highlights)
+<!-- TOC -->
+
+
 ## Product Details
  
 ### Q1: What are you planning to build?
@@ -23,10 +43,14 @@ The status quo for auto shop owners is answering calls/emails from open to close
 ### Q4: How will you build it?
 
 The technology stack we’re planning to use is React/TypeScript to design the front end. We will use various libraries for styling and components such as TailwindCSS + TailwindUI. React Router Dom to organize the front end into pages. For the backend we’re using Java Spring/Springboot to develop the apis and organize the application into an MVC pattern using controllers working with our SQL database (postgreSQL). We’ll likely be using hibernate + a mixture of our own SQL queries to access the database.
+
 We’re planning on using JUnit for testing, and will require some mocking from Spring to help with those objects.
+
 To deploy, we’re planning on using Railway to deploy the backend API, and netlify to deploy the frontend web app.
+
 In terms of architecture, we will be coding by feature and following the diagrams laid out below to ensure we capture all functionality required for the web app. Refer also to the mockups for the frontend pages.
 
+![](planning_images/architecture.png)
 
 ### Q5: What are the user stories that make up the MVP?
 
@@ -41,6 +65,9 @@ In terms of architecture, we will be coding by feature and following the diagram
 9. As a shop owner I would like to be able to have automated emails sent to me and my clients with reminders and appointments, details about previous jobs, and invoices.
 10. As a vehicle owner I would like to be able to chat with an employee at a shop to ask any questions or seek help.
 
+Partner approval email:
+
+![](planning_images/partner_userstories_approval.png)
 
 ----
 ## Intellectual Property Confidentiality Agreement 
