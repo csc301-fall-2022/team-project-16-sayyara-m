@@ -53,7 +53,7 @@ function DropDown(props: DropDownProps) {
     return(
         <div className="relative inline-block text-left">
             <div>
-                <button type="button" className="inline-flex w-full justify-center rounded-md border 
+                <button type="button" className="inline-flex w-full justify-center rounded-md border shadow-sm
                 border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" 
                 id="menu-button" aria-expanded="true" aria-haspopup="true"
                 onClick={() => { setMenuVisible(!menuVisible) }}>

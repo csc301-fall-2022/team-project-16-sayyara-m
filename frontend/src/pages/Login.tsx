@@ -18,7 +18,7 @@ function Login() {
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
                     <div className='mx-8'>
                         <div className='flex justify-center my-8'>
-                            <span className='text-4xl font-bold'>Log In</span>
+                            <label className='text-4xl font-bold'>Log In</label>
                         </div>
                         <div className='mb-4 w-full justify-center flex'>
                             <DropDown onSelectionChanged={setLoginUserType} items={['Vehicle Owner', 'Shop Owner']} selectedItem={loginUserType} />
@@ -27,14 +27,14 @@ function Login() {
                             <label className="block text-gray-700 font-bold mb-2">
                                 Email
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                             focus:outline-blue-500 focus:shadow-outline" id="email" type="text" placeholder="Email Address"/>
                         </div>
                         <div className="mb-3">
                             <label className="block text-gray-700 font-bold mb-2">
                                 Password
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight
+                            <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight
                             focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"/>
                             <p className="text-red-500 text-xs italic" hidden={true}>
                                 Please choose a password.
