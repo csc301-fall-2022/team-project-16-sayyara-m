@@ -29,6 +29,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "postcss.config.js",
+    "tailwind.config.js"
   ]
 }

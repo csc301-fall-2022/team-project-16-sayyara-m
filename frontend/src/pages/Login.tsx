@@ -12,7 +12,7 @@ function Login() {
             <div className='flex flex-wrap h-full max-w-md min-w-[330px] w-full'>
                 <div className='flex w-full justify-center relative'>
                     <div className='absolute bottom-32 text-7xl font-semibold text-blue-800'>
-                        Sayyara  {/* We could put a logo here instead */} 
+                        Sayyara  {/* We could put a logo here instead */}
                     </div>
                 </div>
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
@@ -27,25 +27,25 @@ function Login() {
                             <label className="block text-gray-700 font-bold mb-2">
                                 Email
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight 
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                             focus:outline-blue-500 focus:shadow-outline" id="email" type="text" placeholder="Email Address"/>
                         </div>
                         <div className="mb-3">
                             <label className="block text-gray-700 font-bold mb-2">
                                 Password
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight 
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight
                             focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"/>
                             <p className="text-red-500 text-xs italic" hidden={true}>
                                 Please choose a password.
                             </p>
                         </div>
                         <div className="flex items-center justify-between mb-6">
-                            <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white 
+                            <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
                             font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                                Log In
+                                <Link to="/home">Log In</Link>
                             </button>
-                            <a className="transition duration-100 ease-in-out inline-block align-baseline font-bold text-sm 
+                            <a className="transition duration-100 ease-in-out inline-block align-baseline font-bold text-sm
                             text-blue-500 hover:text-blue-800" href="#">
                                 Forgot Password?
                             </a>
