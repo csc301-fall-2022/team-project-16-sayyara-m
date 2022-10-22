@@ -8,7 +8,7 @@ const Navbar = () => {
             <div className='text-5xl font-semibold text-blue-800 self-center'>
                 Sayyara  {/* We could put a logo here instead */}
             </div>
-            <div className= "flex justify-center items-center ml-10 text-xl">
+            <div className= "flex items-center ml-10 text-xl">
                 <button className="transition duration-100 ease-in-out w-35 bg-gray-10 hover:bg-blue-500 text-black
                             font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" type="button">
                     <Link to="/home">Home</Link>
