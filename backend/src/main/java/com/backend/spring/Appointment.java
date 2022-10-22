@@ -7,12 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.time.Period;
 import java.util.Date;
 
 @Entity
-@Table
 @NoArgsConstructor
 public class Appointment {
     @Id @Getter
