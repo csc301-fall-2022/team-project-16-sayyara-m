@@ -1,6 +1,6 @@
-package com.backend.spring.Users;
+package com.backend.spring.User;
 
-import com.backend.spring.Shop;
+import com.backend.spring.Vehicle;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +12,12 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class ShopOwner extends User {
+public class VehicleOwner extends User {
     @OneToMany
     @Getter @Setter
-    private List<Shop> shops = new ArrayList<>();
+    private List<Vehicle> vehicles = new ArrayList<>();
 
-    public ShopOwner(Long id, String firstName, String lastName, String email, String phone, String username, String password) {
+    public VehicleOwner(Long id, String firstName, String lastName, String email, String phone, String username, String password) {
         super(id, firstName, lastName, email, phone, username, password);
     }
 }

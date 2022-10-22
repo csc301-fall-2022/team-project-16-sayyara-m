@@ -1,6 +1,6 @@
 package com.backend.spring;
 
-import com.backend.spring.Users.ShopOwner;
+import com.backend.spring.User.ShopOwner;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,9 +1,9 @@
-package com.backend.spring.Users;
+package com.backend.spring.User;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -15,17 +15,17 @@ public abstract class User {
     @GeneratedValue
     @Getter
     private Long id;
-    @Getter
+    @Getter @Setter
     private String firstName;
-    @Getter
+    @Getter @Setter
     private String lastName;
-    @Getter
+    @Getter @Setter
     private String email;
-    @Getter
+    @Getter @Setter
     private String phone;
-    @Getter
+    @Getter @Setter
     private String username;
-    @Getter
+    @Getter @Setter
     private String password;
 
     public User(Long id, String firstName, String lastName, String email, String phone, String username, String password) {
