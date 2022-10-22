@@ -46,6 +46,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>javax.xml.registry</groupId>
+            <artifactId>javax.xml.registry-api</artifactId>
+            <version>1.0.8</version>
+        </dependency>
     </dependencies>
 
     <build>
