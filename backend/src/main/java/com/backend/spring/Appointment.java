@@ -2,13 +2,13 @@ package com.backend.spring;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Period;
 import java.util.Date;
 
 @Entity
@@ -20,16 +20,24 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn
-    @Getter @Setter
+    @Getter
     private Shop shop;
 
     @ManyToOne
     @JoinColumn
-    @Getter @Setter
+    @Getter
     private Vehicle vehicle;
 
-    @Getter @Setter
+    @Getter
     private Date date;
-    @Getter @Setter
-    private Date length;
+    @Getter
+    private Period length;
+
+    public Appointment(long id, Shop shop, Vehicle vehicle, Date date, Period length) {
+        this.id = id;
+        this.shop = shop;
+        this.vehicle = vehicle;
+        this.date = date;
+        this.length = length;
+    }
 }

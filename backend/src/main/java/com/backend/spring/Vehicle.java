@@ -3,14 +3,15 @@ package com.backend.spring;
 import com.backend.spring.Users.VehicleOwner;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table
@@ -32,15 +33,21 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn
-    @Getter @Setter
+    @Getter
     private VehicleOwner owner;
 
-    public Vehicle(long id, int year, String make, String model, String vin, String plate) {
+    @OneToMany
+    @JoinColumn
+    @Getter
+    private List<Appointment> appointments;
+
+    public Vehicle(long id, int year, String make, String model, String vin, String plate, VehicleOwner owner) {
         this.id = id;
         this.year = year;
         this.make = make;
         this.model = model;
         this.vin = vin;
         this.plate = plate;
+        this.owner = owner;
     }
 }

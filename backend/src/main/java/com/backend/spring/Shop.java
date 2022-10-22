@@ -2,7 +2,7 @@ package com.backend.spring;
 
 import com.backend.spring.Users.ShopOwner;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Period;
 
 @Entity
 @Table
+@NoArgsConstructor
 public class Shop {
     @Id
     @GeneratedValue
@@ -20,6 +22,24 @@ public class Shop {
 
     @ManyToOne
     @JoinColumn
-    @Getter @Setter
+    @Getter
     private ShopOwner shopOwner;
+
+    @Getter
+    private String address;
+    @Getter
+    private String phone;
+    @Getter
+    private String email;
+    @Getter
+    private Period hours;
+
+    public Shop(long id, ShopOwner shopOwner, String address, String phone, String email, Period hours) {
+        this.id = id;
+        this.shopOwner = shopOwner;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.hours = hours;
+    }
 }
