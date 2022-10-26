@@ -1,20 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Disclosure } from "@headlessui/react"
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { IconButton } from "@mui/material";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     return (
         <Disclosure as="nav" className="flex flex-col sm:flex-row items-center bg-gray-100 justify-between w-full px-4 sm:px-6 \
         sm:py-6 md:py-8 md:px-8">
@@ -34,34 +23,9 @@ const Navbar = () => {
                 </button>
             </Disclosure.Panel>
             <div className="flex text-sm sm:text-xl">
-                <div className="">
-                    <IconButton
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                    >
-                        <AccountCircle />
-                    </IconButton>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <Link to='/profile' style={{ textDecoration: 'none' }}>
-                            <MenuItem>Profile</MenuItem>
-                        </Link>
-                        <Link to='/' style={{ textDecoration: 'none' }}>
-                            <MenuItem>Log out</MenuItem>
-                        </Link>
-                    </Menu>
-                    <Link className="mx-2" to="/">Login</Link>
-                    <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
-                </div>
+                <ProfileDropdown />
+                <Link className="mx-2" to="/">Login</Link>
+                <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
             </div>
         </Disclosure>
     )
