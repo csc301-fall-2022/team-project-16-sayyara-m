@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 import static javax.persistence.FetchType.EAGER;
@@ -19,7 +17,6 @@ import static javax.persistence.FetchType.EAGER;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class ShopOwner extends AppUser {
     @OneToOne(mappedBy = "shopOwner", fetch = EAGER, optional = false)
     private Shop shop;
