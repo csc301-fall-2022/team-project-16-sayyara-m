@@ -30,7 +30,7 @@ public class Vehicle {
     @SequenceGenerator(name = "vehicle_sequence", sequenceName = "vehicle_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "vehicle_sequence")
     @Column(name = "vehicle_id")
-    private long id;
+    private Long id;
     private int year;
     private String make;
     private String model;

@@ -35,7 +35,7 @@ public class Shop {
     @SequenceGenerator(name = "shop_sequence", sequenceName = "shop_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "shop_sequence")
     @Column(name = "shop_id")
-    private long id;
+    private Long id;
 
     @OneToOne(optional = false, cascade = ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")

@@ -36,7 +36,7 @@ public class Appointment {
     @SequenceGenerator(name = "appointment_sequence", sequenceName = "appointment_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "appointment_sequence")
     @Column(name = "appointment_id")
-    private long id;
+    private Long id;
     @ManyToOne(cascade = ALL, optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
