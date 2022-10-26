@@ -39,7 +39,7 @@ const WebNavMap = () => {
 const Navbar = () => {
     return (
         <Disclosure as="nav" className="flex flex-col sm:flex-row items-center bg-gray-100 w-full px-4 sm:px-6 \
-        sm:py-6 md:py-8 md:px-8">
+        pt-6 pb-12 md:px-8">
             <Disclosure.Button className="sm:hidden">Dash</Disclosure.Button>
             <div className='text-xl sm:pr-6 sm:text-3xl md:text-5xl font-semibold text-blue-800 self-center sm:justify-start'>
                 Sayyara  {/* We could put a logo here instead */}
