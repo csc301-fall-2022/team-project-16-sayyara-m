@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,21 +13,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = SEQUENCE, generator = "role_sequence")
     @Column(name = "role_id")
     private Long id;
 
@@ -45,6 +50,6 @@ public class Role {
      * @return RoleEnum
      */
     public RoleEnum getName() {
-        return RoleEnum.valueOf(name);
+        return RoleEnum.fromString(name);
     }
 }

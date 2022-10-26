@@ -16,11 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
 @Setter
@@ -30,7 +32,8 @@ import static javax.persistence.CascadeType.ALL;
 @Table(name = "shops")
 public class Shop {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "shop_sequence", sequenceName = "shop_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = SEQUENCE, generator = "shop_sequence")
     @Column(name = "shop_id")
     private long id;
 
