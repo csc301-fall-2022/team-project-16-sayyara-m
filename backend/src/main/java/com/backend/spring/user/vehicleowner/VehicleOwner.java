@@ -4,6 +4,7 @@ import com.backend.spring.appointment.Appointment;
 import com.backend.spring.quote.Quote;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
+import com.backend.spring.user.role.RoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +30,7 @@ public class VehicleOwner extends AppUser {
     private final List<Quote> quotes = new ArrayList<>();
 
     public VehicleOwner(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        super(new Role("ROLE_VEHICLE_OWNER"), firstName, lastName, email, phoneNumber, username, password);
+        super(new Role(RoleEnum.VEHICLE_OWNER), firstName, lastName, email, phoneNumber, username, password);
     }
 
     @Override

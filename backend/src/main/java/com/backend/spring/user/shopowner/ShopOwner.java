@@ -4,6 +4,7 @@ import com.backend.spring.shop.Address;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
+import com.backend.spring.user.role.RoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +37,7 @@ public class ShopOwner extends AppUser {
      * @param shopEmail       email of shop
      */
     public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password, Address shopAddress, String shopPhoneNumber, String shopEmail) {
-        super(new Role("ROLE_SHOP_OWNER"), firstName, lastName, userEmail, userPhoneNumber, username, password);
+        super(new Role(RoleEnum.SHOP_OWNER), firstName, lastName, userEmail, userPhoneNumber, username, password);
         this.shop = new Shop(shopAddress, shopPhoneNumber, shopEmail, this);
     }
 

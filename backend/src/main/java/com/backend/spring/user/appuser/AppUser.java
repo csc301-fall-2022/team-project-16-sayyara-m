@@ -48,7 +48,7 @@ public abstract class AppUser {
     @JsonIgnore // don't display when returning from API endpoint
     protected String password;
 
-    public AppUser(Role role, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
+    protected AppUser(Role role, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
         this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -57,5 +57,4 @@ public abstract class AppUser {
         this.username = username;
         this.password = password;
     }
-
 }
