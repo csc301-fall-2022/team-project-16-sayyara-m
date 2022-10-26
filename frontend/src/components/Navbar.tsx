@@ -7,9 +7,8 @@ const Navbar = () => {
     return (
         <Disclosure as="nav" className="flex flex-col sm:flex-row items-center bg-gray-100 justify-between w-full px-4 sm:px-6 \
         sm:py-6 md:py-8 md:px-8">
-
+            <Disclosure.Button className="sm:hidden">Dash</Disclosure.Button>
             <div className='text-xl sm:text-5xl font-semibold text-blue-800 self-center sm:justify-start'>
-                <Disclosure.Button>Dash</Disclosure.Button>
                 Sayyara  {/* We could put a logo here instead */}
             </div>
             <Disclosure.Panel className="flex flex-col w-full sm:flex-row text-white sm:text-black \
