@@ -16,9 +16,10 @@ const MobileNavMap = () => {
     return (
         <Disclosure.Panel className="sm:hidden flex flex-col text-sm items-start">
             {navigation.map(item => (
-                <Disclosure.Button className="transition duration-100 ease-in-out  bg-gray-10 hover:bg-blue-300 \
+                <Disclosure.Button as={Link} to={item.to} className="transition duration-100 ease-in-out  bg-gray-10 hover:bg-blue-300 \
             font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full text-left" type="button">
-                    <Link to={item.to}>{item.name}</Link>
+                    {/*<Link to={item.to}>{item.name}</Link>*/}
+                    {item.name}
                 </Disclosure.Button>
             ))}
         </Disclosure.Panel>
