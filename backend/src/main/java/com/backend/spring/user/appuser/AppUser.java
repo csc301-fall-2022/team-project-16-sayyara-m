@@ -43,7 +43,7 @@ public abstract class AppUser {
     protected String firstName;
     @Column(name = "last_name", nullable = false)
     protected String lastName;
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     protected String email;
     @Column(name = "phone_number", nullable = false)
     protected String phoneNumber;

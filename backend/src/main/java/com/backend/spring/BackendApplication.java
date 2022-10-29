@@ -19,25 +19,25 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, RoleRepository roleRepository, ShopRepository shopRepository, AddressRepository addressRepository) {
-        return args -> {
-
-            Address address = new Address("Street", "StreetNum", "PostalCode", "City", "Prov");
-
-
-            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password", address, "123", "email");
-            roleRepository.save(shopOwner.getRole());
-            shopRepository.save(shopOwner.getShop());
-            addressRepository.save(shopOwner.getShop().getAddress());
-            shopOwner = appUserRepository.save(shopOwner);
-
-            VehicleOwner vehicleOwner = new VehicleOwner("bob", "jack", "bob@gmail.com", "416-423-1423", "jack", "pass");
-            roleRepository.save(vehicleOwner.getRole());
-            vehicleOwner = appUserRepository.save(vehicleOwner);
-
-            System.out.println(vehicleOwner);
-            System.out.println(shopOwner);
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, RoleRepository roleRepository, ShopRepository shopRepository, AddressRepository addressRepository) {
+//        return args -> {
+//
+//            Address address = new Address("Street", "StreetNum", "PostalCode", "City", "Prov");
+//
+//
+//            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password", address, "123", "email");
+//            roleRepository.save(shopOwner.getRole());
+//            shopRepository.save(shopOwner.getShop());
+//            addressRepository.save(shopOwner.getShop().getAddress());
+//            shopOwner = appUserRepository.save(shopOwner);
+//
+//            VehicleOwner vehicleOwner = new VehicleOwner("bob", "jack", "bob@gmail.com", "416-423-1423", "jack", "pass");
+//            roleRepository.save(vehicleOwner.getRole());
+//            vehicleOwner = appUserRepository.save(vehicleOwner);
+//
+//            System.out.println(vehicleOwner);
+//            System.out.println(shopOwner);
+//        };
+//    }
 }

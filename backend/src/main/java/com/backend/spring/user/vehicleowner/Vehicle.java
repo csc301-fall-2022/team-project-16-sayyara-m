@@ -37,7 +37,16 @@ public class Vehicle {
     private String vin;
     private String plate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner owner;
+
+    public Vehicle(int year, String make, String model, String vin, String plate, VehicleOwner owner) {
+        this.year = year;
+        this.make = make;
+        this.model = model;
+        this.vin = vin;
+        this.plate = plate;
+        this.owner = owner;
+    }
 }
