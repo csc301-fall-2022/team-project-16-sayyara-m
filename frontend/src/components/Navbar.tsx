@@ -1,65 +1,74 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { IconButton } from "@mui/material";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
+import {Disclosure} from "@headlessui/react"
+import ProfileDropdown from "./ProfileDropdown";
+import MenuIcon from '@mui/icons-material/Menu';
 
-const Navbar = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+//hidden on web version
+//sm:hidden on mobile version
+//seperate react code
+const navigation = [
+    {name: "Home", to: "/home", current: true},
+    {name: "Appointments", to: "/appointments", current: false},
+];
+
+const MobileNavMap = () => {
     return (
-        <div className="flex items-center bg-gray-100 justify-between w-full h-24 px-4">
-            <div className="flex items h-full">
-            <div className='text-5xl font-semibold text-blue-800 self-center'>
-                Sayyara  {/* We could put a logo here instead */}
-            </div>
-            <div className= "flex items-center ml-10 text-xl">
-                <button className="transition duration-100 ease-in-out w-35 bg-gray-10 hover:bg-blue-500 text-black
-                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" type="button">
-                    <Link to="/home">Home</Link>
+        <Disclosure.Panel className="sm:hidden flex flex-col text-sm items-start">
+            {navigation.map(item => (
+                <Disclosure.Button as={Link} to={item.to} className="transition duration-100 ease-in-out  bg-gray-10 hover:bg-blue-300 \
+            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full text-left" type="button">
+                    {/*<Link to={item.to}>{item.name}</Link>*/}
+                    {item.name}
+                </Disclosure.Button>
+            ))}
+        </Disclosure.Panel>
+    );
+};
+const WebNavMap = () => {
+    return (
+        <div className="hidden sm:flex sm:text-lg md:text-xl">
+            {navigation.map(item => (
+                <button className="transition duration-100 ease-in-out  bg-gray-10 hover:bg-blue-500 \
+        font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" type="button">
+                    <Link to={item.to}>{item.name}</Link>
                 </button>
-                <button className="transition duration-100 ease-in-out w-35 bg-gray-10 hover:bg-blue-500 text-black
-                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                    <Link to="/appointments">Appointments</Link>
-                </button>
-            </div>
-            </div>
-            <div className="mx-2">
-                <IconButton 
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                >
-                    <AccountCircle />
-                </IconButton>
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                    }}
-                >
-                    <Link to='/profile' style={{ textDecoration: 'none' }}>
-                        <MenuItem>Profile</MenuItem>
-                    </Link>
-                    <Link to='/' style={{ textDecoration: 'none' }}>
-                        <MenuItem>Log out</MenuItem>
-                    </Link>
-                </Menu>
-                <Link className="mx-2" to="/">Login</Link>
-                <Link className="mx-2" to="/SignUp">Sign Up</Link>
-            </div>
+            ))}
         </div>
+
+    )
+};
+const Navbar = () => {
+
+    const [user, _] = useState(null);
+
+    return (
+        <Disclosure as="nav" className="bg-gray-200 w-full px-4 sm:px-6 \
+        pt-6 pb-5 md:px-8">
+            <div className="flex justify-between">
+                <div className="w-2/5 pl-0 sm:hidden">
+                    <Disclosure.Button className="text-left ml-4 sm:hidden active:bg-inherit">
+                        <MenuIcon />
+                    </Disclosure.Button>
+                </div>
+                <div
+                    className='text-xl sm:pr-6 sm:text-3xl md:text-5xl font-semibold text-blue-800 self-center sm:justify-start'>
+                    Sayyara {/* We could put a logo here instead */}
+                </div>
+
+                {/* hidden by default all styles applied with sm: */}
+                <WebNavMap/>
+
+                <div className="flex w-2/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
+                    {user && <ProfileDropdown/>}
+                    <Link className="mx-2" to="/">Login</Link>
+                    <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
+                </div>
+            </div>
+
+            {/* sm:hidden applied, hidden after 640px */}
+            <MobileNavMap/>
+        </Disclosure>
     )
 }
 export default Navbar;

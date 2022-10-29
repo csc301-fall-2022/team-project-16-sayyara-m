@@ -8,13 +8,8 @@ function Login() {
     const [loginUserType, setLoginUserType] = useState<string>("Vehicle Owner");
 
     return(
-        <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8'>
+        <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8 pt-8'>
             <div className='flex flex-wrap h-full max-w-md min-w-[330px] w-full'>
-                <div className='flex w-full justify-center relative'>
-                    <div className='absolute bottom-32 text-7xl font-semibold text-blue-800'>
-                        Sayyara  {/* We could put a logo here instead */}
-                    </div>
-                </div>
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
                     <div className='mx-8'>
                         <div className='flex justify-center my-8'>
