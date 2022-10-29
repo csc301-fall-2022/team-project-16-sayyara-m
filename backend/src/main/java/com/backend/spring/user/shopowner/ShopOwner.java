@@ -36,9 +36,9 @@ public class ShopOwner extends AppUser {
      * @param shopPhoneNumber phone number of phone
      * @param shopEmail       email of shop
      */
-    public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password, Address shopAddress, String shopPhoneNumber, String shopEmail) {
+    public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password, String shopName, Address shopAddress, String shopPhoneNumber, String shopEmail) {
         super(new Role(RoleEnum.SHOP_OWNER), firstName, lastName, userEmail, userPhoneNumber, username, password);
-        this.shop = new Shop(shopAddress, shopPhoneNumber, shopEmail, this);
+        this.shop = new Shop(shopName, shopAddress, shopPhoneNumber, shopEmail, this);
     }
 
     @Override

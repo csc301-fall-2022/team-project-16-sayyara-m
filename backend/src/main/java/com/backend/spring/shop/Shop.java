@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +38,10 @@ public class Shop {
     @Column(name = "shop_id")
     private Long id;
 
+    @Column(name = "shop_name", nullable = false, unique = true)
+    private String name;
+
+    @ToString.Exclude
     @OneToOne(optional = false, cascade = ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ShopOwner shopOwner;
@@ -56,23 +61,12 @@ public class Shop {
     @Column(name = "email")
     private String email;
 
-    public Shop(Address address, String phoneNumber, String email, ShopOwner shopOwner) {
+    public Shop(String name, Address address, String phoneNumber, String email, ShopOwner shopOwner) {
+        this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.shopOwner = shopOwner;
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", shopOwner=" + shopOwner.getFirstName() +
-                ", address=" + address +
-                ", appointments=" + appointments +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 
 }
