@@ -43,8 +43,45 @@ const Profile = () => {
                         </div>
                         :
                         <div className="mx-8">
-                            <div className='flex justify-evenly mt-4 mb-8'>
-                                <button className="transition duration-100 ease-in-out w-32 bg-white-500 hover:bg-white-700 text-blue
+                            <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
+                                <label className='mb-[2px] font-semibold'>First Name</label>
+                                <label className='ml-2 font-semibold'>Last Name</label>
+                                <div className='mr-2'>
+                                    <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                    focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="First Name" defaultValue="firstName"/>
+                                </div>
+                                <div className='ml-2'>
+                                    <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                    focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Last Name" defaultValue="lastName"/>
+                                </div>
+                                <label className='col-span-2 mt-1 font-semibold'>
+                                    Email Address
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Email Address" defaultValue="someone@example.com"/>
+                                <label className='col-span-2 mt-1 font-semibold'>
+                                    Phone Number
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Phone Number" defaultValue="123-456-789"/>
+                                <label className='col-span-2 mt-1 font-semibold'>
+                                    Username
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Username" defaultValue="username"/>
+                                <label className='col-span-2 mt-6 font-semibold'>
+                                    Password
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                                <label className='col-span-2 font-semibold'>
+                                    Confirm Password
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                            </div>
+                            <div className='flex justify-evenly my-8'>
+                                <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
                                 font-semibold py-2 px-4 rounded border border-black" type="button" onClick={() => setEditing(false)}>
                                     Cancel
                                 </button>
