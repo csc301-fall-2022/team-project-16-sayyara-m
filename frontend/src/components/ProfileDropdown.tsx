@@ -33,10 +33,10 @@ const ProfileDropdown = () => {
                 }}
             >
                 <Link to='/profile' style={{ textDecoration: 'none' }}>
-                    <MenuItem>Profile</MenuItem>
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
                 </Link>
                 <Link to='/' style={{ textDecoration: 'none' }}>
-                    <MenuItem>Log out</MenuItem>
+                    <MenuItem onClick={handleClose}>Log out</MenuItem>
                 </Link>
             </Menu>
         </div>
