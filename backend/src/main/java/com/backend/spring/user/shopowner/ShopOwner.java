@@ -22,6 +22,22 @@ public class ShopOwner extends AppUser {
     @OneToOne(mappedBy = "shopOwner", fetch = EAGER, optional = false)
     private Shop shop;
 
+    public ShopOwner(String firstName,
+                     String lastName,
+                     String email,
+                     String phoneNumber,
+                     String username,
+                     String password) {
+        super(new Role(RoleEnum.SHOP_OWNER),
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                username,
+                password);
+        this.shop = null;
+    }
+
     /**
      * Constructor that takes data about a ShopOwner and Shop and creates a new Shop with the shop owner set to this
      * ShopOwner.

@@ -5,6 +5,7 @@ import com.backend.spring.quote.Quote;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
 import com.backend.spring.user.role.RoleEnum;
+import com.backend.spring.vehicle.Vehicle;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import java.util.List;
 public class VehicleOwner extends AppUser {
 
     @OneToMany(mappedBy = "owner")
-    private final List<Vehicle> vehicles = new ArrayList<>();
+    private List<Vehicle> vehicles = new ArrayList<>();
 
     @OneToMany(mappedBy = "vehicleOwner")
     private final List<Appointment> appointments = new ArrayList<>();
@@ -29,8 +30,19 @@ public class VehicleOwner extends AppUser {
     @OneToMany(mappedBy = "vehicleOwner")
     private final List<Quote> quotes = new ArrayList<>();
 
-    public VehicleOwner(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        super(new Role(RoleEnum.VEHICLE_OWNER), firstName, lastName, email, phoneNumber, username, password);
+    public VehicleOwner(String firstName,
+                        String lastName,
+                        String email,
+                        String phoneNumber,
+                        String username,
+                        String password) {
+        super(new Role(RoleEnum.VEHICLE_OWNER),
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                username,
+                password);
     }
 
     @Override

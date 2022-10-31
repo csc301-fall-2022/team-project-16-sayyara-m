@@ -1,5 +1,6 @@
 package com.backend.spring.user.appuser;
 
+import com.backend.spring.user.role.Role;
 import com.backend.spring.user.shopowner.ShopOwner;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
 import lombok.RequiredArgsConstructor;
@@ -11,41 +12,53 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AppUserService {
-    private final AppUserRepository appUserRepository;
+    private final AppUserRepository repository;
 
-    public List<AppUser> getAllUsers() {
-        return appUserRepository.findAll();
+    public List<AppUser> getAllAppUsers() {
+        return repository.findAll();
     }
 
+    public AppUser getAppUser(long id) {
+        return repository.findById(id).orElseThrow(IllegalStateException::new);
+    }
+    
     public ShopOwner createShopOwner(ShopOwner shopOwner) {
-        return appUserRepository.save(shopOwner);
+        return repository.save(shopOwner);
     }
 
     public VehicleOwner createVehicleOwner(VehicleOwner vehicleOwner) {
-        return appUserRepository.save(vehicleOwner);
+        return repository.save(vehicleOwner);
     }
 
+    public void deleteAppUser(long id) {
+        repository.deleteById(id);
+    }
+    
     @Transactional
-    public void updateUser(Long userId, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        AppUser user = appUserRepository.findById(userId).orElseThrow(IllegalStateException::new);
+    public void updateAppUser(Long userId, Role role, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
+        AppUser appUser = repository.findById(userId).orElseThrow(IllegalStateException::new);
+
+        if (role != null) {
+            appUser.setRole(role);
+        }
 
         if (firstName != null && firstName.length() > 0) {
-            user.setFirstName(firstName);
+            appUser.setFirstName(firstName);
         }
         if (lastName != null && lastName.length() > 0) {
-            user.setLastName(lastName);
+            appUser.setLastName(lastName);
         }
         if (email != null && email.length() > 0) {
-            user.setEmail(email);
+            appUser.setEmail(email);
         }
         if (phoneNumber != null && phoneNumber.length() > 0) {
-            user.setPhoneNumber(phoneNumber);
+            appUser.setPhoneNumber(phoneNumber);
         }
         if (username != null && username.length() > 0) {
-            user.setUsername(username);
+            appUser.setUsername(username);
         }
         if (password != null && password.length() > 0) {
-            user.setPassword(password);
+            appUser.setPassword(password);
         }
     }
 }
