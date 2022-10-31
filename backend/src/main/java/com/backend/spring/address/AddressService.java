@@ -40,19 +40,19 @@ public class AddressService {
         }
 
         if (streetNumber != null) {
-            address.setStreet(streetNumber);
+            address.setStreetNumber(streetNumber);
         }
 
         if (postalCode != null) {
-            address.setStreet(postalCode);
+            address.setPostalCode(postalCode);
         }
 
         if (city != null) {
-            address.setStreet(city);
+            address.setCity(city);
         }
 
         if (province != null) {
-            address.setStreet(province);
+            address.setProvince(province);
         }
 
     }
