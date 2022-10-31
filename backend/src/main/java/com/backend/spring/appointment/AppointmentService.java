@@ -21,8 +21,8 @@ public class AppointmentService {
         return repository.findAll();
     }
 
-    public Optional<Appointment> getAppointment(long id) {
-        return repository.findById(id);
+    public Appointment getAppointment(long id) {
+        return repository.findById(id).orElseThrow(IllegalStateException::new);
     }
 
     public Appointment createAppointment(Appointment appointment) {
