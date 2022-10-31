@@ -37,7 +37,7 @@ public class QuoteController {
     }
 
     @PostMapping
-    public Quote addNewQuote(@RequestBody Quote quote) {
+    public Quote createQuote(@RequestBody Quote quote) {
         return service.createQuote(quote);
     }
 

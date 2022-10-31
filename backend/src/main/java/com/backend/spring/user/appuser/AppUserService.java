@@ -17,11 +17,11 @@ public class AppUserService {
         return appUserRepository.findAll();
     }
 
-    public ShopOwner addNewShopOwner(ShopOwner shopOwner) {
+    public ShopOwner createShopOwner(ShopOwner shopOwner) {
         return appUserRepository.save(shopOwner);
     }
 
-    public VehicleOwner addNewVehicleOwner(VehicleOwner vehicleOwner) {
+    public VehicleOwner createVehicleOwner(VehicleOwner vehicleOwner) {
         return appUserRepository.save(vehicleOwner);
     }
 

@@ -1,7 +1,7 @@
 package com.backend.spring;
 
-import com.backend.spring.shop.Address;
-import com.backend.spring.shop.AddressRepository;
+import com.backend.spring.address.Address;
+import com.backend.spring.address.AddressRepository;
 import com.backend.spring.shop.ShopRepository;
 import com.backend.spring.user.appuser.AppUserRepository;
 import com.backend.spring.user.role.RoleRepository;
@@ -23,7 +23,7 @@ public class BackendApplication {
     CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, RoleRepository roleRepository, ShopRepository shopRepository, AddressRepository addressRepository) {
         return args -> {
 
-            Address address = new Address("Street", "StreetNum", "PostalCode", "City", "Prov");
+            Address address = new Address("StreetNum", "Street", "City", "Prov", "PostalCode");
 
 
             ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password", address, "123", "email");

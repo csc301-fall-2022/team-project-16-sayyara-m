@@ -1,6 +1,6 @@
 package com.backend.spring.user.shopowner;
 
-import com.backend.spring.shop.Address;
+import com.backend.spring.address.Address;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
