@@ -7,7 +7,7 @@ export interface User {
     email: string,
 }
 
-interface Address {
+export interface Address {
     addressId: number,
     street: string,
     streetNumber: string,
@@ -15,7 +15,7 @@ interface Address {
     province: string
 }
 
-interface Shop {
+export interface Shop {
     shopId: number,
     shopName: string,
     address: Address,
