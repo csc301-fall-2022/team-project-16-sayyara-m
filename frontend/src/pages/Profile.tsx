@@ -90,6 +90,11 @@ const Profile = () => {
                         <div className="mx-8">
                             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
                                 <label className='col-span-2 mt-6 font-semibold'>
+                                    Old Password
+                                </label>
+                                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                                <label className='col-span-2 mt-6 font-semibold'>
                                     New Password
                                 </label>
                                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
