@@ -17,12 +17,11 @@ export const mVehicleOwner: VehicleOwner = {
 export const mAppointment: Appointment = {
     appointmentId: "1",
     vehicleOwner: mVehicleOwner,
-    startTime: new Date(),
-    endTime: new Date(),
-    day: (new Date()).toISOString(),
+    startDate: new Date(),
+    endDate: new Date(),
     duration: 100
 }
-export const generateAppointments = () => {
+const generateAppointments = () => {
     let appointments: Appointment[] = [];
     for(let i = 0; i < 10; i++){
         appointments.push(mAppointment);
