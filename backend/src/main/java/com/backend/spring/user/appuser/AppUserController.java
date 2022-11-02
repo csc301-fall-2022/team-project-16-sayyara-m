@@ -33,17 +33,17 @@ public class AppUserController {
         return service.getAllAppUsers();
     }
 
-    @GetMapping
+    @GetMapping(path = "{appUser_id}")
     public AppUser getAppUser(long id) {
         return service.getAppUser(id);
     }
 
-    @PostMapping
+    @PostMapping(path = "shopOwner")
     public AppUser createShopOwner(@RequestBody ShopOwner shopOwner) {
         return service.createShopOwner(shopOwner);
     }
 
-    @PostMapping
+    @PostMapping(path = "vehicleOwner")
     public AppUser createVehicleOwner(@RequestBody VehicleOwner vehicleOwner) {
         return service.createVehicleOwner(vehicleOwner);
     }

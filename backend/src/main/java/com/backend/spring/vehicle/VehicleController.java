@@ -31,7 +31,7 @@ public class VehicleController {
         return service.getAllVehicles();
     }
 
-    @GetMapping
+    @GetMapping(path = "{vehicle_id}")
     public Vehicle getVehicle(long id) {
         return service.getVehicle(id);
     }

@@ -34,7 +34,7 @@ public class ShopController {
         return service.getAllShops();
     }
 
-    @GetMapping
+    @GetMapping(path = "{shop_id}")
     public Shop getShop(long id) {
         return service.getShop(id);
     }

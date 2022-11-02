@@ -30,7 +30,7 @@ public class AddressController {
         return service.getAllAddresses();
     }
 
-    @GetMapping
+    @GetMapping(path = "{address_id}")
     public Address getAddress(long id) {
         return service.getAddress(id);
     }

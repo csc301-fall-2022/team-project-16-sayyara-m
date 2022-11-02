@@ -31,7 +31,7 @@ public class AppointmentController {
         return service.getAllAppointments();
     }
 
-    @GetMapping
+    @GetMapping(path = "{appointment_id}")
     public Appointment getAppointment(long id) {
         return service.getAppointment(id);
     }

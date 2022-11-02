@@ -31,7 +31,7 @@ public class QuoteController {
         return service.getAllQuotes();
     }
 
-    @GetMapping
+    @GetMapping(path = "{quote_id}")
     public Quote getQuote(long id) {
         return service.getQuote(id);
     }
