@@ -29,6 +29,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -45,7 +46,7 @@ public class Shop {
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToOne(optional = false, cascade = ALL)
+    @OneToOne(cascade = ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ShopOwner shopOwner;
 
@@ -57,6 +58,7 @@ public class Shop {
     private List<Appointment> appointments = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
     @Column(name = "phone_number")
@@ -64,12 +66,11 @@ public class Shop {
     @Column(name = "email")
     private String email;
 
-    public Shop(String name, Address address, String phoneNumber, String email, ShopOwner shopOwner) {
+    public Shop(String name, Address address, String phoneNumber, String email) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.shopOwner = shopOwner;
     }
 
 }

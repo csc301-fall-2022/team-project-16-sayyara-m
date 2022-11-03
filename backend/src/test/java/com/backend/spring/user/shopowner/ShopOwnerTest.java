@@ -3,12 +3,9 @@ package com.backend.spring.user.shopowner;
 import com.backend.spring.address.Address;
 import com.backend.spring.address.AddressRepository;
 import com.backend.spring.shop.Shop;
-import com.backend.spring.shop.ShopOwnerSaveHelper;
 import com.backend.spring.shop.ShopRepository;
-import com.backend.spring.user.role.Role;
 import com.backend.spring.user.role.RoleEnum;
 import com.backend.spring.user.role.RoleRepository;
-import com.backend.spring.user.vehicleowner.VehicleOwner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,55 +34,38 @@ class ShopOwnerTest {
     private TestEntityManager entityManager;
 
     private ShopOwner shopOwner;
-    private ShopOwner shopOwner1;
-
-    private Role shopOwnerRole;
 
     private Shop shop;
-    private com.backend.spring.address.Address address;
+    private Address address;
 
     private ShopOwnerSaveHelper saveHelper;
 
     @BeforeEach
     void setUp() {
-        this.saveHelper = new ShopOwnerSaveHelper(shopOwnerRepository, shopRepository, addressRepository);
-
-        Role shopOwnerRole = entityManager.persist(new Role(RoleEnum.SHOP_OWNER));
-        Role vehicleOwnerRole = entityManager.persist(new Role(RoleEnum.VEHICLE_OWNER));
+        this.saveHelper = new ShopOwnerSaveHelper(shopOwnerRepository, shopRepository, addressRepository, roleRepository);
 
         address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
-        Address address2 = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
 
+        shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
 
-        shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password", "UofT Shop", address, "123", "email", shopOwnerRole);
-        entityManager.persist(shopOwner.getShop());
-        address = entityManager.persist(shopOwner.getShop().getAddress());
-        shopOwner = entityManager.persist(shopOwner);
-
-        shopOwner1 = new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob", "password", "UofT Shop2", address2, "123", "email", shopOwnerRole);
-        entityManager.persist((shopOwner1.getShop()));
-        address2 = entityManager.persist(shopOwner1.getShop().getAddress());
-        shopOwner1 = entityManager.persist(shopOwner1);
-
-        VehicleOwner vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", "jack", "pass", vehicleOwnerRole);
-        vehicleOwner = entityManager.persist(vehicleOwner);
+        shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
+        saveHelper.saveAndFlush(shopOwner, shop, address);
+        shopOwner = saveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
 
     }
 
     @Test
     void checkShopOwnerSaved() {
-        assertThat(shopOwnerRepository.save(shopOwner)).isEqualTo(shopOwner);
+        assertThat(saveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress())).isEqualTo(shopOwner);
     }
 
     @Test
     void checkShopsUnique() {
-        shopOwner1 = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password", "UofT Shop", address, "123", "email", shopOwnerRole);
-        shopOwner1 = entityManager.persist(shopOwner1);
-        shopOwner1.setShop(entityManager.persist(shopOwner.getShop()));
+        ShopOwner shopOwner1 = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
         try {
-            shopOwner = saveHelper.saveAndFlush(shopOwner);
-            shopOwner1 = saveHelper.saveAndFlush(shopOwner1);
-            fail("shops not unique");
+            shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
+            shopOwner1 = saveHelper.saveAndFlush(shopOwner1, shop, address);
+            fail("Shops are the same and app doesn't crash: \n\t" + shopOwner + "\n\t" + shopOwner1);
         } catch (DataIntegrityViolationException ignored) {
             assertThat(shopOwner1).isNotNull();
             assertThat(shopOwner).isNotNull();
@@ -104,7 +84,7 @@ class ShopOwnerTest {
 
     @Test
     void checkShopExists() {
-        assertThat(shopOwner.getShop().getName()).isEqualTo("UofT Shop");
+        assertThat(shopOwner.getShop().getName()).isEqualTo("Sayyara Shop");
     }
 
     @Test

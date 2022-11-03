@@ -40,7 +40,7 @@ public abstract class AppUser {
 
     @JsonIgnore
     @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id") // TODO: "role" or "role_id"?
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     protected Role role;
     @Column(name = "first_name", nullable = false)
     protected String firstName;
@@ -56,8 +56,7 @@ public abstract class AppUser {
     @JsonIgnore // don't display when returning from API endpoint
     protected String password;
 
-    protected AppUser(Role role, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        this.role = role;
+    protected AppUser(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

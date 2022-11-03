@@ -41,7 +41,7 @@ public class QuoteService {
         }
 
         if (expiryDate != null) {
-            quote.setExpiryDate(expiryDate);
+            quote.setExpiryTime(expiryDate);
         }
     }
 }
