@@ -6,7 +6,6 @@ import com.backend.spring.vehicle.Vehicle;
 import com.backend.spring.vehicle.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class VehicleOwnerSaveHelper {
 
     private final RoleRepository roleRepository;
 
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Saves a vehicle owner in the database as well as the vehicle assigned to it.
