@@ -42,9 +42,8 @@ export interface VehicleOwner extends User {
 export interface Appointment {
     appointmentId: string,
     vehicleOwner: VehicleOwner,
-    startTime: Date,
-    endTime: Date,
-    day: string,
+    startDate: Date,
+    endDate: Date,
     duration: number
 }
 
