@@ -1,11 +1,76 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+// import { useCookies } from 'react-cookie';
+
+import { API_ROOT } from 'src/App';
 import DropDown from 'src/components/DropDown';
+
+interface Credentials {
+    email: string,
+    password: string
+}
 
 function Login() {
 
-    const [loginUserType, setLoginUserType] = useState<string>("Vehicle Owner");
+    // const [cookies, setCookie] = useCookies(['auth_token']);
+
+    const [loginUserType, setLoginUserType] = useState<string>("Vehicle Owner"); // Can be "Vehicle Owner" or "Shop Owner"
+    const [loginEmail, setLoginEmail] = useState<string>(""); // Matches whatever is in the email input field
+    const [loginPassword, setLoginPassword] = useState<string>(""); // Matches whatever is in the password input field
+
+    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const newVal: string = event.currentTarget.value;
+        setLoginEmail(newVal);
+    }
+        
+    const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const newVal: string = event.currentTarget.value;
+        setLoginPassword(newVal);
+    }
+
+    // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
+    const loginClicked = () => {
+        // Function is called when the login button is clicked.
+        // Sends a login post request and interprets the response. If successful, sets the auth_token cookie
+
+        const credentials: Credentials = {
+            email: loginEmail,
+            password: loginPassword
+        };
+        const loginRequestUrl: string = API_ROOT + "/login"; // TODO: Change to appropriate endpoint
+        console.log("Attempting a login...");
+        fetch(loginRequestUrl, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials) 
+        })
+        .then((response) => {
+            if (response.status >= 500) {
+                console.log(response.statusText);
+                // TODO: Here is where we may want to have the UI display some error since the login failed
+
+
+            }
+            response.json()
+            .then((jsonResponse) => {
+                // Set the auth_token cookie with the response
+
+
+            })
+            .catch((e) => {
+                console.log("Failed to parse the response as JSON");
+                console.error(e);
+            });
+        })
+        .catch((e) => {
+            // I believe this function runs when there is a network error, but not an HTTP error response
+            console.log("Failed to make the HTTP request");
+            console.error(e);
+        });
+    }
 
     return(
         <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8 pt-8'>
@@ -22,24 +87,32 @@ function Login() {
                             <label className="block text-gray-700 font-bold mb-2">
                                 Email
                             </label>
+                            {/* EMAIL INPUT FIELD */}
                             <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" id="email" type="text" placeholder="Email Address"/>
+                            focus:outline-blue-500 focus:shadow-outline" id="email" type="text" placeholder="Email Address"
+                            value={loginEmail} onChange={emailFieldOnChange}/>
                         </div>
                         <div className="mb-3">
                             <label className="block text-gray-700 font-bold mb-2">
                                 Password
                             </label>
+                            {/* PASSWORD INPUT FIELD */}
                             <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"/>
+                            focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"
+                            value={loginPassword} onChange={passwordFieldOnChange}/>
+                            {/* Error message */}
                             <p className="text-red-500 text-xs italic" hidden={true}>
-                                Please choose a password.
+                                Email/password combination not foundPlease choose a password.
                             </p>
                         </div>
                         <div className="flex items-center justify-between mb-6">
+                            {/* LOGIN BUTTON */}
                             <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
-                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
+                            onClick={loginClicked}>
                                 <Link to="/home">Log In</Link>
                             </button>
+                            {/* FORGOT PASSWORD LINK */}
                             <a className="transition duration-100 ease-in-out inline-block align-baseline font-bold text-sm
                             text-blue-500 hover:text-blue-800" href="#">
                                 Forgot Password?
