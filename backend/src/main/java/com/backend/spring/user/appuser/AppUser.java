@@ -37,7 +37,7 @@ public abstract class AppUser {
     @Column(name = "user_id")
     protected Long id;
     @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id") // TODO: "role" or "role_id"?
     protected Role role;
     @Column(name = "first_name", nullable = false)
     protected String firstName;

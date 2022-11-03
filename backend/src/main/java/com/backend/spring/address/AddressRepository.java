@@ -1,8 +1,8 @@
-package com.backend.spring.user.shopowner;
+package com.backend.spring.address;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ShopOwnerRepository extends JpaRepository<ShopOwner, Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 }

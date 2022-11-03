@@ -1,8 +1,8 @@
-package com.backend.spring.shop;
+package com.backend.spring.vehicle;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address, Long> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 }

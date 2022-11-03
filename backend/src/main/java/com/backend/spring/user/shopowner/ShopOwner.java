@@ -1,6 +1,6 @@
 package com.backend.spring.user.shopowner;
 
-import com.backend.spring.shop.Address;
+import com.backend.spring.address.Address;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
@@ -21,6 +21,22 @@ import static javax.persistence.FetchType.EAGER;
 public class ShopOwner extends AppUser {
     @OneToOne(mappedBy = "shopOwner", fetch = EAGER, optional = false)
     private Shop shop;
+
+    public ShopOwner(String firstName,
+                     String lastName,
+                     String email,
+                     String phoneNumber,
+                     String username,
+                     String password) {
+        super(new Role(RoleEnum.SHOP_OWNER),
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                username,
+                password);
+        this.shop = null;
+    }
 
     /**
      * Constructor that takes data about a ShopOwner and Shop and creates a new Shop with the shop owner set to this

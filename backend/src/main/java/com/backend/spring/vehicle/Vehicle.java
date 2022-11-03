@@ -1,5 +1,6 @@
-package com.backend.spring.user.vehicleowner;
+package com.backend.spring.vehicle;
 
+import com.backend.spring.user.vehicleowner.VehicleOwner;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

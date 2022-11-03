@@ -1,5 +1,6 @@
 package com.backend.spring.shop;
 
+import com.backend.spring.address.Address;
 import com.backend.spring.appointment.Appointment;
 import com.backend.spring.quote.Quote;
 import com.backend.spring.user.shopowner.ShopOwner;

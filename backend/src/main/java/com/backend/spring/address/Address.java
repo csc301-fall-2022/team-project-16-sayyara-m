@@ -1,4 +1,4 @@
-package com.backend.spring.shop;
+package com.backend.spring.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,22 +28,22 @@ public class Address {
     @GeneratedValue(strategy = SEQUENCE, generator = "address_sequence")
     @Column(name = "address_id")
     private Long id;
-
-    @Column(name = "street", nullable = false)
-    private String street;
     @Column(name = "street_number", nullable = false)
     private String streetNumber;
-    @Column(name = "postal_code", nullable = false)
-    private String postalCode;
+    @Column(name = "street", nullable = false)
+    private String street;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "province", nullable = false)
     private String province;
-    public Address(String street, String streetNumber, String postalCode, String city, String province) {
-        this.street = street;
+    @Column(name = "postal_code", nullable = false)
+    private String postalCode;
+
+    public Address(String streetNumber, String street, String city, String province, String postalCode) {
         this.streetNumber = streetNumber;
-        this.postalCode = postalCode;
+        this.street = street;
         this.city = city;
         this.province = province;
+        this.postalCode = postalCode;
     }
 }
