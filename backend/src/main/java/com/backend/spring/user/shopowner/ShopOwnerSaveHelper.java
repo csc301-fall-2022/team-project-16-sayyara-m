@@ -8,6 +8,9 @@ import com.backend.spring.user.role.RoleEnum;
 import com.backend.spring.user.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * Helper class for Shop Owner that abstracts how it is being saved.
@@ -17,8 +20,9 @@ import org.springframework.lang.NonNull;
  * For example, a Shop owner needs to be assigned a Shop, and this class will allow you to pass in
  * a Shop owner and a Shop and assign those values itself without you needing to assign them.
  * <p>
- * It will also set the appropriate role of the Shop Owner
+ * It will also set the appropriate role of the Shop Owner and encrypt the password.
  */
+@Service
 @RequiredArgsConstructor
 public class ShopOwnerSaveHelper {
 
@@ -29,6 +33,8 @@ public class ShopOwnerSaveHelper {
     private final AddressRepository addressRepository;
 
     private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     /**
      * Saves a vehicle owner in the database as well as the vehicle assigned to it.
@@ -41,10 +47,7 @@ public class ShopOwnerSaveHelper {
      * @return Shop Owner after successfully saving
      */
     public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        shop.setAddress(addressRepository.save(address));
-        shopOwner.setShop(shopRepository.save(shop));
-        shopOwner.setRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shop.setShopOwner(shopOwner);
+        setShopOwner(shopOwner, shop, address);
         return shopOwnerRepository.save(shopOwner);
     }
 
@@ -55,10 +58,15 @@ public class ShopOwnerSaveHelper {
      * for easier testing of database constraint violations.
      */
     ShopOwner saveAndFlush(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        shop.setAddress(addressRepository.save(address));
-        shopOwner.setShop(shopRepository.save(shop));
-        shopOwner.setRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shop.setShopOwner(shopOwner);
+        setShopOwner(shopOwner, shop, address);
         return shopOwnerRepository.saveAndFlush(shopOwner);
+    }
+
+    private void setShopOwner(ShopOwner shopOwner, Shop shop, Address address) {
+        shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+        shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
+        shopOwner.setShop(shopRepository.save(shop));
+        shop.setAddress(addressRepository.save(address));
+        shop.setShopOwner(shopOwner);
     }
 }

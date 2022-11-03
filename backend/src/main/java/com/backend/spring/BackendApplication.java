@@ -8,7 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -20,7 +21,7 @@ public class BackendApplication {
     @Bean
     CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
         return args -> {
-            List<Role> roles = List.of(new Role(RoleEnum.SHOP_OWNER), new Role(RoleEnum.VEHICLE_OWNER));
+            Set<Role> roles = new HashSet<>(Set.of(new Role(RoleEnum.SHOP_OWNER), new Role(RoleEnum.VEHICLE_OWNER)));
             roleRepository.saveAll(roles);
         };
     }

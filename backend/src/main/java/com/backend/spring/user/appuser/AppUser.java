@@ -15,12 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
-import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
@@ -39,9 +41,13 @@ public abstract class AppUser {
     protected Long id;
 
     @JsonIgnore
-    @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    protected Role role;
+    @ManyToMany(fetch = EAGER)
+    @JoinTable(
+            name = "UserRoles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    protected Set<Role> roles = new HashSet<>();
     @Column(name = "first_name", nullable = false)
     protected String firstName;
     @Column(name = "last_name", nullable = false)
@@ -50,7 +56,7 @@ public abstract class AppUser {
     protected String email;
     @Column(name = "phone_number", nullable = false)
     protected String phoneNumber;
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     protected String username;
     @Column(name = "password", nullable = false)
     @JsonIgnore // don't display when returning from API endpoint
@@ -65,10 +71,11 @@ public abstract class AppUser {
         this.password = password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AppUser appUser)) return false;
-        return Objects.equals(id, appUser.id) && Objects.equals(role, appUser.role) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(phoneNumber, appUser.phoneNumber) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password);
+    public void addRole(Role role) {
+        for (Role curRole : this.roles) {
+            if (curRole.getName().equals(role.getName()))
+                return;
+        }
+        this.roles.add(role);
     }
 }

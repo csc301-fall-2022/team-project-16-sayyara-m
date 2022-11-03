@@ -6,6 +6,9 @@ import com.backend.spring.vehicle.Vehicle;
 import com.backend.spring.vehicle.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * Helper class for Vehicle Owner that abstracts how it is being saved.
@@ -15,8 +18,9 @@ import org.springframework.lang.NonNull;
  * For example, a vehicle owner needs to be assigned a vehicle, and this class will allow you to pass in
  * a vehicle owner and a vehicle and assign those values itself without you needing to assign them.
  * <p>
- * It will also set the appropriate role of the Vehicle Owner
+ * It will also set the appropriate role of the Vehicle Owner and encrypt the password.
  */
+@Service
 @RequiredArgsConstructor
 public class VehicleOwnerSaveHelper {
     private final VehicleOwnerRepository vehicleOwnerRepository;
@@ -24,6 +28,8 @@ public class VehicleOwnerSaveHelper {
     private final VehicleRepository vehicleRepository;
 
     private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     /**
      * Saves a vehicle owner in the database as well as the vehicle assigned to it.
@@ -35,10 +41,15 @@ public class VehicleOwnerSaveHelper {
      * @return Vehicle Owner after saving
      */
     public VehicleOwner save(@NonNull VehicleOwner vehicleOwner, @NonNull Vehicle vehicle) {
+        setVehicleOwner(vehicleOwner, vehicle);
+        return vehicleOwnerRepository.save(vehicleOwner);
+    }
+
+    private void setVehicleOwner(VehicleOwner vehicleOwner, Vehicle vehicle) {
+        vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
+        vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
         vehicleOwner.setVehicle(vehicleRepository.save(vehicle));
         vehicle.setOwner(vehicleOwner);
-        vehicleOwner.setRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
-        return vehicleOwnerRepository.save(vehicleOwner);
     }
 
     /**
@@ -48,9 +59,7 @@ public class VehicleOwnerSaveHelper {
      * for easier testing of database constraint violations.
      */
     VehicleOwner saveAndFlush(@NonNull VehicleOwner vehicleOwner, @NonNull Vehicle vehicle) {
-        vehicleOwner.setVehicle(vehicleRepository.save(vehicle));
-        vehicle.setOwner(vehicleOwner);
-        vehicleOwner.setRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
+        setVehicleOwner(vehicleOwner, vehicle);
         return vehicleOwnerRepository.saveAndFlush(vehicleOwner);
     }
 }
