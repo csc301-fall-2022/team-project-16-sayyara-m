@@ -1,16 +1,16 @@
 package com.backend.spring.user.shopowner;
 
-import com.backend.spring.shop.Address;
+import com.backend.spring.address.Address;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.role.Role;
-import com.backend.spring.user.role.RoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.util.Objects;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -36,23 +36,20 @@ public class ShopOwner extends AppUser {
      * @param shopPhoneNumber phone number of phone
      * @param shopEmail       email of shop
      */
-    public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password, String shopName, Address shopAddress, String shopPhoneNumber, String shopEmail) {
-        super(new Role(RoleEnum.SHOP_OWNER), firstName, lastName, userEmail, userPhoneNumber, username, password);
+    public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password, String shopName, Address shopAddress, String shopPhoneNumber, String shopEmail, Role role) {
+        super(role, firstName, lastName, userEmail, userPhoneNumber, username, password);
         this.shop = new Shop(shopName, shopAddress, shopPhoneNumber, shopEmail, this);
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShopOwner shopOwner)) return false;
+        return Objects.equals(shop, shopOwner.shop);
+    }
+
+    @Override
     public String toString() {
-        return "ShopOwner{" +
-                "id=" + id +
-                ", role=" + role +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", " + shop +
-                '}';
+        return "ShopOwner{" + "id=" + id + ", role=" + role + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber + '\'' + ", username='" + username + '\'' + ", password='" + password + '\'' + ", " + shop + '}';
     }
 }

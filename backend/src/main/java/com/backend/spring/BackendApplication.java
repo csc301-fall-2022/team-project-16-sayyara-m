@@ -1,12 +1,11 @@
 package com.backend.spring;
 
-import com.backend.spring.shop.Address;
-import com.backend.spring.shop.AddressRepository;
+import com.backend.spring.address.AddressRepository;
 import com.backend.spring.shop.ShopRepository;
 import com.backend.spring.user.appuser.AppUserRepository;
+import com.backend.spring.user.role.Role;
+import com.backend.spring.user.role.RoleEnum;
 import com.backend.spring.user.role.RoleRepository;
-import com.backend.spring.user.shopowner.ShopOwner;
-import com.backend.spring.user.vehicleowner.VehicleOwner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +18,13 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-//    @Bean
-//    CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, RoleRepository roleRepository, ShopRepository shopRepository, AddressRepository addressRepository) {
-//        return args -> {
-//
+    @Bean
+    CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, RoleRepository roleRepository, ShopRepository shopRepository, AddressRepository addressRepository) {
+        return args -> {
+
+            roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
+            roleRepository.save(new Role(RoleEnum.VEHICLE_OWNER));
+
 //            Address address = new Address("Street", "StreetNum", "PostalCode", "City", "Prov");
 //
 //
@@ -38,6 +40,6 @@ public class BackendApplication {
 //
 //            System.out.println(vehicleOwner);
 //            System.out.println(shopOwner);
-//        };
-//    }
+        };
+    }
 }

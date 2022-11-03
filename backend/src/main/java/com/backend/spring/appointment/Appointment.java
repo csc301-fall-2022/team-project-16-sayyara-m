@@ -1,7 +1,9 @@
 package com.backend.spring.appointment;
 
+import com.backend.spring.quote.Quote;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -37,9 +40,12 @@ public class Appointment {
     @GeneratedValue(strategy = SEQUENCE, generator = "appointment_sequence")
     @Column(name = "appointment_id")
     private Long id;
+
+    @JsonIgnore
     @ManyToOne(cascade = ALL, optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
+
     @ManyToOne(cascade = ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
@@ -51,6 +57,10 @@ public class Appointment {
     @Transient
     @Getter(NONE) // to override getter
     private Duration duration;
+
+    @OneToOne(cascade = ALL)
+    @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
+    private Quote quote;
 
     /**
      * duration = endDate - startDate

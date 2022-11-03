@@ -1,5 +1,7 @@
-package com.backend.spring.user.vehicleowner;
+package com.backend.spring.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.backend.spring.user.vehicleowner.VehicleOwner;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
+    @JsonIgnore
     @Id
     @SequenceGenerator(name = "vehicle_sequence", sequenceName = "vehicle_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "vehicle_sequence")
@@ -37,6 +40,7 @@ public class Vehicle {
     private String vin;
     private String plate;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner owner;

@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.Objects;
 
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -36,8 +37,10 @@ public abstract class AppUser {
     @GeneratedValue(strategy = SEQUENCE, generator = "app_user_sequence")
     @Column(name = "user_id")
     protected Long id;
+
+    @JsonIgnore
     @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id") // TODO: "role" or "role_id"?
     protected Role role;
     @Column(name = "first_name", nullable = false)
     protected String firstName;
@@ -61,5 +64,12 @@ public abstract class AppUser {
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AppUser appUser)) return false;
+        return Objects.equals(id, appUser.id) && Objects.equals(role, appUser.role) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(phoneNumber, appUser.phoneNumber) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password);
     }
 }

@@ -1,8 +1,10 @@
 package com.backend.spring.shop;
 
+import com.backend.spring.address.Address;
 import com.backend.spring.appointment.Appointment;
 import com.backend.spring.quote.Quote;
 import com.backend.spring.user.shopowner.ShopOwner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,7 @@ public class Shop {
     private String name;
 
     @ToString.Exclude
+    @JsonIgnore
     @OneToOne(optional = false, cascade = ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ShopOwner shopOwner;
