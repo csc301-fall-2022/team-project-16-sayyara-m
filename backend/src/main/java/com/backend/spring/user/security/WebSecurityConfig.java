@@ -18,11 +18,12 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
+    private final AppUserAuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(null);
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
         http.csrf().disable();
         http.authorizeRequests().antMatchers(POST, "/api/**").permitAll();
         http.authorizeRequests()

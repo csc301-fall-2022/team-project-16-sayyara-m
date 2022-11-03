@@ -2,8 +2,6 @@ package com.backend.spring.user.security;
 
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.appuser.AppUserRepository;
-import com.backend.spring.user.shopowner.ShopOwnerSaveHelper;
-import com.backend.spring.user.vehicleowner.VehicleOwnerSaveHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,14 +9,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@Component
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final ShopOwnerSaveHelper shopOwnerSaveHelper;
-    private final VehicleOwnerSaveHelper vehicleOwnerSaveHelper;
     private final AppUserRepository appUserRepository;
 
     @Override
