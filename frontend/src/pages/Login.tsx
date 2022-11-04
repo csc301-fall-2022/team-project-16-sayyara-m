@@ -8,35 +8,37 @@ import DropDown from 'src/components/DropDown';
 
 interface Credentials {
     email: string,
-    password: string
+    password: string,
+    type: string
 }
 
 function Login() {
 
+    // Setting the component's state
     // const [cookies, setCookie] = useCookies(['auth_token']);
-
     const [loginUserType, setLoginUserType] = useState<string>("Vehicle Owner"); // Can be "Vehicle Owner" or "Shop Owner"
     const [loginEmail, setLoginEmail] = useState<string>(""); // Matches whatever is in the email input field
     const [loginPassword, setLoginPassword] = useState<string>(""); // Matches whatever is in the password input field
 
-    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+    // The onChange input field handlers
+    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setLoginEmail(newVal);
     }
-        
-    const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setLoginPassword(newVal);
     }
 
     // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
-    const loginClicked = () => {
+    const loginClicked = (): void => {
         // Function is called when the login button is clicked.
         // Sends a login post request and interprets the response. If successful, sets the auth_token cookie
 
         const credentials: Credentials = {
             email: loginEmail,
-            password: loginPassword
+            password: loginPassword,
+            type: loginUserType
         };
         const loginRequestUrl: string = API_ROOT + "/login"; // TODO: Change to appropriate endpoint
         console.log("Attempting a login...");
@@ -56,7 +58,7 @@ function Login() {
             }
             response.json()
             .then((jsonResponse) => {
-                // Set the auth_token cookie with the response
+                // TODO: Set the auth_token cookie with the response
 
 
             })
@@ -101,8 +103,8 @@ function Login() {
                             focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"
                             value={loginPassword} onChange={passwordFieldOnChange}/>
                             {/* Error message */}
-                            <p className="text-red-500 text-xs italic" hidden={true}>
-                                Email/password combination not foundPlease choose a password.
+                            <p className="text-red-500 text-xs italic" hidden={false}>
+                                Email/password combination not found
                             </p>
                         </div>
                         <div className="flex items-center justify-between mb-6">
