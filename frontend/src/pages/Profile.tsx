@@ -1,9 +1,16 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => void; setEditingProfile: (arg0: boolean) => void; }) => {
+const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => void; setEditingProfile: (arg0: boolean) => void; userInfo: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+} }) => {
     return (
         <div className='mx-8'>
             <div className='flex justify-center my-8'>
@@ -14,18 +21,15 @@ const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => voi
                 <label className='text-3xl font-bold'>firstName lastName</label>
             </div>
             <div className='flex justify-center my-8'>
-                { /* TODO: Fetch username of user from server */ }
-                <label className='text-1xl font-bold'>username</label>
+                <label className='text-1xl font-bold'>{props.userInfo.username}</label>
             </div>
             <div className='flex justify-center mt-8'>
                 <PhoneIcon className="mx-1" />
-                { /* TODO: Fetch phoneNumber of user from server */ }
-                <label className='text-1m mx-1'>123-456-789</label>
+                <label className='text-1m mx-1'>{props.userInfo.phoneNumber}</label>
             </div>
             <div className='flex justify-center mt-4 mb-8'>
                 <EmailIcon className="mx-1" />
-                { /* TODO: Fetch email of user from server */ }
-                <label className='text-1m mx-1'>someone@example.com</label>
+                <label className='text-1m mx-1'>{props.userInfo.email}</label>
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-34 bg-blue-500 hover:bg-blue-700 text-white
@@ -123,6 +127,25 @@ const Profile = () => {
 
     const [isEditingProfile, setEditingProfile] = useState<boolean>(false)
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
+    const [userInfo, setUserInfo] = useState< {
+        firstName: string;
+        lastName: string;
+        username: string;
+        email: string;
+        phoneNumber: string;
+        password: string;
+    }>({
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        phoneNumber: "",
+        password: ""
+    })
+
+    useEffect(() => {
+        //TODO: Call server
+    })
 
     return (
         <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8 pt-8'>
@@ -132,6 +155,7 @@ const Profile = () => {
                         <DefaultProfilePage 
                             setChangingPassword={setChangingPassword}
                             setEditingProfile={setEditingProfile}
+                            userInfo={userInfo}
                         />
                         : !isChangingPassword ?
                         <EditProfilePage 
