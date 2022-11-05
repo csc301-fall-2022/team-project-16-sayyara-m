@@ -17,8 +17,7 @@ const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => voi
                 <AccountCircle fontSize="large" />
             </div>
             <div className='flex justify-center my-8'>
-                { /* TODO: Fetch firstName and lastName of user from server */ }
-                <label className='text-3xl font-bold'>firstName lastName</label>
+                <label className='text-3xl font-bold'>{props.userInfo.firstName} {props.userInfo.lastName}</label>
             </div>
             <div className='flex justify-center my-8'>
                 <label className='text-1xl font-bold'>{props.userInfo.username}</label>
@@ -45,7 +44,21 @@ const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => voi
     )
 }
 
-const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; }) => {
+const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; saveUserInfo: (arg0: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+}) => void; userInfo: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+} }) => {
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
@@ -53,27 +66,27 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; })
                 <label className='ml-2 font-semibold'>Last Name</label>
                 <div className='mr-2'>
                     <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                    focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="First Name" defaultValue="firstName"/>
+                    focus:outline-blue-500 focus:shadow-outline" type="text" id="firstName" placeholder="First Name" defaultValue={props.userInfo.firstName}/>
                 </div>
                 <div className='ml-2'>
                     <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                    focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Last Name" defaultValue="lastName"/>
+                    focus:outline-blue-500 focus:shadow-outline" type="text" id="lastName" placeholder="Last Name" defaultValue={props.userInfo.lastName}/>
                 </div>
                 <label className='col-span-2 mt-6 font-semibold'>
                     Email Address
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Email Address" defaultValue="someone@example.com"/>
+                focus:outline-blue-500 focus:shadow-outline" type="text" id="email" placeholder="Email Address" defaultValue={props.userInfo.email}/>
                 <label className='col-span-2 mt-6 font-semibold'>
                     Phone Number
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Phone Number" defaultValue="123-456-789"/>
+                focus:outline-blue-500 focus:shadow-outline" type="text" id="phoneNumber" placeholder="Phone Number" defaultValue={props.userInfo.phoneNumber}/>
                 <label className='col-span-2 mt-6 font-semibold'>
                     Username
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="Username" defaultValue="username"/>
+                focus:outline-blue-500 focus:shadow-outline" type="text" id="username" placeholder="Username" defaultValue={props.userInfo.username}/>
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -81,7 +94,14 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; })
                     Cancel
                 </button>
                 <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
-                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.setEditingProfile(false)}>
+                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.saveUserInfo({
+                    firstName: (document.getElementById('firstName') as HTMLInputElement).value,
+                    lastName: (document.getElementById('lastName') as HTMLInputElement).value,
+                    username: (document.getElementById('username') as HTMLInputElement).value,
+                    email: (document.getElementById('email') as HTMLInputElement).value,
+                    phoneNumber: (document.getElementById('phoneNumber') as HTMLInputElement).value,
+                    password: props.userInfo.password
+                })}>
                     Save
                 </button>
             </div>
@@ -89,7 +109,21 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; })
     )
 }
 
-const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; }) => {
+const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; saveUserInfo: (arg0: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+}) => void; userInfo: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+} }) => {
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
@@ -147,6 +181,12 @@ const Profile = () => {
         //TODO: Call server
     })
 
+    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string; password: string}) => {
+        setEditingProfile(false)
+        setChangingPassword(false)
+        setUserInfo(newUserInfo)
+    }
+
     return (
         <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8 pt-8'>
             <div className='flex flex-wrap h-full max-w-md min-w-[330px] w-full'>
@@ -160,10 +200,14 @@ const Profile = () => {
                         : !isChangingPassword ?
                         <EditProfilePage 
                             setEditingProfile={setEditingProfile}
+                            userInfo={userInfo}
+                            saveUserInfo={saveUserInfo}
                         />
                         :
                         <ChangePasswordPage 
                             setChangingPassword={setChangingPassword}
+                            userInfo={userInfo}
+                            saveUserInfo={saveUserInfo}
                         />
                     }
                 </div>
