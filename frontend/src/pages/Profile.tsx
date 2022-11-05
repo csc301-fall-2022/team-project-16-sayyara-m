@@ -124,6 +124,28 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
     phoneNumber: string;
     password: string;
 } }) => {
+    const [showOldPasswordErrorMsg, setShowOldPasswordErrorMsg] = useState<boolean>(false)
+    const [showPasswordsMatchErrorMsg, setShowPasswordsMatchErrorMsg] = useState<boolean>(false)
+
+    const checkPassword = (oldPassword: string, newPassword: string, confirmPassword: string) => {
+        if (oldPassword !== props.userInfo.password) {
+            setShowOldPasswordErrorMsg(true)
+        }
+        else if (newPassword !== confirmPassword) {
+            setShowOldPasswordErrorMsg(false)
+            setShowPasswordsMatchErrorMsg(true)
+        }
+        else {
+            props.saveUserInfo({
+                firstName: props.userInfo.firstName,
+                lastName: props.userInfo.lastName,
+                username: props.userInfo.username,
+                email: props.userInfo.email,
+                phoneNumber: props.userInfo.phoneNumber,
+                password: newPassword
+            })
+        }
+    }
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
@@ -131,17 +153,19 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
                     Old Password
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                focus:outline-blue-500 focus:shadow-outline" type="password" id='oldPassword' placeholder="************"/>
+                {showOldPasswordErrorMsg ? <label className="text-red-500">Incorrect Password</label> : null}
                 <label className='col-span-2 mt-6 font-semibold'>
                     New Password
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                focus:outline-blue-500 focus:shadow-outline" type="password" id='newPassword' placeholder="************"/>
                 <label className='col-span-2 mt-6 font-semibold'>
                     Confirm Password
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************"/>
+                focus:outline-blue-500 focus:shadow-outline" type="password" id='confirmPassword' placeholder="************"/>
+                {showPasswordsMatchErrorMsg ? <label className="text-red-500">Passwords don't match</label> : null}
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -149,7 +173,11 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
                     Cancel
                 </button>
                 <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
-                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.setChangingPassword(false)}>
+                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => checkPassword(
+                        (document.getElementById('oldPassword') as HTMLInputElement).value,
+                        (document.getElementById('newPassword') as HTMLInputElement).value,
+                        (document.getElementById('confirmPassword') as HTMLInputElement).value
+                    )}>
                     Save
                 </button>
             </div>
@@ -178,13 +206,40 @@ const Profile = () => {
     })
 
     useEffect(() => {
-        //TODO: Call server
+        fetch('https://localhost:8080/api/appUsers/' + 'userId') //TODO: Change to live url when possible and figure out how to get user id
+        .then(response => response.json())
+        .then(
+        (result) => {
+            setUserInfo(result)
+        },
+        (error) => {
+            console.log("Could not fetch user info from server")
+            console.log(error)
+        }
+        )
     })
 
     const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string; password: string}) => {
         setEditingProfile(false)
         setChangingPassword(false)
         setUserInfo(newUserInfo)
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userInfo)
+        }
+        let url = 'https://localhost:8080/api/appUsers/' + 'userId' //TODO: Change to live url when possible and figure out how to get user id
+      fetch(url, requestOptions)
+      .then(response => response.json())
+      .then(
+        (result) => {
+          
+        },
+        (error) => {
+          console.log("Could not update user to database")
+          console.log(error)
+        }
+      )
     }
 
     return (
