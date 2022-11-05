@@ -43,7 +43,7 @@ public abstract class AppUser {
     @JsonIgnore
     @ManyToMany(fetch = EAGER)
     @JoinTable(
-            name = "UserRoles",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
