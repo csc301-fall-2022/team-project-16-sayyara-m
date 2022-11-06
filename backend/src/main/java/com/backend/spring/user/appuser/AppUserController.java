@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/appUsers")
+@RequestMapping(path = "api/users")
 public class AppUserController {
     private final AppUserService service;
 
@@ -32,9 +32,9 @@ public class AppUserController {
         return service.getAllAppUsers();
     }
 
-    @GetMapping(path = "{appUser_id}")
-    public AppUser getAppUser(long id) {
-        return service.getAppUser(id);
+    @GetMapping(path = "{userId}")
+    public AppUser getAppUser(@PathVariable long userId) {
+        return service.getAppUser(userId);
     }
 
     @PostMapping(path = "shopOwner")

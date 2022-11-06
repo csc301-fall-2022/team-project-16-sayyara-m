@@ -1,7 +1,7 @@
 package com.backend.spring.user.security;
 
-import com.backend.spring.user.security.filters.SimpleAuthenticationFilter;
-import com.backend.spring.user.security.filters.SimpleAuthorizationFilter;
+import com.backend.spring.user.security.filters.JWTAuthenticationFilter;
+import com.backend.spring.user.security.filters.JWTAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        SimpleAuthenticationFilter authenticationFilter = new SimpleAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
+        JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
         authenticationFilter.setFilterProcessesUrl(LOGIN_URL);
 
         http.csrf().disable();
@@ -35,7 +35,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         http.addFilter(authenticationFilter);
-        http.addFilterBefore(new SimpleAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // TODO: Allow specific route access based on role later on
 //        http.authorizeRequests().antMatchers(GET, "/api/**").permitAll();

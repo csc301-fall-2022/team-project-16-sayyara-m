@@ -2,6 +2,7 @@ package com.backend.spring.user.appuser;
 
 import com.backend.spring.user.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,7 +60,7 @@ public abstract class AppUser {
     @Column(name = "username", nullable = false, unique = true)
     protected String username;
     @Column(name = "password", nullable = false)
-    @JsonIgnore // don't display when returning from API endpoint
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // don't display when returning from API endpoint
     protected String password;
 
     protected AppUser(String firstName, String lastName, String email, String phoneNumber, String username, String password) {

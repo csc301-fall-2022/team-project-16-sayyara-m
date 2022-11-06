@@ -21,7 +21,7 @@ public class ShopOwner extends AppUser {
     @OneToOne(mappedBy = "shopOwner", fetch = EAGER, optional = false)
     private Shop shop;
 
-    public ShopOwner(String firstName, String lastName, String userEmail, String userPhoneNumber, String username, String password) {
-        super(firstName, lastName, userEmail, userPhoneNumber, username, password);
+    public ShopOwner(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
+        super(firstName, lastName, email, phoneNumber, username, password);
     }
 }
