@@ -54,11 +54,13 @@ public class TokenController {
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception e) {
                 response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", e.getLocalizedMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                Map<String, String> responseBody = new HashMap<>();
+                responseBody.put("error_message", e.getMessage());
+                new ObjectMapper().writeValue(response.getOutputStream(), responseBody);
             }
+        } else {
+            response.sendError(400);
         }
     }
 }
