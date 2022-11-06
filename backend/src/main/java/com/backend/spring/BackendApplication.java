@@ -32,7 +32,7 @@ public class BackendApplication {
 
             Shop shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
 
-            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
+            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "password");
             shopOwner = shopOwnerSaveHelper.save(shopOwner, shop, address);
 
             System.out.println("====");
