@@ -12,7 +12,7 @@ public class ShopOwnerService {
         System.out.println(shopOwner);
         try {
             shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             System.out.println("Error at ShopOwnerService:saveShopOwner");
             System.out.println(e.getMessage());
             return false;

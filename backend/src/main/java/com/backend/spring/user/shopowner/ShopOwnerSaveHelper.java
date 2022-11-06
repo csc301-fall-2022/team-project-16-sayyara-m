@@ -45,9 +45,15 @@ public class ShopOwnerSaveHelper {
      * @param address   address to assign to the shop of this shop owner
      * @return Shop Owner after successfully saving
      */
-    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        setShopOwner(shopOwner, shop, address);
-        return shopOwnerRepository.save(shopOwner);
+    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws IllegalStateException {
+        ShopOwner savedShopOwner = null;
+        try {
+            setShopOwner(shopOwner, shop, address);
+            savedShopOwner = shopOwnerRepository.save(shopOwner);
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception.getCause());
+        }
+        return savedShopOwner;
     }
 
     /**
