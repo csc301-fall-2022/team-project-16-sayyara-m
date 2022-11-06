@@ -1,4 +1,4 @@
-package com.backend.spring;
+package com.backend.spring.user.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
