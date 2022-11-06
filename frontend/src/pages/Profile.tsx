@@ -13,9 +13,14 @@ const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => voi
 } }) => {
     return (
         <div className='mx-8'>
-            <div className='flex justify-center my-8'>
-                <AccountCircle fontSize="large" />
-            </div>
+            <ul className="flex justify-evenly -mb-px">
+                <li className="mr-2">
+                    <a className="inline-block p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600 active dark:text-blue-500 dark:border-blue-500">User</a>
+                </li>
+                <li>
+                    <a className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Shop</a>
+                </li>
+            </ul>
             <div className='flex justify-center my-8'>
                 <label className='text-3xl font-bold'>{props.userInfo.firstName} {props.userInfo.lastName}</label>
             </div>
@@ -149,23 +154,27 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
-                <label className='col-span-2 mt-6 font-semibold'>
+                <div className="col-span-2 flow-root flex flex-row mt-6">
+                <label className='font-semibold float-left'>
                     Old Password
                 </label>
+                {showOldPasswordErrorMsg ? <label className="text-red-500 italic float-right">Incorrect Password</label> : null}
+                </div>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" type="password" id='oldPassword' placeholder="************"/>
-                {showOldPasswordErrorMsg ? <label className="text-red-500">Incorrect Password</label> : null}
                 <label className='col-span-2 mt-6 font-semibold'>
                     New Password
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" type="password" id='newPassword' placeholder="************"/>
-                <label className='col-span-2 mt-6 font-semibold'>
+                <div className="col-span-2 flow-root flex flex-row mt-6">
+                <label className='font-semibold float-left'>
                     Confirm Password
                 </label>
+                {showPasswordsMatchErrorMsg ? <label className="text-red-500 italic float-right">Passwords don't match</label> : null}
+                </div>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" type="password" id='confirmPassword' placeholder="************"/>
-                {showPasswordsMatchErrorMsg ? <label className="text-red-500">Passwords don't match</label> : null}
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -204,13 +213,34 @@ const Profile = () => {
         phoneNumber: "",
         password: ""
     })
+    const [shopInfo, setShopInfo] = useState< {
+        address: string;
+        phoneNumber: string,
+        email: string;
+    }>({
+        address: "",
+        phoneNumber: "",
+        email: ""
+    })
 
     useEffect(() => {
         fetch('https://localhost:8080/api/appUsers/' + 'userId') //TODO: Change to live url when possible and figure out how to get user id
         .then(response => response.json())
         .then(
         (result) => {
-            setUserInfo(result)
+            setUserInfo({
+                firstName: result.firstName,
+                lastName: result.lastName,
+                username: result.username,
+                email: result.email,
+                phoneNumber: result.phoneNumber,
+                password: result.password
+            })
+            setShopInfo({
+                address: result.shop.address,
+                phoneNumber: result.shop.phoneNumber,
+                email: result.shop.email
+            })
         },
         (error) => {
             console.log("Could not fetch user info from server")
