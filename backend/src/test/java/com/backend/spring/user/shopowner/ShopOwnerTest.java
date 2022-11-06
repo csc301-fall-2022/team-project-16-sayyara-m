@@ -40,9 +40,9 @@ class ShopOwnerTest {
     void setUp() {
         address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
 
-        shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
+        shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
 
-        shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
+        shopOwner = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
         shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
 
     }
@@ -54,7 +54,7 @@ class ShopOwnerTest {
 
     @Test
     void checkShopsUnique() {
-        ShopOwner shopOwner1 = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
+        ShopOwner shopOwner1 = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
         try {
             shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
             shopOwner1 = saveHelper.saveAndFlush(shopOwner1, shop, address);
@@ -67,7 +67,7 @@ class ShopOwnerTest {
 
     @Test
     void checkShopOwnerExists() {
-        assertThat(shopOwner.getFirstName()).isEqualTo("abc");
+        assertThat(shopOwner.getFirstName()).isEqualTo("abc2");
     }
 
     @Test
@@ -77,7 +77,7 @@ class ShopOwnerTest {
 
     @Test
     void checkShopExists() {
-        assertThat(shopOwner.getShop().getName()).isEqualTo("Sayyara Shop");
+        assertThat(shopOwner.getShop().getName()).isEqualTo("Sayyara Shop2");
     }
 
     @Test
