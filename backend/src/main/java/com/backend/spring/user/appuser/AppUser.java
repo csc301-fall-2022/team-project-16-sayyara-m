@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.Objects;
 
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -36,14 +37,16 @@ public abstract class AppUser {
     @GeneratedValue(strategy = SEQUENCE, generator = "app_user_sequence")
     @Column(name = "user_id")
     protected Long id;
+
+    @JsonIgnore
     @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id") // TODO: "role" or "role_id"?
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     protected Role role;
     @Column(name = "first_name", nullable = false)
     protected String firstName;
     @Column(name = "last_name", nullable = false)
     protected String lastName;
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     protected String email;
     @Column(name = "phone_number", nullable = false)
     protected String phoneNumber;
@@ -53,13 +56,19 @@ public abstract class AppUser {
     @JsonIgnore // don't display when returning from API endpoint
     protected String password;
 
-    protected AppUser(Role role, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        this.role = role;
+    protected AppUser(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AppUser appUser)) return false;
+        return Objects.equals(id, appUser.id) && Objects.equals(role, appUser.role) && Objects.equals(firstName, appUser.firstName) && Objects.equals(lastName, appUser.lastName) && Objects.equals(email, appUser.email) && Objects.equals(phoneNumber, appUser.phoneNumber) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password);
     }
 }
