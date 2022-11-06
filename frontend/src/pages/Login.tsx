@@ -4,26 +4,23 @@ import { Link } from 'react-router-dom';
 // import { useCookies } from 'react-cookie';
 
 import { API_ROOT } from 'src/App';
-import DropDown from 'src/components/DropDown';
 
 interface Credentials {
-    email: string,
-    password: string,
-    type: string
+    username: string,
+    password: string
 }
 
 function Login() {
 
     // Setting the component's state
     // const [cookies, setCookie] = useCookies(['auth_token']);
-    const [loginUserType, setLoginUserType] = useState<string>("Vehicle Owner"); // Can be "Vehicle Owner" or "Shop Owner"
-    const [loginEmail, setLoginEmail] = useState<string>(""); // Matches whatever is in the email input field
+    const [loginUsername, setLoginUsername] = useState<string>(""); // Matches whatever is in the username input field
     const [loginPassword, setLoginPassword] = useState<string>(""); // Matches whatever is in the password input field
 
     // The onChange input field handlers
-    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
+    const usernameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
-        setLoginEmail(newVal);
+        setLoginUsername(newVal);
     }
     const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
@@ -36,9 +33,8 @@ function Login() {
         // Sends a login post request and interprets the response. If successful, sets the auth_token cookie
 
         const credentials: Credentials = {
-            email: loginEmail,
-            password: loginPassword,
-            type: loginUserType
+            username: loginUsername,
+            password: loginPassword
         };
         const loginRequestUrl: string = API_ROOT + "/login"; // TODO: Change to appropriate endpoint
         console.log("Attempting a login...");
@@ -80,19 +76,16 @@ function Login() {
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
                     <div className='mx-8'>
                         <div className='flex justify-center my-8'>
-                            <label className='text-4xl font-bold'>Log In</label>
-                        </div>
-                        <div className='mb-4 w-full justify-center flex'>
-                            <DropDown onSelectionChanged={setLoginUserType} items={['Vehicle Owner', 'Shop Owner']} selectedItem={loginUserType} />
+                            <label className='text-4xl font-bold'>Owner Login</label>
                         </div>
                         <div className="mb-3">
                             <label className="block text-gray-700 font-bold mb-2">
-                                Email
+                                Username
                             </label>
-                            {/* EMAIL INPUT FIELD */}
+                            {/* USERNAME INPUT FIELD */}
                             <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" id="email" type="text" placeholder="Email Address"
-                            value={loginEmail} onChange={emailFieldOnChange}/>
+                            focus:outline-blue-500 focus:shadow-outline" id="email" type="text"
+                            value={loginUsername} onChange={usernameFieldOnChange}/>
                         </div>
                         <div className="mb-3">
                             <label className="block text-gray-700 font-bold mb-2">
