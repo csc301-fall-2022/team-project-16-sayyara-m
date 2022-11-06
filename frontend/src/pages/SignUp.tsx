@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../index.css';
 import clsx from 'clsx';
+import { MuiTelInput, MuiTelInputInfo, matchIsValidTel } from 'mui-tel-input';
 
 import { API_ROOT } from 'src/App';
 import DropDown from 'src/components/DropDown';
@@ -21,30 +23,43 @@ function SignUp() {
     const [signUpFirstName, setSignUpFirstName] = useState<string>("");
     const [signUpLastName, setSignUpLastName] = useState<string>("");
     const [signUpEmail, setSignUpEmail] = useState<string>("");
+    const [signUpPhone, setSignUpPhone] = useState<string>("");
+    const [signUpUsername, setSignUpUsername] = useState<string>("");
     const [signUpPassword, setSignUpPassword] = useState<string>("");
     const [signUpPasswordConfirm, setSignUpPasswordConfirm] = useState<string>("");
 
     // States for UI error messages
+    const [emailValid, setEmailValid] = useState<boolean>(true);
+    const [phoneValid, setPhoneValid] = useState<boolean>(true);
+    const [usernameValid, setUsernameValid] = useState<boolean>(true);
     const [passwordInvalidMessage, setPasswordInvalidMessage] = useState<string>("");
     const [confirmPasswordValid, setConfirmPasswordValid] = useState<boolean>(true);
-    const [emailValid, setEmailValid] = useState<boolean>(true);
 
     // ============ The onChange input field handlers ====================
-    const firstNameFieldOnChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    const firstNameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpFirstName(newVal);
     }
-    const lastNameFieldOnChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    const lastNameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpLastName(newVal);
     }
-    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpEmail(newVal);
         const eReg: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         setEmailValid(newVal === "" || eReg.test(newVal.toLowerCase()));
     }
-    const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    const phoneFieldOnChange = (newVal: string, info: MuiTelInputInfo): void => {
+        setSignUpPhone(newVal);
+        setPhoneValid(matchIsValidTel(newVal));
+    }
+    const usernameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const newVal: string = event.currentTarget.value;
+        setSignUpUsername(newVal);
+        setUsernameValid(newVal === "" || newVal.length > 7);
+    }
+    const passwordFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpPassword(newVal);
 
@@ -64,7 +79,7 @@ function SignUp() {
         setPasswordInvalidMessage(invalidMessage);
         setConfirmPasswordValid((signUpPasswordConfirm === "" || newVal === signUpPasswordConfirm));
     }
-    const confirmPasswordFieldOnChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    const confirmPasswordFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpPasswordConfirm(newVal);
         // If confirm password does not match password, inform the user
@@ -73,11 +88,12 @@ function SignUp() {
     // ====================================================================
 
 
-    const validateForm =():boolean => {
+    const validateForm =(): boolean => {
         // Returns true if all the fields are correctly filled
         const formInvalid: boolean = (
             signUpEmail === "" || signUpPassword === "" || signUpPasswordConfirm === "" 
             || !emailValid || !confirmPasswordValid || passwordInvalidMessage !== ""
+            || !usernameValid || signUpUsername === "" || !matchIsValidTel(signUpPhone)
         );
 
         if (formInvalid) {
@@ -87,6 +103,10 @@ function SignUp() {
                 setConfirmPasswordValid(false);
             if (signUpPassword === "")
                 setPasswordInvalidMessage("Must have a password");
+            if (signUpUsername === "")
+                setUsernameValid(false);
+            if (!matchIsValidTel(signUpPhone))
+                setPhoneValid(false);
             return false;
         }
         return true;
@@ -153,19 +173,19 @@ function SignUp() {
                                 <DropDown onSelectionChanged={setSignUpUserType} items={['Vehicle Owner', 'Shop Owner']} selectedItem={signUpUserType} />
                             </div>
                         </div>
-                        <div className='grid grid-cols-2 grid-rows-8 gap-1 mt-6 mb-6'>
+                        <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
                             <label className='mb-[2px] font-semibold'>First Name</label>
                             <label className='ml-2 font-semibold'>Last Name</label>
                             <div className='mr-2'>
                                 {/* FIRST NAME INPUT FIELD */}
-                                <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="" value={signUpFirstName}
+                                <input className="shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="" value={signUpFirstName}
                                 onChange={firstNameFieldOnChange}/>
                             </div>
                             <div className='ml-2'>
                                 {/* LAST NAME INPUT FIELD */}
-                                <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                                focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="" value={signUpLastName}
+                                <input className="shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="" value={signUpLastName}
                                 onChange={lastNameFieldOnChange}/>
                             </div>
                             <label className='mt-1 font-semibold'>
@@ -176,10 +196,30 @@ function SignUp() {
                                 Must be a valid email
                             </p>
                             {/* EMAIL ADDRESS INPUT FIELD */}
-                            <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" type="text" placeholder="example@gmail.com" value={signUpEmail}
+                            <input className="col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="example@gmail.com" value={signUpEmail}
                             onChange={emailFieldOnChange}/>
+                            <label className='mt-1 font-semibold'>
+                                Phone Number
+                            </label>
+                            {/* Phone error message */}
+                            <p className='justify-self-end whitespace-nowrap self-end text-red-500 text-xs italic' hidden={phoneValid}>
+                                Must be valid number
+                            </p>
+                            {/* PHONE NUMBER INPUT FIELD */}
+                            <MuiTelInput className='col-span-2 shadow-sm' value={signUpPhone} onChange={phoneFieldOnChange}
+                            onlyCountries={['CA', 'US']} focusOnSelectCountry defaultCountry='CA'/>
                             <label className='mt-6 font-semibold'>
+                                Username
+                            </label>
+                            {/* Username error text */}
+                            <p className='justify-self-end whitespace-nowrap self-end text-red-500 text-xs italic' hidden={usernameValid}>
+                                Must be at least 8 characters
+                            </p>
+                            {/* USERNAME INPUT FIELD */}
+                            <input className={'col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700' + clsx({'background-red-500': !confirmPasswordValid})} 
+                            type="password" placeholder="" value={signUpUsername} onChange={usernameFieldOnChange}/>
+                            <label className='font-semibold'>
                                 Password
                             </label>
                             {/* Password error text */}
@@ -187,7 +227,7 @@ function SignUp() {
                                 {passwordInvalidMessage}
                             </p>
                             {/* PASSWORD INPUT FIELD */}
-                            <input className={'col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline ' + clsx({'background-red-500': !confirmPasswordValid})} 
+                            <input className={'col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700' + clsx({'background-red-500': !confirmPasswordValid})} 
                             type="password" placeholder="************" value={signUpPassword} onChange={passwordFieldOnChange}/>
                             <label className='font-semibold'>
                                 Confirm Password
@@ -197,8 +237,8 @@ function SignUp() {
                                 Passwords don't match
                             </p>
                             {/* CONFIRM PASSWORD INPUT FIELD */}
-                            <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" type="password" placeholder="************" value={signUpPasswordConfirm}
+                            <input className="col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="password" placeholder="************" value={signUpPasswordConfirm}
                             onChange={confirmPasswordFieldOnChange}/>
                         </div>
                         <div className='flex justify-center mb-6'>

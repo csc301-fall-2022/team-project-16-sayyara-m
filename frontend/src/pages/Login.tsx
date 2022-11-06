@@ -103,7 +103,7 @@ function Login() {
                             focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"
                             value={loginPassword} onChange={passwordFieldOnChange}/>
                             {/* Error message */}
-                            <p className="text-red-500 text-xs italic" hidden={false}>
+                            <p className="text-red-500 text-xs italic" hidden={true}>
                                 Email/password combination not found
                             </p>
                         </div>
