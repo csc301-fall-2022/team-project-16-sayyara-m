@@ -370,9 +370,13 @@ const Profile = () => {
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(shopInfo)
+            body: JSON.stringify({
+                address: shopInfo.address,
+                email: shopInfo.email,
+                phoneNumber: shopInfo.phoneNumber
+            })
         }
-        let url = 'https://localhost:8080/api/shops/' + 'shopId' //TODO: Change to live url when possible and figure out how to get shop id
+        let url = 'https://localhost:8080/api/shops/' + shopInfo.id //TODO: Change to live url when possible
       fetch(url, requestOptions)
       .then(response => response.json())
       .then(
