@@ -30,7 +30,7 @@ const generateAppointments = () => {
 }
 export const mAddress: Address = {
     addressId: 1,
-    street: "DemonTime Blvd",
+    street: "Daemon Blvd",
     streetNumber: "123",
     postalCode: "M4B192",
     province: "ON"

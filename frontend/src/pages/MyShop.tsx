@@ -10,11 +10,11 @@ const MyShop = () => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
         return (
-            <div className="border" id={(String)(ap.appointmentId)}>
-                <h1>{vehicleOwner.lastName}</h1>
-                <p>{vehicle.make} {vehicle.model}</p>
-                <p>{ap.startDate.toLocaleDateString()}</p>
-                <p>{ap.startDate.toLocaleTimeString()} to {ap.endDate.toLocaleTimeString()}</p>
+            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1" id={(String)(ap.appointmentId)}>
+                <h1 className="text-lg"><strong>{vehicleOwner.lastName}</strong></h1>
+                <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
+                <p><strong>{ap.startDate.toLocaleDateString()}</strong></p>
+                <p className="text-xs whitespace-nowrap">{ap.startDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}-{ap.endDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}</p>
             </div>
         )
     }
@@ -37,7 +37,7 @@ const MyShop = () => {
             </div>
             <div>
                 <h1 className="text-2xl pt-2 text-blue-800">My Appointments</h1>
-                <div>
+                <div className="flex overflow-scroll flex-shrink-0">
                     {generateCards()}
                 </div>
             </div>
