@@ -8,14 +8,14 @@ export const mVehicleOwner: VehicleOwner = {
     email: "hz@gmail.com",
     vehicle: {
         year: 2002,
-        make: "toyota",
-        model: "camery",
+        make: "Toyota",
+        model: "Camry",
         vin: "2313123",
         plate: "bxmt 293"
     }
 }
 export const mAppointment: Appointment = {
-    appointmentId: "1",
+    appointmentId: 1,
     vehicleOwner: mVehicleOwner,
     startDate: new Date(),
     endDate: new Date(),
