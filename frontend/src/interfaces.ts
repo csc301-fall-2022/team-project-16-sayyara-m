@@ -27,7 +27,7 @@ export interface Shop {
 export interface ShopOwner extends User {
     shop: Shop
 }
-interface Vehicle {
+export interface Vehicle {
     year: number,
     make: string,
     model: string,
@@ -40,7 +40,7 @@ export interface VehicleOwner extends User {
 }
 
 export interface Appointment {
-    appointmentId: string,
+    appointmentId: number,
     vehicleOwner: VehicleOwner,
     startDate: Date,
     endDate: Date,
