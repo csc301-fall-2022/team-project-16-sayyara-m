@@ -15,7 +15,7 @@
     <description>backend</description>
     <properties>
         <java.version>17</java.version>
-<!--        <maven.compiler.release>7&lt;!&ndash;&ndash;&gt;</maven.compiler.release>-->
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
     <dependencies>
         <dependency>
