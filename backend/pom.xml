@@ -92,8 +92,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>3.8.4</source>
+                    <target>3.8.4</target>
                 </configuration>
             </plugin>
         </plugins>
