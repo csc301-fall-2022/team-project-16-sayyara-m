@@ -1,32 +1,22 @@
 package com.backend.spring.user.vehicleowner;
 
-import com.backend.spring.user.role.RoleRepository;
 import com.backend.spring.vehicle.Vehicle;
-import com.backend.spring.vehicle.VehicleRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest
+@SpringBootTest
 class VehicleOwnerTest {
 
+    @Autowired
     private VehicleOwnerSaveHelper saveHelper;
 
     @Autowired
     private VehicleOwnerRepository vehicleOwnerRepository;
-
-    @Autowired
-    private VehicleRepository vehicleRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private TestEntityManager entityManager;
 
     private VehicleOwner vehicleOwner;
 
@@ -34,14 +24,17 @@ class VehicleOwnerTest {
 
     @BeforeEach
     void setUp() {
-        saveHelper = new VehicleOwnerSaveHelper(vehicleOwnerRepository, vehicleRepository, roleRepository);
-
-        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", "jack", "pass");
+        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", "jack2", "pass");
 
         vehicle = new Vehicle(2022, "Honda", "Civic", "123456VIN", "ABC1234");
 
         vehicleOwner = saveHelper.saveAndFlush(vehicleOwner, vehicle);
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        vehicleOwnerRepository.deleteAll();
     }
 
     @Test

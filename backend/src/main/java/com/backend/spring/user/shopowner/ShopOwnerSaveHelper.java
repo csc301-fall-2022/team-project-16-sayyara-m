@@ -8,6 +8,8 @@ import com.backend.spring.user.role.RoleEnum;
 import com.backend.spring.user.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * Helper class for Shop Owner that abstracts how it is being saved.
@@ -17,8 +19,9 @@ import org.springframework.lang.NonNull;
  * For example, a Shop owner needs to be assigned a Shop, and this class will allow you to pass in
  * a Shop owner and a Shop and assign those values itself without you needing to assign them.
  * <p>
- * It will also set the appropriate role of the Shop Owner
+ * It will also set the appropriate role of the Shop Owner and encrypt the password.
  */
+@Service
 @RequiredArgsConstructor
 public class ShopOwnerSaveHelper {
 
@@ -30,6 +33,8 @@ public class ShopOwnerSaveHelper {
 
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * Saves a vehicle owner in the database as well as the vehicle assigned to it.
      * The appropriate role will be pulled from the database and assigned to this vehicle owner.
@@ -40,12 +45,15 @@ public class ShopOwnerSaveHelper {
      * @param address   address to assign to the shop of this shop owner
      * @return Shop Owner after successfully saving
      */
-    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        shop.setAddress(addressRepository.save(address));
-        shopOwner.setShop(shopRepository.save(shop));
-        shopOwner.setRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shop.setShopOwner(shopOwner);
-        return shopOwnerRepository.save(shopOwner);
+    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws IllegalStateException {
+        ShopOwner savedShopOwner = null;
+        try {
+            setShopOwner(shopOwner, shop, address);
+            savedShopOwner = shopOwnerRepository.save(shopOwner);
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception.getCause());
+        }
+        return savedShopOwner;
     }
 
     /**
@@ -55,10 +63,15 @@ public class ShopOwnerSaveHelper {
      * for easier testing of database constraint violations.
      */
     ShopOwner saveAndFlush(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        shop.setAddress(addressRepository.save(address));
-        shopOwner.setShop(shopRepository.save(shop));
-        shopOwner.setRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shop.setShopOwner(shopOwner);
+        setShopOwner(shopOwner, shop, address);
         return shopOwnerRepository.saveAndFlush(shopOwner);
+    }
+
+    private void setShopOwner(ShopOwner shopOwner, Shop shop, Address address) {
+        shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+        shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
+        shopOwner.setShop(shopRepository.save(shop));
+        shop.setAddress(addressRepository.save(address));
+        shop.setShopOwner(shopOwner);
     }
 }

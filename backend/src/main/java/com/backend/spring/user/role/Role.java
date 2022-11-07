@@ -1,6 +1,7 @@
 package com.backend.spring.user.role;
 
 import com.backend.spring.user.appuser.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,14 +10,13 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
@@ -39,8 +39,10 @@ public class Role {
     @Column(name = "role_name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
-    private List<AppUser> users = new ArrayList<>();
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    private Set<AppUser> users = new HashSet<>();
 
     public Role(RoleEnum role) {
         this.name = role.getValue();

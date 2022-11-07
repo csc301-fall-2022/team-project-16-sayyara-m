@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -34,7 +34,7 @@ spring:
     password: "password"
   jpa:
     database-platform: "org.hibernate.dialect.H2Dialect"
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: create-drop
     defer-datasource-initialization: true
 
 ---
@@ -42,9 +42,16 @@ spring:
 spring:
   config:
     activate:
-      on-profile: "production"
-#    heroku:
-#      host: "localhost"
-#      port: 5672
-#      username: "admin"
-#      password: "secret"
+      on-profile: "prod"
+  datasource:
+    url: "jdbc:postgresql://ec2-44-195-132-31.compute-1.amazonaws.com:5432/d8pbit7u2vl22n?user=owmgucfutpdwpp&password=66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
+    username: "owmgucfutpdwpp"
+    password: "66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
+  jpa:
+    hibernate:
+      ddl-auto: create
+server:
+  port: ${PORT}
+  error:
+    include-binding-errors: always
+    include-message: always

@@ -1,6 +1,5 @@
 package com.backend.spring.user.appuser;
 
-import com.backend.spring.user.role.Role;
 import com.backend.spring.user.shopowner.ShopOwner;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/appUsers")
+@RequestMapping(path = "api/users")
 public class AppUserController {
     private final AppUserService service;
 
@@ -33,9 +32,9 @@ public class AppUserController {
         return service.getAllAppUsers();
     }
 
-    @GetMapping(path = "{appUser_id}")
-    public AppUser getAppUser(long id) {
-        return service.getAppUser(id);
+    @GetMapping(path = "{userId}")
+    public AppUser getAppUser(@PathVariable long userId) {
+        return service.getAppUser(userId);
     }
 
     @PostMapping(path = "shopOwner")
@@ -55,13 +54,12 @@ public class AppUserController {
 
     @PutMapping(path = "{appUser_id}")
     public void updateAppUser(@PathVariable("appUser_id") Long id,
-                              @RequestParam(required = false) Role role,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
                               @RequestParam(required = false) String email,
                               @RequestParam(required = false) String phoneNumber,
                               @RequestParam(required = false) String username,
                               @RequestParam(required = false) String password) {
-        service.updateAppUser(id, role, firstName, lastName, email, phoneNumber, username, password);
+        service.updateAppUser(id, firstName, lastName, email, phoneNumber, username, password);
     }
 }

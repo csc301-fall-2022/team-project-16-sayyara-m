@@ -1,22 +1,20 @@
 package com.backend.spring.user.shopowner;
 
 import com.backend.spring.address.Address;
-import com.backend.spring.address.AddressRepository;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.shop.ShopRepository;
 import com.backend.spring.user.role.RoleEnum;
-import com.backend.spring.user.role.RoleRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-@DataJpaTest
+@SpringBootTest
 class ShopOwnerTest {
     @Autowired
     private ShopOwnerRepository shopOwnerRepository;
@@ -25,43 +23,38 @@ class ShopOwnerTest {
     private ShopRepository shopRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private TestEntityManager entityManager;
+    private ShopOwnerSaveHelper saveHelper;
 
     private ShopOwner shopOwner;
 
     private Shop shop;
     private Address address;
 
-    private ShopOwnerSaveHelper saveHelper;
+    @AfterEach
+    void tearDown() {
+        shopRepository.deleteAll();
+        shopOwnerRepository.deleteAll();
+    }
 
     @BeforeEach
     void setUp() {
-        this.saveHelper = new ShopOwnerSaveHelper(shopOwnerRepository, shopRepository, addressRepository, roleRepository);
-
         address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
 
-        shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
+        shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
 
-        shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
-        saveHelper.saveAndFlush(shopOwner, shop, address);
-        shopOwner = saveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+        shopOwner = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
+        shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
 
     }
 
     @Test
     void checkShopOwnerSaved() {
-        assertThat(saveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress())).isEqualTo(shopOwner);
+        assertThat(saveHelper.save(shopOwner, shop, address).getUsername()).isEqualTo(shopOwner.getUsername());
     }
 
     @Test
     void checkShopsUnique() {
-        ShopOwner shopOwner1 = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob", "password");
+        ShopOwner shopOwner1 = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
         try {
             shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
             shopOwner1 = saveHelper.saveAndFlush(shopOwner1, shop, address);
@@ -74,17 +67,17 @@ class ShopOwnerTest {
 
     @Test
     void checkShopOwnerExists() {
-        assertThat(shopOwner.getFirstName()).isEqualTo("abc");
+        assertThat(shopOwner.getFirstName()).isEqualTo("abc2");
     }
 
     @Test
     void checkRoleExists() {
-        assertThat(shopOwner.getRole().getName()).isEqualTo(RoleEnum.SHOP_OWNER);
+        assertThat(shopOwner.getRoles().stream().findFirst().orElseThrow().getName()).isEqualTo(RoleEnum.SHOP_OWNER);
     }
 
     @Test
     void checkShopExists() {
-        assertThat(shopOwner.getShop().getName()).isEqualTo("Sayyara Shop");
+        assertThat(shopOwner.getShop().getName()).isEqualTo("Sayyara Shop2");
     }
 
     @Test
