@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input';
 
 import { SignUpInfo, UserInfoValidationStates } from '../../pages/SignUp';
+import { validatePassword } from '../../utilities/ValidatePassword';
 
 // THIS COMPONENT IS NOT DESIGNED TO BE REUSABLE - this may change if it is needed elsewhere
 
@@ -46,7 +47,6 @@ function UserInfoForm(props: Props) {
     const phoneFieldOnChange = (newVal: string): void => {
         setSignUpInfo(prevState => ({...prevState, phoneNumber: newVal}));
         setValidation(prevState => ({...prevState, phoneValid: matchIsValidTel(newVal)}));
-
     }
     const usernameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
@@ -60,18 +60,7 @@ function UserInfoForm(props: Props) {
         setSignUpInfo(prevState => ({...prevState, password: newVal}));
 
         // Determine if the password is valid and set the UI message
-        let invalidMessage: string = "";
-        if (newVal.length <= 8) {
-            invalidMessage = "Must be at least 8 characters";
-        } else if (!/[A-Za-z]/.test(newVal)) {
-            invalidMessage = "Must contain at least one letter";
-        } else if (!/[A-Z]/.test(newVal)) {
-            invalidMessage = "At least one letter must be uppercase";
-        } else if (!/\d/.test(newVal)) {
-            invalidMessage = "Must contain at least one number";
-        } else if (!/[.,!@#$%^&*]/.test(newVal)) {
-            invalidMessage = "Must contain at least one of .,!@#$%^&*";
-        }
+        let invalidMessage: string = validatePassword(newVal);
         setValidation(prevState => (
             {
                 ...prevState, 
@@ -86,14 +75,11 @@ function UserInfoForm(props: Props) {
 
         // If confirm password does not match password, inform the user
         const validity: boolean = (newVal === "" || newVal === signUpInfo.password);
-        setValidation(prevState => ({...prevState, usernameValid: validity}));
+        setValidation(prevState => ({...prevState, confirmPasswordValid: validity}));
 
     }
 
     return(<>
-        <div className='flex justify-center my-8'>
-            <label className='text-4xl font-bold'>Owner Sign Up</label>
-        </div>
         <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-10 mb-6'>
             <label className='mb-[2px] font-semibold'>First Name</label>
             <label className='ml-2 font-semibold'>Last Name</label>

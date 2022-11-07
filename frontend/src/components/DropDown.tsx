@@ -13,7 +13,10 @@ interface DropDownProps {
     
     // The currently selected item for the dropdown (renders when the dropdown list isnt visible)
     // A good place to pass the state that's updated by onSelectionChanged
-    selectedItem: string
+    selectedItem: string,
+
+    // Classes to be applied to the button element
+    className?: string
 }
 
 // This component renders a dropdown menu for the UI.
@@ -51,15 +54,16 @@ function DropDown(props: DropDownProps) {
     }
 
     return(
-        <div className="relative inline-block text-left">
+        <div className="relative inline-block w-full">
             <div>
-                <button type="button" className="inline-flex w-full justify-center rounded-md border shadow-sm
-                border-[#0000003b] bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" 
+                <button type="button" className={`inline-flex w-full rounded-md border shadow-sm
+                border-[#0000003b] bg-white px-3 py-2 text-sm font-medium text-left text-gray-700 shadow-sm hover:bg-gray-50 `
+                + props.className} 
                 id="menu-button" aria-expanded="true" aria-haspopup="true"
                 onClick={() => { setMenuVisible(!menuVisible) }}>
                     {props.selectedItem}
                     {/* Import - Heroicon name: mini/chevron-down */}
-                    <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" 
+                    <svg className="absolute right-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" 
                     fill="currentColor" aria-hidden="true">
                         <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 
                         0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
