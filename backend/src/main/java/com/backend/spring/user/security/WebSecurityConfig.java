@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static com.backend.spring.user.security.SecurityConstants.LOGIN_URL;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -29,7 +31,7 @@ public class WebSecurityConfig {
         JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager());
         authenticationFilter.setFilterProcessesUrl(LOGIN_URL);
 
-        http.csrf().disable();
+        http.cors().and().csrf().disable();
         http.authorizeRequests().anyRequest().permitAll();
         http.httpBasic(withDefaults());
         http.sessionManagement().sessionCreationPolicy(STATELESS);
@@ -48,5 +50,16 @@ public class WebSecurityConfig {
 //                .sessionCreationPolicy(STATELESS);
 
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods("*");
+            }
+        };
     }
 }
