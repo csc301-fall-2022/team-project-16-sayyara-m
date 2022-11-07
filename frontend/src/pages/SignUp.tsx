@@ -5,6 +5,9 @@ import { matchIsValidTel } from 'mui-tel-input';
 
 import ShopCreationForm from '../components/SignUp/ShopCreationForm';
 import UserInfoForm from '../components/SignUp/UserInfoForm';
+import { API_ROOT } from 'src/App';
+import useAuth from 'src/utilities/hooks/useAuth';
+import { useCookies } from 'react-cookie';
 
 
 export interface SignUpInfo {
@@ -52,6 +55,10 @@ export interface ShopInfoValidationStates {
 }
 
 function SignUp() {
+
+    // @ts-ignore
+    const [ cookies, setCookie ] = useCookies(['refresh_token']);
+    const { setAuth } = useAuth();
 
     // Determines which form to render
     const [showShopForm, setShowShopForm] = useState<boolean>(false);
@@ -153,13 +160,67 @@ function SignUp() {
     // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
     // Function is called when the Next button is clicked
     const nextFormClicked = (): void => {
-        //if (!validateUserInfoForm()) return;
-        validateUserInfoForm();
+        
+        if (!validateUserInfoForm()) return;
         setShowShopForm(true);
     }
 
     const signUpClicked = (): void => {
-        validateShopInfoForm();
+        
+        if (!validateShopInfoForm()) return;
+
+        const requestUrl: string = API_ROOT + '/shopOwner';
+        fetch(requestUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(signUpInfo)
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Sign up failed');
+            }
+            loginAfterSignup();
+        })
+        .catch((err) => {
+            console.log('Request Failed');
+            console.error(err);
+        });
+    }
+
+    // TODO: This function is copy pasted from Login.tsx, refactor later
+    const loginAfterSignup = (): void => {
+        // Function is called when the login button is clicked.
+
+        const bodyFormData = new FormData();
+        bodyFormData.append('username', signUpInfo.username);
+        bodyFormData.append('password', signUpInfo.password);
+        const requestUrl: string = API_ROOT + '/user/login';
+        fetch(requestUrl, {
+            method: 'POST',
+            body: bodyFormData
+        })
+        .then((response) => {
+            response.json()
+            .then((parsedJson) => {
+                const accessToken: string = parsedJson.access_token;
+                const refreshToken: string = parsedJson.refresh_token;
+
+                setCookie('refresh_token', refreshToken, {path: '/'});
+                setAuth(accessToken);
+
+                console.log('Login succeeded\n');
+                console.log('Access token: ' + accessToken + '\n');
+                console.log('Refresh token: ' + refreshToken);
+            })
+            .catch((err) => {
+                console.log('Failed to parse JSON');
+                console.error(err);
+            })
+        })
+        .catch((err) => {
+            console.log('Request Failed');
+            console.error(err);
+        });
     }
 
     const renderForm = () => {

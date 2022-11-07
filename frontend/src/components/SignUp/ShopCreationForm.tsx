@@ -14,14 +14,14 @@ interface Props {
     setShopInfoValidationStates: Dispatch<SetStateAction<ShopInfoValidationStates>>
 }
 function ShopCreationForm(props: Props) {
-
-    const [selectedProvince, setSelectedProvince] = useState<string>("--");
-
     // Extracting props and shortening names
     const shopInfo: ShopInfo = props.signUpInfo.shop;
     const setSignUpInfo: Dispatch<SetStateAction<SignUpInfo>> = props.setSignUpInfo;
     const v: ShopInfoValidationStates = props.shopInfoValidationStates;
     const setValidation: Dispatch<SetStateAction<ShopInfoValidationStates>> = props.setShopInfoValidationStates;
+
+    const prevProv: string = (shopInfo.address.province === "") ? "--" : shopInfo.address.province;
+    const [selectedProvince, setSelectedProvince] = useState<string>(prevProv);
 
     const showAddressError: boolean = (!v.streetNoValid || !v.streetNameValid || !v.cityValid || !v.provinceValid || !v.postalValid);
 

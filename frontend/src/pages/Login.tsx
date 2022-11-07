@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
 
-import { API_ROOT } from 'src/App';
+import { useCookies } from 'react-cookie';
+import useAuth from 'src/utilities/hooks/useAuth';
 
-interface Credentials {
-    username: string,
-    password: string
-}
+import { API_ROOT } from '../App';
 
 function Login() {
+
+    // @ts-ignore
+    const [ cookies, setCookie ] = useCookies(['refresh_token']);
+    const { setAuth } = useAuth();
 
     // Setting the component's state
     // const [cookies, setCookie] = useCookies(['auth_token']);
@@ -30,43 +31,36 @@ function Login() {
     // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
     const loginClicked = (): void => {
         // Function is called when the login button is clicked.
-        // Sends a login post request and interprets the response. If successful, sets the auth_token cookie
 
-        const credentials: Credentials = {
-            username: loginUsername,
-            password: loginPassword
-        };
-        const loginRequestUrl: string = API_ROOT + "/login"; // TODO: Change to appropriate endpoint
-        console.log("Attempting a login...");
-        fetch(loginRequestUrl, { 
+        const bodyFormData = new FormData();
+        bodyFormData.append('username', loginUsername);
+        bodyFormData.append('password', loginPassword);
+        const requestUrl: string = API_ROOT + '/user/login';
+        fetch(requestUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(credentials) 
+            body: bodyFormData
         })
         .then((response) => {
-            if (response.status >= 500) {
-                console.log(response.statusText);
-                // TODO: Here is where we may want to have the UI display some error since the login failed
-
-
-            }
             response.json()
-            .then((jsonResponse) => {
-                // TODO: Set the auth_token cookie with the response
+            .then((parsedJson) => {
+                const accessToken: string = parsedJson.access_token;
+                const refreshToken: string = parsedJson.refresh_token;
 
+                setCookie('refresh_token', refreshToken, {path: '/'});
+                setAuth(accessToken);
 
+                console.log('Login succeeded\n');
+                console.log('Access token: ' + accessToken + '\n');
+                console.log('Refresh token: ' + refreshToken);
             })
-            .catch((e) => {
-                console.log("Failed to parse the response as JSON");
-                console.error(e);
-            });
+            .catch((err) => {
+                console.log('Failed to parse JSON');
+                console.error(err);
+            })
         })
-        .catch((e) => {
-            // I believe this function runs when there is a network error, but not an HTTP error response
-            console.log("Failed to make the HTTP request");
-            console.error(e);
+        .catch((err) => {
+            console.log('Request Failed');
+            console.error(err);
         });
     }
 
@@ -105,13 +99,13 @@ function Login() {
                             <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
                             font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
                             onClick={loginClicked}>
-                                <Link to="/home">Log In</Link>
+                                Log In
                             </button>
                             {/* FORGOT PASSWORD LINK */}
-                            <a className="transition duration-100 ease-in-out inline-block align-baseline font-bold text-sm
-                            text-blue-500 hover:text-blue-800" href="#">
+                            <button className="transition duration-100 ease-in-out inline-block align-baseline font-bold text-sm
+                            text-blue-500 hover:text-blue-800" onClick={() => {}}>
                                 Forgot Password?
-                            </a>
+                            </button>
                         </div>
                         <div className='flex w-full justify-center relative mb-4 border-t pt-3 text-sm'>
                             <span className='mr-2 text-gray-500'>Don't have an account?</span>
