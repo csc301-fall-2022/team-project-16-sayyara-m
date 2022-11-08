@@ -33,7 +33,7 @@ function useRefreshToken() {
         });
         setAuth(response.data.access_token);
         setCookie('refresh_token', response.data.refresh_token, {path: '/'});
-        return response.data.access_token;
+        console.log('Successfully refreshed');
     }
     return refresh;
 }

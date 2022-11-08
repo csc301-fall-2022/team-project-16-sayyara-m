@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Home from './pages/Home';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
+import useRefreshToken from './utilities/hooks/useRefreshToken';
 
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -13,38 +14,16 @@ export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
 function App() {
 
+  // @ts-ignore
+  const [cookies, setCookie] = useCookies(['refresh_token']);
+  const refresh = useRefreshToken();
 
-  // If the user has a refresh token stored in the cookie, use it to get a new access token
-  // by calling the refresh API endpoint
-  // const [cookies, setCookie] = useCookies(['refresh_token']);
-  // if (accessToken == null && cookies.refresh_token != null) {
-  //   const url: string = API_ROOT + "token/refresh";
-  //   const authStr: string = "Bearer " + cookies.refresh_token;
-    
-  //   fetch(url, { headers: { 'Authorization': authStr } })
-  //   .then((response) => {
-  //     response.json()
-  //     .then((parsedJson) => {
-  //       // We get a 403 status when the authentication fails
-  //       if (response.status === 403) {
-  //         console.log("Failed to authenticate.");
-  //         console.error(parsedJson.error_message);
-  //       } else if (response.ok) {
-  //         setAccessToken(parsedJson.access_token);
-  //         setCookie('refresh_token', parsedJson.refresh_token, { path: '/' });
-  //         console.log("Authenticated successfully.");
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       console.log("Failed to parse the refresh request response as JSON.");
-  //       console.error(e);
-  //     })
-  //   })
-  //   .catch((e) => {
-  //     console.log("Failed to make the authentication HTTP request.");
-  //     console.error(e);
-  //   });
-  // }
+  // If there is a stored refresh token, attempt a refresh.
+  useEffect(() => {
+    if (cookies.refresh_token == null) return;
+    console.log('Attempting a refresh');
+    refresh?.();
+  }, []);
 
   return (
     <div>
