@@ -1,5 +1,5 @@
 import React from "react";
-import { Appointment, Vehicle, VehicleOwner } from "../interfaces";
+import { Appointment, Quote, Vehicle, VehicleOwner } from "../interfaces";
 import { mShop as shop } from "../mockData";
 
 const MyShop = () => {
@@ -10,15 +10,32 @@ const MyShop = () => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
         return (
-            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1" id={(String)(ap.appointmentId)}>
+            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-2xl" id={(String)(ap.appointmentId)}>
                 <h1 className="text-lg"><strong>{vehicleOwner.lastName}</strong></h1>
                 <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                <p><strong>{ap.startDate.toLocaleDateString()}</strong></p>
-                <p className="text-xs whitespace-nowrap">{ap.startDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}-{ap.endDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}</p>
+                <p><strong>{ap.startDate.toISOString().substring(0, 10)}</strong></p>
+                <p className="whitespace-nowrap">
+                    {ap.startDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}-{ap.endDate.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"})}
+                </p>
             </div>
         )
     }
-    const generateCards = () =>{
+    interface QuoteCardProps {
+        quote: Quote;
+    }
+    const QuoteCard = ({quote}: QuoteCardProps) => {
+        const vehicleOwner: VehicleOwner = quote.vehicleOwner;
+        const vehicle: Vehicle = vehicleOwner.vehicle;
+        return (
+            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-2xl">
+                <h1 className="text-lg"><strong>{vehicleOwner.lastName}</strong></h1>
+                <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
+                <p className="whitespace-nowrap">Price: ${quote.price}</p>
+                <p className="whitespace-nowrap">Expires: {quote.expiryTime}</p>
+            </div>
+        )
+    }
+    const generateAppointmentCards = () =>{
         console.log(shop);
         let appointments: Appointment[] = shop.appointments;
         return appointments.map(ap => {
@@ -27,22 +44,32 @@ const MyShop = () => {
             );
         });
     }
+    const generateQuoteCards = () => {
+        let quotes: Quote[] = shop.quotes;
+        return quotes.map(q => {
+            return <QuoteCard quote={q}/>
+        })
+    }
     return (
         <div className="pt-2">
             <div>
-                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold">My Shop</h1>
-                <h1 className="">Shop Name: {shop.shopName} </h1>
-                <h1>Shop Address: {shop.address.streetNumber + " " + shop.address.street}</h1>
-
+                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold">{shop.shopName}</h1>
             </div>
             <div>
-                <h1 className="text-2xl pt-2 text-blue-800">My Appointments</h1>
-                <div className="flex overflow-scroll flex-shrink-0">
-                    {generateCards()}
+                <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Appointments</h1>
+                <div className="flex overflow-auto pb-4">
+                    {generateAppointmentCards()}
                 </div>
             </div>
             <div>
-                <h1>My Quotes</h1>
+                <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Quotes</h1>
+                <div className="flex overflow-auto pb-4">
+                    {generateQuoteCards()}
+                </div>
+            </div>
+            <br></br>
+            <div className="flex justify-center">
+                <button className="border-2 rounded-md p-2 bg-blue-200">Edit Shop</button>
             </div>
         </div>
     )

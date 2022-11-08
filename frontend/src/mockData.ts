@@ -1,4 +1,4 @@
-import { ShopOwner, Shop, Address, Appointment, VehicleOwner } from "./interfaces";
+import { ShopOwner, Shop, Address, Appointment, VehicleOwner, Quote } from "./interfaces";
 export const mVehicleOwner: VehicleOwner = {
     id: 2,
     firstName: "Hamoon",
@@ -21,12 +21,24 @@ export const mAppointment: Appointment = {
     endDate: new Date(),
     duration: 100
 }
+export const mQuote: Quote = {
+    vehicleOwner: mVehicleOwner,
+    price: 120.00,
+    expiryTime: "2020-12-12"
+}
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
-    for(let i = 0; i < 10; i++){
+    for(let i = 0; i < 20; i++){
         appointments.push(mAppointment);
     }
     return appointments;
+}
+const genereateQuotes = () => {
+    let quotes: Quote[] = [];
+    for(let i = 0; i < 20; i++){
+        quotes.push(mQuote);
+    }
+    return quotes;
 }
 export const mAddress: Address = {
     addressId: 1,
@@ -40,7 +52,7 @@ export const mShop: Shop = {
     shopName: "Uths Garage",
     address: mAddress,
     appointments: generateAppointments(),
-    quotes: []
+    quotes: genereateQuotes()
 }
 export const mShopOwner: ShopOwner = {
     id: 1,
@@ -51,3 +63,4 @@ export const mShopOwner: ShopOwner = {
     email: "123uth@gmail.com",
     shop: mShop
 }
+
