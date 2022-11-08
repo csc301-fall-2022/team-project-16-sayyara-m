@@ -1,22 +1,32 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useCookies } from 'react-cookie';
-import useAuth from 'src/utilities/hooks/useAuth';
+import useRequestLogin from 'src/utilities/hooks/useRequestLogin';
 
-import { API_ROOT } from '../App';
-
+// This page displays the login form
 function Login() {
 
-    // @ts-ignore
-    const [ cookies, setCookie ] = useCookies(['refresh_token']);
-    const { setAuth } = useAuth();
+    // Add a keyboard event listener on document mount. When enter is pressed, attempt a login
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+            event.preventDefault();
+            loginClicked();
+        }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, []);
+
+    const requestLogin = useRequestLogin();
 
     // Setting the component's state
-    // const [cookies, setCookie] = useCookies(['auth_token']);
     const [loginUsername, setLoginUsername] = useState<string>(""); // Matches whatever is in the username input field
     const [loginPassword, setLoginPassword] = useState<string>(""); // Matches whatever is in the password input field
+    const [errorMsg, setErrorMsg] = useState<string>(""); // Error message displayed on failure
 
     // The onChange input field handlers
     const usernameFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
@@ -28,39 +38,15 @@ function Login() {
         setLoginPassword(newVal);
     }
 
-    // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
+    // Function is called when the login button is clicked.
     const loginClicked = (): void => {
-        // Function is called when the login button is clicked.
+        requestLogin(loginUsername, loginPassword)
+        .then((errorMsg: string) => {
+            setErrorMsg(errorMsg);
+            if (errorMsg === "") {
+                // TODO: Do something on login success
 
-        const bodyFormData = new FormData();
-        bodyFormData.append('username', loginUsername);
-        bodyFormData.append('password', loginPassword);
-        const requestUrl: string = API_ROOT + '/user/login';
-        fetch(requestUrl, {
-            method: 'POST',
-            body: bodyFormData
-        })
-        .then((response) => {
-            response.json()
-            .then((parsedJson) => {
-                const accessToken: string = parsedJson.access_token;
-                const refreshToken: string = parsedJson.refresh_token;
-
-                setCookie('refresh_token', refreshToken, {path: '/'});
-                setAuth(accessToken);
-
-                console.log('Login succeeded\n');
-                console.log('Access token: ' + accessToken + '\n');
-                console.log('Refresh token: ' + refreshToken);
-            })
-            .catch((err) => {
-                console.log('Failed to parse JSON');
-                console.error(err);
-            })
-        })
-        .catch((err) => {
-            console.log('Request Failed');
-            console.error(err);
+            }
         });
     }
 
@@ -87,11 +73,11 @@ function Login() {
                             </label>
                             {/* PASSWORD INPUT FIELD */}
                             <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder="********"
+                            focus:outline-blue-500 focus:shadow-outline" id="password" type="password" placeholder=""
                             value={loginPassword} onChange={passwordFieldOnChange}/>
                             {/* Error message */}
-                            <p className="text-red-500 text-xs italic" hidden={true}>
-                                Email/password combination not found
+                            <p className="text-red-500 text-xs italic ">
+                                {errorMsg}
                             </p>
                         </div>
                         <div className="flex items-center justify-between mb-6">

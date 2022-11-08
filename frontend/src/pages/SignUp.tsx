@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { matchIsValidTel } from 'mui-tel-input';
 
 import ShopCreationForm from '../components/SignUp/ShopCreationForm';
 import UserInfoForm from '../components/SignUp/UserInfoForm';
 import { API_ROOT } from 'src/App';
-import useAuth from 'src/utilities/hooks/useAuth';
-import { useCookies } from 'react-cookie';
-
+import useRequestLogin from 'src/utilities/hooks/useRequestLogin';
 
 export interface SignUpInfo {
     firstName: string,
@@ -56,12 +54,27 @@ export interface ShopInfoValidationStates {
 
 function SignUp() {
 
-    // @ts-ignore
-    const [ cookies, setCookie ] = useCookies(['refresh_token']);
-    const { setAuth } = useAuth();
+    const requestLogin = useRequestLogin();
+    const [showShopForm, setShowShopForm] = useState<boolean>(false); // Determines which form to render
 
-    // Determines which form to render
-    const [showShopForm, setShowShopForm] = useState<boolean>(false);
+    // Add a keyboard event listener on document mount. 
+    // When enter is pressed, attempt signup if on shop info form, otherwise attempt navigating to the shop info form
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+            event.preventDefault();
+            if (showShopForm) {
+                signUpClicked();
+            } else {
+                nextFormClicked();
+            }
+        }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, []);
 
     // Field values for both forms, to be submitted on signup
     const initialSignUpInfo: SignUpInfo = {
@@ -165,9 +178,11 @@ function SignUp() {
         setShowShopForm(true);
     }
 
+    // Executes when the 'Sign Up' button is clicked while the Shop Info form is loaded
     const signUpClicked = (): void => {
         
-        if (!validateShopInfoForm()) return;
+        if (!validateShopInfoForm()) 
+            return;
 
         const requestUrl: string = API_ROOT + '/shopOwner';
         fetch(requestUrl, {
@@ -179,42 +194,12 @@ function SignUp() {
             if (!response.ok) {
                 throw new Error('Sign up failed');
             }
-            loginAfterSignup();
-        })
-        .catch((err) => {
-            console.log('Request Failed');
-            console.error(err);
-        });
-    }
+            requestLogin(signUpInfo.username, signUpInfo.password)
+            .then((errorMsg: string) => {
+                if (errorMsg === "") {
+                    // TODO: Do something on success
 
-    // TODO: This function is copy pasted from Login.tsx, refactor later
-    const loginAfterSignup = (): void => {
-        // Function is called when the login button is clicked.
-
-        const bodyFormData = new FormData();
-        bodyFormData.append('username', signUpInfo.username);
-        bodyFormData.append('password', signUpInfo.password);
-        const requestUrl: string = API_ROOT + '/user/login';
-        fetch(requestUrl, {
-            method: 'POST',
-            body: bodyFormData
-        })
-        .then((response) => {
-            response.json()
-            .then((parsedJson) => {
-                const accessToken: string = parsedJson.access_token;
-                const refreshToken: string = parsedJson.refresh_token;
-
-                setCookie('refresh_token', refreshToken, {path: '/'});
-                setAuth(accessToken);
-
-                console.log('Login succeeded\n');
-                console.log('Access token: ' + accessToken + '\n');
-                console.log('Refresh token: ' + refreshToken);
-            })
-            .catch((err) => {
-                console.log('Failed to parse JSON');
-                console.error(err);
+                }
             })
         })
         .catch((err) => {
@@ -266,7 +251,9 @@ function SignUp() {
             <div className='flex w-full justify-center relative mb-4 border-t pt-3 text-sm'>
                 <span className='mr-2 text-gray-500'>Already have an account?</span>
                 <Link to='/'>
-                    <a className='transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>Log In</a>
+                    <a className='transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>
+                        Log In
+                    </a>
                 </Link>
             </div>
         </>);

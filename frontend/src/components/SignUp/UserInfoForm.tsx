@@ -138,7 +138,7 @@ function UserInfoForm(props: Props) {
             <input className='col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 
             text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700'
             type="password" placeholder="************" value={signUpInfo.password} onChange={passwordFieldOnChange}/>
-            <label className='font-semibold'>
+            <label className='font-semibold whitespace-nowrap'>
                 Confirm Password
             </label>
             {/* Confirm password error text */}

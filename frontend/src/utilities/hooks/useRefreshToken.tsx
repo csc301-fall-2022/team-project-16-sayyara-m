@@ -24,8 +24,8 @@ function useRefreshToken() {
         return;
     }
 
-    const refreshStr: string = 'Bearer ' + cookies.refresh_token;
     const refresh = async () => {
+        const refreshStr: string = 'Bearer ' + cookies.refresh_token;
         const response = await axios.get('/token/refresh', {
             headers: {
                 Authorization: refreshStr

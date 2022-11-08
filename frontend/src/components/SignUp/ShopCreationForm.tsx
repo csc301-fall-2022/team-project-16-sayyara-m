@@ -77,7 +77,7 @@ function ShopCreationForm(props: Props) {
     
     return(<>
         <div className='grid grid-cols-3 grid-rows-12 gap-1 mt-10 mb-4'>
-            <label className='mt-1 font-semibold whitespace-nowrap'>
+            <label className='mt-1 font-semibold whitespace-nowrap text-sm sm:text-base'>
                 Business Name
             </label>
             {/* Shop name error message */}
@@ -88,7 +88,7 @@ function ShopCreationForm(props: Props) {
             <input className="col-span-3 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="" 
             value={shopInfo.name} onChange={nameFieldOnChange}/>
-            <label className='mt-1 font-semibold whitespace-nowrap'>
+            <label className='mt-1 font-semibold whitespace-nowrap text-sm sm:text-base'>
                 Email Address
             </label>
             {/* Email error message */}
@@ -99,7 +99,7 @@ function ShopCreationForm(props: Props) {
             <input className="col-span-3 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="example@gmail.com"
             value={shopInfo.email} onChange={emailFieldOnChange}/>
-            <label className='mt-1 col-span-2 font-semibold'>
+            <label className='mt-1 col-span-2 font-semibold text-sm sm:text-base'>
                 Business Number
             </label>
             {/* Phone error message */}
@@ -109,29 +109,29 @@ function ShopCreationForm(props: Props) {
             {/* PHONE NUMBER INPUT FIELD */}
             <MuiTelInput className='col-span-3 shadow-sm' value={shopInfo.phoneNumber} onChange={phoneFieldOnChange}
             onlyCountries={['CA', 'US']} focusOnSelectCountry defaultCountry='CA'/>
-            <label className='mt-8 font-semibold'>
+            <label className='mt-8 font-semibold text-sm sm:text-base'>
                 Street Number
             </label>
-            <label className='col-span-2 mt-8 font-semibold self-end'>
+            <label className='col-span-2 mt-8 font-semibold self-end text-sm sm:text-base'>
                 Street Name
             </label>
             {/* STREET NUMBER INPUT FIELD */}
             <div className='mr-2'>
                 <input className={`shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 ` + clsx({'border-red-500': !v.streetNoValid})} type="text" placeholder="e.g. 123"
+                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 ` + clsx({'border-red-500': !v.streetNoValid})} type="text" placeholder=""
                 value={shopInfo.address.streetNumber} onChange={streetNumberOnChange}/>
             </div>
             {/* STREET NAME INPUT FIELD */}
             <input className={`col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 ` + clsx({'border-red-500': !v.streetNameValid})} type="text" placeholder=""
             value={shopInfo.address.street} onChange={streetNameOnChange}/>
-            <label className='font-semibold self-end'>
+            <label className='font-semibold self-end text-sm sm:text-base'>
                 City
             </label>
-            <label className='font-semibold self-end'>
+            <label className='font-semibold self-end text-sm sm:text-base'>
                 Province
             </label>
-            <label className='ml-2 font-semibold self-end whitespace-nowrap'>
+            <label className='ml-2 font-semibold self-end whitespace-nowrap text-sm sm:text-base'>
                 Postal Code
             </label>
             {/* CITY INPUT FIELD */}
