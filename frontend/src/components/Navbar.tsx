@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Link} from "react-router-dom";
 import {Disclosure} from "@headlessui/react"
 import ProfileDropdown from "./ProfileDropdown";
@@ -40,8 +40,6 @@ const WebNavMap = () => {
 };
 const Navbar = () => {
 
-    const [user, _] = useState(null);
-
     return (
         <Disclosure as="nav" className="bg-gray-200 w-full px-4 sm:px-6 \
         pt-6 pb-5 md:px-8">
@@ -59,8 +57,8 @@ const Navbar = () => {
                 {/* hidden by default all styles applied with sm: */}
                 <WebNavMap/>
 
-                <div className="flex w-2/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
-                    {user && <ProfileDropdown/>}
+                <div className="flex w-3/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
+                    <ProfileDropdown/>
                     <Link className="mx-2" to="/">Login</Link>
                     <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
                 </div>

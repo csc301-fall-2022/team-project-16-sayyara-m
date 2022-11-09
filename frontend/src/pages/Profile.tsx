@@ -287,6 +287,8 @@ const Profile = () => {
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
     const [isViewingShop, setIsViewingShop] = useState<boolean>(false)
     const [isEditingShop, setIsEditingShop] = useState<boolean>(false)
+    // For now, we're giving the user and shop info some mock data as the server calls
+    // implementation hasn't been completed as of yet
     const [userInfo, setUserInfo] = useState< {
         firstName: string;
         lastName: string;
@@ -295,12 +297,12 @@ const Profile = () => {
         phoneNumber: string;
         password: string;
     }>({
-        firstName: "",
-        lastName: "",
-        username: "",
-        email: "",
-        phoneNumber: "",
-        password: ""
+        firstName: "Ahsan",
+        lastName: "Saeed",
+        username: "saeedahsan",
+        email: "ahsanm.saeed@mail.utoronto.ca",
+        phoneNumber: "123456789",
+        password: "password"
     })
     const [shopInfo, setShopInfo] = useState< {
         id: string
@@ -308,10 +310,10 @@ const Profile = () => {
         phoneNumber: string,
         email: string;
     }>({
-        id: "",
-        address: "",
-        phoneNumber: "",
-        email: ""
+        id: "1",
+        address: "123 Street Rd",
+        phoneNumber: "987654321",
+        email: "myshop@gmail.com"
     })
 
     useEffect(() => {
