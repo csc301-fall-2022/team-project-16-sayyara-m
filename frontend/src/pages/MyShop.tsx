@@ -53,7 +53,7 @@ const MyShop = () => {
     return (
         <div className="pt-2">
             <div>
-                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold">{shop.shopName}</h1>
+                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold sm:text-4xl">{shop.shopName}</h1>
             </div>
             <div>
                 <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Appointments</h1>
@@ -68,9 +68,6 @@ const MyShop = () => {
                 </div>
             </div>
             <br></br>
-            <div className="flex justify-center">
-                <button className="border-2 rounded-md p-2 bg-blue-200">Edit Shop</button>
-            </div>
         </div>
     )
 };
