@@ -26,7 +26,7 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 #### GitHub Project Board
  - Allowed us to efficiently record, organize, and assign tasks
  - Made it easy to visualize what still needed to be done, who was currently working on what, and what was already completed
-   ![Project Board](ProjectBoard.png)
+ ![Project Board](ProjectBoard.png)
 
 #### Weekly Standup Meetings
 - Provided an opportunity for us to collaborate on brainstorming new ideas and tackling challenges
@@ -35,6 +35,7 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 #### Miro Board
 - Powerful visual overview of all the features that comprise our project 
 - Helped us define the scope of our project and user stories
+![Project Board](MiroBoard.png)
 
 #### Pull Request Rules
 - Kept each other up to date on changes made by teammates
@@ -53,16 +54,18 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 
 
 #### Meetings with partner were not frequent
-
+- Some expectations for certain features were unclear which created development roadblocks 
 
 #### Not prioritizing mockups
-
+- Made it difficult for us integrate separately developed front end features
+- Features were developed without an established userflow flow in mind which caused some friction points in our UI
 
 #### Not enough consultation with other members before starting a feature
-
+- Caused challenges in integrating each other's features because development occurred without any defined interfaces
 
 #### Finalizing details of organization and management too late
 (ex: exact days and time for standups) a bit later than what would have been ideal
+- Resulted in a slow start to our work and as we lacked agreed upon action points and mechanisms for accountability
 
 
 
