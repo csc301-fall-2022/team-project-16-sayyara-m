@@ -1,6 +1,7 @@
 package com.backend.spring.user.appuser;
 
 import com.backend.spring.user.shopowner.ShopOwner;
+import com.backend.spring.user.shopowner.ShopOwnerSaveHelper;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,41 +12,52 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AppUserService {
-    private final AppUserRepository appUserRepository;
+    private final AppUserRepository userRepository;
+    private final ShopOwnerSaveHelper shopOwnerSaveHelper;
 
-    public List<AppUser> getAllUsers() {
-        return appUserRepository.findAll();
+
+    public List<AppUser> getAllAppUsers() {
+        return userRepository.findAll();
     }
 
-    public ShopOwner addNewShopOwner(ShopOwner shopOwner) {
-        return appUserRepository.save(shopOwner);
+    public AppUser getAppUser(long id) {
+        return userRepository.findById(id).orElseThrow(IllegalStateException::new);
     }
 
-    public VehicleOwner addNewVehicleOwner(VehicleOwner vehicleOwner) {
-        return appUserRepository.save(vehicleOwner);
+    public ShopOwner createShopOwner(ShopOwner shopOwner) {
+        // TODO: Change to get shop and address as input
+        return shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+    }
+
+    public VehicleOwner createVehicleOwner(VehicleOwner vehicleOwner) {
+        return userRepository.save(vehicleOwner);
+    }
+
+    public void deleteAppUser(long id) {
+        userRepository.deleteById(id);
     }
 
     @Transactional
-    public void updateUser(Long userId, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        AppUser user = appUserRepository.findById(userId).orElseThrow(IllegalStateException::new);
+    public void updateAppUser(Long userId, String firstName, String lastName, String email, String phoneNumber, String username, String password) {
+        AppUser appUser = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
 
         if (firstName != null && firstName.length() > 0) {
-            user.setFirstName(firstName);
+            appUser.setFirstName(firstName);
         }
         if (lastName != null && lastName.length() > 0) {
-            user.setLastName(lastName);
+            appUser.setLastName(lastName);
         }
         if (email != null && email.length() > 0) {
-            user.setEmail(email);
+            appUser.setEmail(email);
         }
         if (phoneNumber != null && phoneNumber.length() > 0) {
-            user.setPhoneNumber(phoneNumber);
+            appUser.setPhoneNumber(phoneNumber);
         }
         if (username != null && username.length() > 0) {
-            user.setUsername(username);
+            appUser.setUsername(username);
         }
         if (password != null && password.length() > 0) {
-            user.setPassword(password);
+            appUser.setPassword(password);
         }
     }
 }

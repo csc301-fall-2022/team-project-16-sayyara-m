@@ -48,5 +48,5 @@ public class Quote {
     private Double price;
 
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime expiry;
+    private LocalDateTime expiryTime;
 }

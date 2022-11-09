@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp';
 import Appointments from './pages/Appointments';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
+import MyShop from './pages/MyShop';
 
 export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
@@ -28,14 +29,15 @@ function App() {
   return (
     <div>
       <Router>
-          <Navbar />
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/SignUp' element={<SignUp />} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/appointments' element={<Appointments />} />
-            <Route path='/profile' element={<Profile />} />
-          </Routes>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/SignUp' element={<SignUp />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/appointments' element={<Appointments />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/myshop' element={<MyShop />}/>
+        </Routes>
       </Router>
     </div>
   );

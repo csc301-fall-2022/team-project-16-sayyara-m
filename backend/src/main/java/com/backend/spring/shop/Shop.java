@@ -1,12 +1,15 @@
 package com.backend.spring.shop;
 
+import com.backend.spring.address.Address;
 import com.backend.spring.appointment.Appointment;
 import com.backend.spring.quote.Quote;
 import com.backend.spring.user.shopowner.ShopOwner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +29,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -37,7 +41,12 @@ public class Shop {
     @Column(name = "shop_id")
     private Long id;
 
-    @OneToOne(optional = false, cascade = ALL)
+    @Column(name = "shop_name", nullable = false, unique = true)
+    private String name;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToOne(cascade = ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ShopOwner shopOwner;
 
@@ -49,6 +58,7 @@ public class Shop {
     private List<Appointment> appointments = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
     @Column(name = "phone_number")
@@ -56,23 +66,11 @@ public class Shop {
     @Column(name = "email")
     private String email;
 
-    public Shop(Address address, String phoneNumber, String email, ShopOwner shopOwner) {
+    public Shop(String name, Address address, String phoneNumber, String email) {
+        this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.shopOwner = shopOwner;
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", shopOwner=" + shopOwner.getFirstName() +
-                ", address=" + address +
-                ", appointments=" + appointments +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 
 }
