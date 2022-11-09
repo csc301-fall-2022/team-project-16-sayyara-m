@@ -24,21 +24,17 @@ Shop owners are able to create accounts with the web app and store information a
 
 ## Development requirements
 
-#### Required Instalments
-- Java JDK 17
-- Maven
-- Npm
+**For building and running the application you need:**
+- [Java JDK 17](https://www.oracle.com/java/technologies/downloads/#java17)
+- [Maven](https://maven.apache.org/)
+- [Npm](https://nodejs.org/en/download/)
 
-#### Run Application
+#### Build & Run application
 ###### Backend
 ```bash
 # Start from root directory
 cd backend
-mvn clean
-mvn install
-
-# Run server
-java -jar target/backend-0.0.1-SNAPSHOT.jar
+mvn clean install -DskipTests && mvn spring-boot:run
 
 # Run tests
 mvn test
