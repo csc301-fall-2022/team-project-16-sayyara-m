@@ -57,7 +57,7 @@ function SignUp() {
     const requestLogin = useRequestLogin();
     const [showShopForm, setShowShopForm] = useState<boolean>(false); // Determines which form to render
 
-    // Add a keyboard event listener on document mount. 
+    // Add a keyboard event listener on document mount.
     // When enter is pressed, attempt signup if on shop info form, otherwise attempt navigating to the shop info form
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
@@ -115,11 +115,11 @@ function SignUp() {
 
     // Returns true if all the fields are correctly filled
     const validateUserInfoForm = (): boolean => {
-    
+
         const v: UserInfoValidationStates = userInfoValidationStates;
         const formInvalid: boolean = (
-            signUpInfo.email === "" || signUpInfo.password === "" || signUpPasswordConfirm === "" || 
-            !v.emailValid || !v.confirmPasswordValid || v.passwordInvalidMessage !== "" || 
+            signUpInfo.email === "" || signUpInfo.password === "" || signUpPasswordConfirm === "" ||
+            !v.emailValid || !v.confirmPasswordValid || v.passwordInvalidMessage !== "" ||
             !v.usernameValid || signUpInfo.username === "" || !matchIsValidTel(signUpInfo.phoneNumber)
         );
         if (formInvalid) {
@@ -143,9 +143,9 @@ function SignUp() {
         const v: ShopInfoValidationStates = shopInfoValidationStates;
         const shop: ShopInfo = signUpInfo.shop;
         const formInvalid: boolean = (
-            shop.name === "" || shop.email === "" || shop.phoneNumber === "" || shop.address.streetNumber === "" || 
-            shop.address.street === "" || shop.address.city === "" || shop.address.province == "" || 
-            shop.address.postalCode === "" || !v.nameValid || !v.emailValid || !v.phoneValid || !v.streetNoValid || 
+            shop.name === "" || shop.email === "" || shop.phoneNumber === "" || shop.address.streetNumber === "" ||
+            shop.address.street === "" || shop.address.city === "" || shop.address.province == "" ||
+            shop.address.postalCode === "" || !v.nameValid || !v.emailValid || !v.phoneValid || !v.streetNoValid ||
             !v.streetNameValid || !v.cityValid || !v.provinceValid || !v.postalValid
         )
         if (formInvalid) {
@@ -173,15 +173,15 @@ function SignUp() {
     // If event is needed, the type is React.MouseEvent<HTMLButtonElement>
     // Function is called when the Next button is clicked
     const nextFormClicked = (): void => {
-        
+
         if (!validateUserInfoForm()) return;
         setShowShopForm(true);
     }
 
     // Executes when the 'Sign Up' button is clicked while the Shop Info form is loaded
     const signUpClicked = (): void => {
-        
-        if (!validateShopInfoForm()) 
+
+        if (!validateShopInfoForm())
             return;
 
         const requestUrl: string = API_ROOT + '/shopOwner';
@@ -232,7 +232,7 @@ function SignUp() {
                     </button>
                 </div>
             </>);
-        } 
+        }
         return (<>
             <div className='flex justify-center my-8'>
                 <label className='text-4xl font-bold'>Owner Sign Up</label>
@@ -250,7 +250,7 @@ function SignUp() {
             </div>
             <div className='flex w-full justify-center relative mb-4 border-t pt-3 text-sm'>
                 <span className='mr-2 text-gray-500'>Already have an account?</span>
-                <Link to='/'>
+                <Link to='/login'>
                     <a className='transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>
                         Log In
                     </a>

@@ -31,12 +31,12 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/SignUp' element={<SignUp />} />
           <Route path='/home' element={<Home />} />
           <Route path='/appointments' element={<Appointments />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path='/myshop' element={<MyShop />}/>
+          <Route path='/' element={<MyShop />}/>
         </Routes>
       </Router>
     </div>

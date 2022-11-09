@@ -59,7 +59,7 @@ const Navbar = () => {
 
                 <div className="flex w-3/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
                     <ProfileDropdown/>
-                    <Link className="mx-2" to="/">Login</Link>
+                    <Link className="mx-2" to="/login">Login</Link>
                     <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
                 </div>
             </div>
