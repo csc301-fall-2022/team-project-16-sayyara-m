@@ -26,7 +26,7 @@ function useRequestLogin() {
         .then((response) => {
             if (!response.ok) {
                 if (response.status === 401) {
-                    errorMsg = 'Email/password combination not found';
+                    errorMsg = 'Username/password combination not found';
                 } else if (response.status >= 400 && response.status < 500) {
                     errorMsg = 'Client failed request, try another device?';
                 } else if (response.status >= 500) {
