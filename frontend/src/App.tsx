@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import Appointments from './pages/Appointments';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
+import MyShop from './pages/MyShop';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/appointments' element={<Appointments />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/myshop' element={<MyShop />}/>
         </Routes>
       </Router>
     </div>
