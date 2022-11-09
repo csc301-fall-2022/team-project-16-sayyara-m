@@ -1,0 +1,86 @@
+## Sayyara
+
+> _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.
+>
+> _Suggestion:_ Have your review meeting a day or two before the due date. This way you will have some time to go over (and edit) this document, and all team members should have a chance to make their contribution.
+
+
+## Iteration 02 - Review & Retrospect
+
+* When: Monday November 7th 2022 at 8pm
+* Where: Online
+
+## Process - Reflection
+
+
+#### Q1. Decisions that turned out well
+
+List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, turned out to be successful.
+
+
+* 2 - 4 decisions.
+* Ordered from most to least important.
+* Explain why (i.e. give a supporting argument) you consider a decision to be successful.
+* Feel free to refer/link to process artifact(s).
+
+#### GitHub Project Board
+
+
+#### Weekly Standup Meetings
+
+
+#### Pull Request Rules
+
+
+#### Miro Board
+
+
+
+#### Q2. Decisions that did not turn out as well as we hoped
+
+List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, were not as successful as you thought they would be.
+
+* 2 - 4 decisions.
+* Ordered from most to least important.
+* Explain why (i.e. give a supporting argument) you consider a decision to be unsuccessful
+* Feel free to refer/link to process artifact(s).
+
+
+#### Meetings with partner were not frequent
+
+
+#### Not prioritizing mockups
+
+
+#### Not enough consultation with other members before starting a feature
+
+
+#### Finalizing details of organization and management too late
+(ex: exact days and time for standups) a bit later than what would have been ideal
+
+
+
+#### Q3. Planned changes
+
+List any **process-related** (i.e. team organization and how you work) changes you are planning to make (if there are any)
+
+* Ordered from most to least important.
+* Explain why you are making a change.
+
+
+1. Try to meet with the partner more frequently, or at least give more updates so they could be a lot more up to date with the progress of the project
+
+2. Before implementing a feature, consult more thoroughly with others when necessary and/or make a thorough plan
+
+
+
+## Product - Review
+
+Our product demo with the partner Nabeel was held on **Monday November 7th at 8pm**. To prepare for the meeting, we met up as a team an hour before and discussed who would be presenting what parts, and what were the important points we wanted to get across to get the most relevant feedback. We decided that the most important thing was just to show the frontend pages that we had built, and that the code implementation wouldn't be too relevant. 
+
+We started off with a brief reminder of the scope we aim to cover for the final MVP, as well as what we had covered till this point. Next, each frontend member in our team presented the pages that they worked on. This includes the Login/Signup pages, Profile page, and Shop Owner home page.
+
+Throughout the presentation, we made sure to pause and ask if Nabeel had any questions throughout. He mostly liked what we had built, but gave some suggestions as well.
+Some change requests he made were to support Google Chrome autofill form completion for signup/login, add service type field to appointments and quotes, add employee/assigned field to appointments, add approved/viewed field to quotes, and the ability to sort/filter appointments and quotes.
+
+After this demo, we learned that you need to budget much more time than you expect for bringing together everyone’s work and tying up loose ends. In the future, we'll aim to budget the last 2 days on just merging all the code and making sure the product is production-ready before we do the demo.
