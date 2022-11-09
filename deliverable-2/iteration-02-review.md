@@ -24,15 +24,21 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 * Feel free to refer/link to process artifact(s).
 
 #### GitHub Project Board
-
+ - Allowed us to efficiently record, organize, and assign tasks
+ - Made it easy to visualize what still needed to be done, who was currently working on what, and what was already completed
+   ![Project Board](ProjectBoard.png)
 
 #### Weekly Standup Meetings
-
-
-#### Pull Request Rules
-
+- Provided an opportunity for us to collaborate on brainstorming new ideas and tackling challenges
+- Kept us accountable and up to date on developments in each teammate's work
 
 #### Miro Board
+- Powerful visual overview of all the features that comprise our project 
+- Helped us define the scope of our project and user stories
+
+#### Pull Request Rules
+- Kept each other up to date on changes made by teammates
+- Acted as a safety check to catch mistakes
 
 
 
