@@ -41,19 +41,20 @@ public class SetupConfig {
             Shop shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
 
             ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "password", shop);
-            shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-            shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
-            shopOwner = shopOwnerRepository.save(shopOwner);
+            shopOwner = shopOwnerSaveHelper.save(shopOwner, shop, address);
 
             VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124", "jackfill", "password");
             vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
             vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
 
             Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
+            vehicleOwner.setVehicle(vehicle);
 
             Quote quote = new Quote(shop, vehicleOwner, "tires", 100.0, LocalDateTime.of(2022, 12, 1, 11, 59));
 
             Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, LocalDateTime.of(2022, 11, 15, 15, 45), LocalDateTime.of(2022, 11, 15, 16, 30)));
+            System.out.println(shopOwner);
+            System.out.println(appointment);
         };
     }
 
