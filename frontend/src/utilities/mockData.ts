@@ -15,7 +15,7 @@ export const mVehicleOwner: VehicleOwner = {
     }
 }
 export const mAppointment: Appointment = {
-    appointmentId: 1,
+    id: 1,
     vehicleOwner: mVehicleOwner,
     startDate: new Date(),
     endDate: new Date(),
@@ -41,14 +41,14 @@ const genereateQuotes = () => {
     return quotes;
 }
 export const mAddress: Address = {
-    addressId: 1,
+    id: 1,
     street: "Daemon Blvd",
     streetNumber: "123",
     postalCode: "M4B192",
     province: "ON"
 }
 export const mShop: Shop = {
-    shopId: 1,
+    id: 1,
     shopName: "Uths Garage",
     address: mAddress,
     appointments: generateAppointments(),

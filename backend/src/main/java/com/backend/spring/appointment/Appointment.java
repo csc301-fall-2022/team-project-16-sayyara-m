@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
 
@@ -42,7 +43,7 @@ public class Appointment {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(cascade = ALL, optional = false)
+    @ManyToOne(cascade = MERGE, optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
@@ -61,6 +62,13 @@ public class Appointment {
     @OneToOne(cascade = ALL)
     @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
     private Quote quote;
+
+    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startDate, LocalDateTime endDate) {
+        this.shop = shop;
+        this.vehicleOwner = vehicleOwner;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     /**
      * duration = endDate - startDate

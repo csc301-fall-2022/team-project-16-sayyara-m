@@ -3,12 +3,13 @@ import {Link} from "react-router-dom";
 import {Disclosure} from "@headlessui/react"
 import ProfileDropdown from "./ProfileDropdown";
 import MenuIcon from '@mui/icons-material/Menu';
+import useAuth from "src/utilities/hooks/useAuth";
 
 //hidden on web version
 //sm:hidden on mobile version
 //seperate react code
 const navigation = [
-    {name: "Home", to: "/home", current: true},
+    {name: "Home", to: "/", current: true},
     {name: "Appointments", to: "/appointments", current: false},
 ];
 
@@ -39,7 +40,7 @@ const WebNavMap = () => {
     )
 };
 const Navbar = () => {
-
+    const { auth } = useAuth();
     return (
         <Disclosure as="nav" className="bg-gray-200 w-full px-4 sm:px-6 \
         pt-6 pb-5 md:px-8">
@@ -50,17 +51,19 @@ const Navbar = () => {
                     </Disclosure.Button>
                 </div>
                 <div
-                    className='text-xl sm:pr-6 sm:text-3xl md:text-5xl font-semibold text-blue-800 self-center sm:justify-start'>
+                    className='text-xl sm:pr-6 sm:text-3xl md:text-5xl font-semibold text-blue-800 justify-center sm:justify-start'>
                     Sayyara {/* We could put a logo here instead */}
                 </div>
 
                 {/* hidden by default all styles applied with sm: */}
                 <WebNavMap/>
 
-                <div className="flex w-3/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
-                    <ProfileDropdown/>
-                    <Link className="mx-2" to="/login">Login</Link>
-                    <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
+                <div className="flex w-2/5 text-right justify-end items-center text-sm sm:ml-auto sm:text-xl">
+                    {auth ? <ProfileDropdown/>
+                     :<div>
+                        <Link className="mx-2" to="/login">Login</Link>
+                        <Link className="mx-2 text-ellipsis" to="/SignUp">Sign Up</Link>
+                    </div>}
                 </div>
             </div>
 

@@ -5,7 +5,7 @@ import { createContext, useState } from 'react';
 // To access, use the useAuth() hook
 
 interface AuthContextType {
-    auth: string,
+    auth: string | null,
     setAuth: React.Dispatch<SetStateAction<string>>
 }
 const AuthContext = createContext<AuthContextType>({
