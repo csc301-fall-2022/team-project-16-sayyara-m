@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.backend.spring.exceptions.InvalidAuthorizationException;
+import com.backend.spring.exceptions.InvalidDataException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,14 @@ public class ShopOwnerService {
 
     private final ShopOwnerRepository shopOwnerRepository;
 
-    public boolean saveShopOwner(ShopOwner shopOwner) {
-        System.out.println(shopOwner);
+    public void saveShopOwner(ShopOwner shopOwner) {
         try {
             shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
         } catch (IllegalStateException e) {
             System.out.println("Error at ShopOwnerService:saveShopOwner");
             System.out.println(e.getMessage());
-            return false;
+            throw new InvalidDataException(e.getMessage());
         }
-        return true;
     }
 
     public ShopOwner getShopOwner(String authorization) {
@@ -41,7 +40,7 @@ public class ShopOwnerService {
             }
             catch (JWTVerificationException e) {
                 System.out.println(e.getMessage());
-                throw new InvalidAuthorizationException("Invalid Access Token passed");
+                throw new InvalidAuthorizationException(e.getLocalizedMessage());
             }
         } else {
             throw new InvalidAuthorizationException("Invalid/Missing Authorization header");
