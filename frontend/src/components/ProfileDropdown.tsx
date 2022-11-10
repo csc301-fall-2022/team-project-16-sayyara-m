@@ -3,9 +3,11 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { IconButton, MenuItem } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLogout } from 'src/utilities/hooks/useLogout';
 
 const ProfileDropdown = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { logout } = useLogout();
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -13,6 +15,10 @@ const ProfileDropdown = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const onLogout = () => {
+        logout();
+        handleClose();
+    }
     return (
         <div className="">
             <IconButton
@@ -36,7 +42,7 @@ const ProfileDropdown = () => {
                     <MenuItem onClick={handleClose}>Profile</MenuItem>
                 </Link>
                 <Link to='/' style={{ textDecoration: 'none' }}>
-                    <MenuItem onClick={handleClose}>Log out</MenuItem>
+                    <MenuItem onClick={onLogout}>Log Out</MenuItem>
                 </Link>
             </Menu>
         </div>
