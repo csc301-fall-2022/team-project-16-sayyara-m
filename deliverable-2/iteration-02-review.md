@@ -38,6 +38,7 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 ![Project Board](MiroBoard.png)
 
 #### Pull Request Rules
+(ex: minimum two reviewers)
 - Kept each other up to date on changes made by teammates
 - Acted as a safety check to catch mistakes
 
@@ -77,9 +78,11 @@ List any **process-related** (i.e. team organization and how you work) changes y
 * Explain why you are making a change.
 
 
-1. Try to meet with the partner more frequently, or at least give more updates so they could be a lot more up to date with the progress of the project
+1. Try to meet with the partner more frequently, or at least give more updates so they could be a lot more up to date with the progress of the project. At the same time they would be able to help resolve roadblocks related to design expectations and prevent us from heading down the wrong path.
 
-2. Before implementing a feature, consult more thoroughly with others when necessary and/or make a thorough plan
+2. Before implementing a feature, consult more thoroughly with others when necessary and/or make a thorough plan. This would make the process of connecting the interfaces of each of our features much cleaner and less time consuming.
+
+3. Definitively divide and assign work during our standups. The stats quo has been loosely establishing what work still remains to be done, adding issues to our project board inidividually, and self-assigning ourselves to tasks following our standups. It would help with accountability if we discussed as a group who will be responsible for which tasks and what expectations we have for each task in terms of scope and deadlines.
 
 
 
