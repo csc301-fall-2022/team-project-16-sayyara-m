@@ -31,9 +31,9 @@ public class AppointmentController {
         return service.getAllAppointments();
     }
 
-    @GetMapping(path = "{appointment_id}")
-    public Appointment getAppointment(long id) {
-        return service.getAppointment(id);
+    @GetMapping(path = "{appointmentId}")
+    public Appointment getAppointment(@PathVariable long appointmentId) {
+        return service.getAppointment(appointmentId);
     }
 
     @PostMapping
@@ -48,8 +48,8 @@ public class AppointmentController {
 
     @PutMapping(path = "{appointment_id}")
     public void updateAppointment(@PathVariable("appointment_id") Long id,
-                           @RequestParam(required = false) LocalDateTime startDate,
-                           @RequestParam(required = false) LocalDateTime endDate) {
+                                  @RequestParam(required = false) LocalDateTime startDate,
+                                  @RequestParam(required = false) LocalDateTime endDate) {
         service.updateAppointment(id, startDate, endDate);
     }
 }

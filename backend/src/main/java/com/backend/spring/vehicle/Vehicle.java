@@ -2,6 +2,7 @@ package com.backend.spring.vehicle;
 
 import com.backend.spring.user.vehicleowner.VehicleOwner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
@@ -50,17 +52,18 @@ public class Vehicle {
     @Column(name = "vehicle_plate")
     private String plate;
 
-    @JsonIgnore
+    @JsonProperty(access = WRITE_ONLY)
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner owner;
 
-    public Vehicle(int year, String make, String model, String vin, String plate) {
+    public Vehicle(int year, String make, String model, String vin, String plate, VehicleOwner owner) {
         this.year = year;
         this.make = make;
         this.model = model;
         this.vin = vin;
         this.plate = plate;
+        this.owner = owner;
     }
 }
