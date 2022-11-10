@@ -11,13 +11,13 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import MyShop from './pages/MyShop';
 import useAuth from './utilities/hooks/useAuth';
+import AppointmentDetails from "./pages/AppointmentDetails";
 
 export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
 function App() {
 
-  // @ts-ignore
-  const [cookies, setCookie] = useCookies(['refresh_token']);
+  const [cookies] = useCookies(['refresh_token']);
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
@@ -35,10 +35,10 @@ function App() {
         <Routes>
           <Route path='/' element={auth ? <MyShop /> : <Navigate to="/login" />}/>
           <Route path='/login' element={!auth ? <Login /> : <Navigate to ="/" />} />
-          <Route path='/SignUp' element={!auth ? <SignUp /> : <Navigate to="/" />} />
-          <Route path='/home' element={auth ? <MyShop /> : <Navigate to="/login"/>} />
-          <Route path='/appointments' element={auth ? <Appointments /> : <Navigate to="/login" />} />
+          <Route path='/signup' element={!auth ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={auth ? <Profile /> : <Navigate to="/login"/>} />
+          <Route path='/appointments' element={auth ? <Appointments /> : <Navigate to="/login" />} />
+          <Route path='/appointments/:id' element={auth ? <AppointmentDetails /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
     </div>

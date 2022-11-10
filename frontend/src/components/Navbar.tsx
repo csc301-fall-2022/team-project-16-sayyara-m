@@ -9,7 +9,7 @@ import useAuth from "src/utilities/hooks/useAuth";
 //sm:hidden on mobile version
 //seperate react code
 const navigation = [
-    {name: "Home", to: "/home", current: true},
+    {name: "Home", to: "/", current: true},
     {name: "Appointments", to: "/appointments", current: false},
 ];
 
