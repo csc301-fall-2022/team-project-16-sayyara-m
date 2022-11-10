@@ -1,1 +1,1 @@
-export const API_ROOT: string = "http://localhost:8080/api";
+export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
