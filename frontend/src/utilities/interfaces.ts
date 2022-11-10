@@ -8,7 +8,7 @@ export interface User {
 }
 
 export interface Address {
-    addressId: number,
+    id: number,
     street: string,
     streetNumber: string,
     postalCode: string,
@@ -16,7 +16,7 @@ export interface Address {
 }
 
 export interface Shop {
-    shopId: number,
+    id: number,
     shopName: string,
     address: Address,
     email?: string,
@@ -40,8 +40,9 @@ export interface VehicleOwner extends User {
 }
 
 export interface Appointment {
-    appointmentId: number,
+    id: number,
     vehicleOwner: VehicleOwner,
+    // TODO: Change to strings instead of dates
     startDate: Date,
     endDate: Date,
     duration: number
