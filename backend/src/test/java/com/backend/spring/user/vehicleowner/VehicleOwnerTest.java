@@ -33,10 +33,11 @@ class VehicleOwnerTest {
         roleRepository.save(new Role(RoleEnum.VEHICLE_OWNER));
 
         vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", "jack2", "pass");
+        vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
 
         vehicle = new Vehicle(2022, "Honda", "Civic", "123456VIN", "ABC1234");
 
-        vehicleOwner = saveHelper.saveAndFlush(vehicleOwner, vehicle);
+        vehicleOwner = vehicleOwnerRepository.save(vehicleOwner);
 
     }
 
@@ -49,11 +50,6 @@ class VehicleOwnerTest {
     @Test
     void checkVehicleOwnerSaved() {
         assertThat(vehicleOwnerRepository.save(vehicleOwner).getUsername()).isEqualTo(vehicleOwner.getUsername());
-    }
-
-    @Test
-    void checkVehicleHasOwner() {
-        assertThat(vehicle.getOwner()).isNotNull();
     }
 
     @Test

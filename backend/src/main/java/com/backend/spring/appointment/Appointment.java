@@ -43,7 +43,7 @@ public class Appointment {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(cascade = MERGE, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
