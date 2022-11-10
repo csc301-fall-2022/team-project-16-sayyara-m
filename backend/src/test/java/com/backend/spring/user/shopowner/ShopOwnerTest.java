@@ -3,7 +3,9 @@ package com.backend.spring.user.shopowner;
 import com.backend.spring.address.Address;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.shop.ShopRepository;
+import com.backend.spring.user.role.Role;
 import com.backend.spring.user.role.RoleEnum;
+import com.backend.spring.user.role.RoleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,14 +32,20 @@ class ShopOwnerTest {
     private Shop shop;
     private Address address;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @AfterEach
     void tearDown() {
         shopRepository.deleteAll();
         shopOwnerRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @BeforeEach
     void setUp() {
+        roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
+
         address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
 
         shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");

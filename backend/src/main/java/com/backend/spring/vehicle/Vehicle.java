@@ -54,7 +54,7 @@ public class Vehicle {
 
     @JsonProperty(access = WRITE_ONLY)
     @ToString.Exclude
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner owner;
 
@@ -65,5 +65,13 @@ public class Vehicle {
         this.vin = vin;
         this.plate = plate;
         this.owner = owner;
+    }
+
+    public Vehicle(int year, String make, String model, String vin, String plate) {
+        this.year = year;
+        this.make = make;
+        this.model = model;
+        this.vin = vin;
+        this.plate = plate;
     }
 }

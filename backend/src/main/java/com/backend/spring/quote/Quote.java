@@ -18,7 +18,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
@@ -35,7 +34,7 @@ public class Quote {
     @Column(name = "quote_id")
     private Long id;
 
-    @ManyToOne(cascade = MERGE, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
     @ManyToOne

@@ -1,5 +1,8 @@
 package com.backend.spring.user.vehicleowner;
 
+import com.backend.spring.user.role.Role;
+import com.backend.spring.user.role.RoleEnum;
+import com.backend.spring.user.role.RoleRepository;
 import com.backend.spring.vehicle.Vehicle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +25,13 @@ class VehicleOwnerTest {
 
     private Vehicle vehicle;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @BeforeEach
     void setUp() {
+        roleRepository.save(new Role(RoleEnum.VEHICLE_OWNER));
+
         vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", "jack2", "pass");
 
         vehicle = new Vehicle(2022, "Honda", "Civic", "123456VIN", "ABC1234");
@@ -35,11 +43,12 @@ class VehicleOwnerTest {
     @AfterEach
     void tearDown() {
         vehicleOwnerRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
     void checkVehicleOwnerSaved() {
-        assertThat(saveHelper.save(vehicleOwner, vehicle).toString()).isEqualTo(vehicleOwner.toString());
+        assertThat(vehicleOwnerRepository.save(vehicleOwner).getUsername()).isEqualTo(vehicleOwner.getUsername());
     }
 
     @Test
