@@ -1,0 +1,1 @@
+export const API_ROOT: string = "https://sayyara.herokuapp.com/api";

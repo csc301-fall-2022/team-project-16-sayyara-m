@@ -1,14 +1,32 @@
-import React from "react";
-import { Appointment, Quote, Vehicle, VehicleOwner } from "../interfaces";
-import { mShop as shop } from "../mockData";
+import React, { useEffect } from "react";
+import { API_ROOT } from "src/utilities/constants";
+import useAuth from "src/utilities/hooks/useAuth";
+import { Appointment, Quote, Vehicle, VehicleOwner } from "../utilities/interfaces";
+import { mShop as shop } from "../utilities/mockData";
 
 const MyShop = () => {
+    const { auth } = useAuth();
+
+    useEffect(() => {
+        const test =  async () => {
+            const res = await fetch(API_ROOT + "/appointments", {
+                method: "GET",
+                headers: {
+                    authorization: `Bearer ${auth}`,
+                }
+            })
+            const data = await res.json();
+            console.log(data);
+        }
+        test();
+    });
     interface AppointmentCardProps {
         ap: Appointment;
     }
     const AppointmentCard = ({ap}: AppointmentCardProps) => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
+
         return (
             <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-2xl" id={(String)(ap.appointmentId)}>
                 <h1 className="text-lg"><strong>{vehicleOwner.lastName}</strong></h1>
