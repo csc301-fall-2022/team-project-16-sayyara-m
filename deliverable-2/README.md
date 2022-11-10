@@ -1,26 +1,30 @@
-# YOUR PRODUCT/TEAM NAME
-
-> _Note:_ This document is intended to be relatively short. Be concise and precise. Assume the reader has no prior knowledge of your application and is non-technical.
+# Sayyara 
 
 ## Description
-* Provide a high-level description of your application and it's value from an end-user's perspective
-* What is the problem you're trying to solve?
-* Is there any context required to understand **why** the application solves this problem?
-
-Our application is meant to be a bridge of communication between vehicle owners and automotive specialists/their shops. The problem we are trying to solve is the communication and visibility issue between shop owners and their customers. We are creating a way for people with cars to connect to mechanics and other types of automotive shop owners.
+Our application is meant to be a bridge of communication between vehicle owners and automotive specialists/their shops. The problem we are trying to solve is the communication and visibility issue between shop owners and their customers, vehicle owners. We are creating a way for people with vehicles to connect to mechanics and other types of automotive shop owners.
 
 ## Key Features
-* Described the key features in the application that the user can access
-* Provide a breakdown or detail for each feature that is most appropriate for your application
-* This section will be used to assess the value of the features built
-
-Shop owners are able to create accounts with the web app and store information about their shop as well as themselves. Once they create a profile for their shop it will be visible to other users of the application, vehicle owners do not have accounts. Vehicle owners can then request quotes for services that the shop can provide, they negotiate a price and once the details are finalized an appointment can be booked for the service to be complete.
+- Users can sign up as a Shop Owner by entering their user info as well as shop info
+- Once logged in, shop owners can edit their info of their user as well as their shop
+- Input fields are protected with validation and display error messages to support the user
+- On the shop owner home page, you can view all appointments and quotes that are booked with your shop
+- You can view the details of an appointment by clicking on an appointment
 
 ## Instructions
-* Clear instructions for how to use the application from the end-user's perspective
-* How do you access it? Are accounts pre-created or does a user register? Where do you start? etc.
-* Provide clear steps for using each feature described above
-* This section is critical to testing your application and must be done carefully and thoughtfully
+Preset account:
+```
+username: bob123
+password: password
+```
+
+The application starts on the login page. Either login with the preset account or press sign up to sign in with a new account and create a new shop. This login is connected to the backend and will only log you in if the account is registered in the database.
+Note: Sometimes login fails and says it is invalid. This is a bug we are looking into. If this happens, wait for a minute and try pressing login again.
+Note: When signing up, the phone number needs to be an actual registered phone number. Keep trying different phone numbers until you get one that doesn't show up as invalid.
+
+Once logged in, you will see the home page of the shop owner. This is currently filled with mock data and not connected to your account. What you see is a list of appointments and list of quotes that will have been booked by a vehicle owner with this shop. If you click on an appointment, it will take you to the `AppointmentDetail` page for that specific appointment, which will eventually show a lot more details about the specific appointment. Both the quotes and appointments are horizontally scrollable views that you can either scroll on mobile by clicking and dragging or on desktop holding shift and scrolling with the mouse scroll wheel.
+
+The nav bar is always available at the top with links to important pages. Currently `Home` links to the shop page for the current user, and `Appointments` links to a page that will show a more detailed view of a list of appointments. Currently it is empty. 
+If a shop owner is logged in, the profile icon will always be there at the top right corner. You can click this and have access to two options. `Log Out` to log out of your account and get redirected back to the login page, or `Profile` which will take you to a view of your profile. From here, you can either edit your profile or your shop. These aren't currently linked to the database so it's just accessing mock data. There is still error checking for the fields which will tell the user what they are doing wrong. Click cancel to return. 
 
 ## Development requirements
 
@@ -71,11 +75,11 @@ Our workflow from start to finish is as follows.
 7. Resolve any problems that are brought up in pull request comments/reviews
 8. Merge branch into main
 9. Mark issue as `Done`
+10. For backend, run `git subtree push --prefix backend main` to redeploy updated changes to the deployed backend app on Heroku. For frontend, the repository is forked and set to automatically deploy with the fork on Netlify. To trigger the redeploy, just pull from the main repository into the forked version.
+
 Using GitHub issues/project to view our tasks makes it really easy for us to stay organized and ensure we always have work to do while everyone knows exactly who is working on what.
 
-To deploy our application, we deployed the backend server as well as the Postgres instance on Heroku. 
-
-// TODO
+To deploy our application, we deployed the backend server as well as the Postgres instance on Heroku. The frontend is linked to this heroku backend. The backend is deployed on Heroku at sayyara.herokuapp.com. The frontend is deployed on Netlify at https://sayyara.netlify.app/.
 
 
 ## Licenses

@@ -1,9 +1,4 @@
-## Sayyara
-
-> _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.
->
-> _Suggestion:_ Have your review meeting a day or two before the due date. This way you will have some time to go over (and edit) this document, and all team members should have a chance to make their contribution.
-
+# Sayyara Product Review
 
 ## Iteration 02 - Review & Retrospect
 
@@ -12,16 +7,7 @@
 
 ## Process - Reflection
 
-
-#### Q1. Decisions that turned out well
-
-List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, turned out to be successful.
-
-
-* 2 - 4 decisions.
-* Ordered from most to least important.
-* Explain why (i.e. give a supporting argument) you consider a decision to be successful.
-* Feel free to refer/link to process artifact(s).
+### Decisions that turned out well
 
 #### GitHub Project Board
  - Allowed us to efficiently record, organize, and assign tasks
@@ -44,15 +30,7 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 
 
 
-#### Q2. Decisions that did not turn out as well as we hoped
-
-List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, were not as successful as you thought they would be.
-
-* 2 - 4 decisions.
-* Ordered from most to least important.
-* Explain why (i.e. give a supporting argument) you consider a decision to be unsuccessful
-* Feel free to refer/link to process artifact(s).
-
+### Decisions that did not turn out as well as we hoped
 
 #### Meetings with partner were not frequent
 - Some expectations for certain features were unclear which created development roadblocks 
@@ -70,13 +48,7 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 
 
 
-#### Q3. Planned changes
-
-List any **process-related** (i.e. team organization and how you work) changes you are planning to make (if there are any)
-
-* Ordered from most to least important.
-* Explain why you are making a change.
-
+### Planned changes
 
 1. Try to meet with the partner more frequently, or at least give more updates so they could be a lot more up to date with the progress of the project. At the same time they would be able to help resolve roadblocks related to design expectations and prevent us from heading down the wrong path.
 
