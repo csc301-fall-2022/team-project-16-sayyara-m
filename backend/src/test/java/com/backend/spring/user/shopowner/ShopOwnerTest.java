@@ -50,14 +50,15 @@ class ShopOwnerTest {
 
         shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
 
-        shopOwner = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
-        shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
+        shopOwner = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password", shop);
+        shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+        shopOwner = shopOwnerRepository.save(shopOwner);
 
     }
 
     @Test
     void checkShopOwnerSaved() {
-        assertThat(saveHelper.save(shopOwner, shop, address).getUsername()).isEqualTo(shopOwner.getUsername());
+        assertThat(shopOwnerRepository.findByUsername(shopOwner.getUsername()).getUsername()).isEqualTo(shopOwner.getUsername());
     }
 
     @Test

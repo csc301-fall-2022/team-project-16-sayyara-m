@@ -10,6 +10,8 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import static javax.persistence.CascadeType.ALL;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class VehicleOwner extends AppUser {
 
-    @OneToOne(mappedBy = "owner")
+    @OneToOne(cascade = ALL, mappedBy = "owner")
     private Vehicle vehicle;
 
     public VehicleOwner(String firstName, String lastName, String email, String phoneNumber, String username, String password) {

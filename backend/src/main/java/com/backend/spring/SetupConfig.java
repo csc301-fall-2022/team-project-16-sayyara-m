@@ -10,6 +10,7 @@ import com.backend.spring.user.role.Role;
 import com.backend.spring.user.role.RoleEnum;
 import com.backend.spring.user.role.RoleRepository;
 import com.backend.spring.user.shopowner.ShopOwner;
+import com.backend.spring.user.shopowner.ShopOwnerRepository;
 import com.backend.spring.user.shopowner.ShopOwnerSaveHelper;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
 import com.backend.spring.user.vehicleowner.VehicleOwnerRepository;
@@ -19,6 +20,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,7 +31,7 @@ public class SetupConfig {
 
     @Bean
     @Profile("!test") // run on all profiles except test
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, VehicleRepository vehicleRepository, VehicleOwnerRepository vehicleOwnerRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
+    CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder, RoleRepository roleRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, VehicleOwnerRepository vehicleOwnerRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
         return args -> {
             Set<Role> roles = new HashSet<>(Set.of(new Role(RoleEnum.SHOP_OWNER), new Role(RoleEnum.VEHICLE_OWNER)));
             roleRepository.saveAll(roles);
@@ -38,16 +40,20 @@ public class SetupConfig {
 
             Shop shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
 
-            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "password");
-            shopOwner = shopOwnerSaveHelper.save(shopOwner, shop, address);
+            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "password", shop);
+            shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+            shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
+            shopOwner = shopOwnerRepository.save(shopOwner);
 
             VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124", "jackfill", "password");
+            vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
+            vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
 
-            Appointment appointment = new Appointment(shop, vehicleOwner, LocalDateTime.of(2022, 11, 15, 15, 45), LocalDateTime.of(2022, 11, 15, 16, 30));
+            Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
 
-            Vehicle vehicle = vehicleRepository.save(new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner));
+            Quote quote = new Quote(shop, vehicleOwner, "tires", 100.0, LocalDateTime.of(2022, 12, 1, 11, 59));
 
-            Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, "tires", 100.0, LocalDateTime.of(2022, 12, 1, 11, 59)));
+            Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, LocalDateTime.of(2022, 11, 15, 15, 45), LocalDateTime.of(2022, 11, 15, 16, 30)));
         };
     }
 
