@@ -1,11 +1,12 @@
 package com.backend.spring.user.shopowner;
 
 import com.backend.spring.exceptions.InvalidDataException;
-import com.backend.spring.shop.Shop;
 import com.backend.spring.user.appuser.AppUser;
 import com.backend.spring.user.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,15 +31,10 @@ public class ShopOwnerService {
         return shopOwnerRepository.findByUsername(username);
     }
 
+    @Transactional
     public ShopOwner updateShopOwner(AppUser appUser, String authorization) {
         ShopOwner shopOwner = getShopOwner(authorization);
         shopOwner.updateUserInfo(appUser);
-        return shopOwner;
-    }
-
-    public ShopOwner updateShop(Shop shop, String authorization) {
-        ShopOwner shopOwner = getShopOwner(authorization);
-        shopOwner.getShop().updateShop(shop);
         return shopOwner;
     }
 }

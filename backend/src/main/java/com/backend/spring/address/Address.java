@@ -46,4 +46,12 @@ public class Address {
         this.province = province;
         this.postalCode = postalCode;
     }
+
+    public void update(Address newAddress) {
+        this.streetNumber = newAddress.streetNumber;
+        this.street = newAddress.street;
+        this.city = newAddress.city;
+        this.province = newAddress.province;
+        this.postalCode = newAddress.postalCode;
+    }
 }
