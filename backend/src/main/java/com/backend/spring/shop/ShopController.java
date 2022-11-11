@@ -14,7 +14,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/shop")
+@RequestMapping(path = "shop")
 public class ShopController {
     private final ShopService service;
 

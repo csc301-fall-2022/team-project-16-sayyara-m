@@ -3,58 +3,16 @@ spring:
     name: "Sayyara Backend"
   profiles:
     default: "dev"
----
-########## DEV environment ##########
-spring:
-  config:
-    activate:
-      on-profile: "dev"
-  datasource:
-    url: "jdbc:postgresql://localhost:5432/postgres"
-    username: ""
-    password: ""
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 server:
+  servlet:
+    context-path: /api
   error:
     include-binding-errors: always
     include-message: always
----
-########## TESTING environment ##########
-spring:
-  config:
-    activate:
-      on-profile: "test"
-  datasource:
-    url: "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false"
-    username: "sa"
-    password: "password"
-  jpa:
-    database-platform: "org.hibernate.dialect.H2Dialect"
-    hibernate.ddl-auto: create-drop
-    defer-datasource-initialization: true
 
----
-########## PRODUCTION environment ##########
-spring:
-  config:
-    activate:
-      on-profile: "prod"
-  datasource:
-    url: "jdbc:postgresql://ec2-44-195-132-31.compute-1.amazonaws.com:5432/d8pbit7u2vl22n?user=owmgucfutpdwpp&password=66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
-    username: "owmgucfutpdwpp"
-    password: "66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
-  jpa:
-    hibernate:
-      ddl-auto: create
-server:
-  port: ${PORT}
-  error:
-    include-binding-errors: always
-    include-message: always
+
+
+springdoc:
+  swagger-ui:
+    path: /docs

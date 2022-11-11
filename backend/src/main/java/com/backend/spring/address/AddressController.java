@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/addresses")
+@RequestMapping(path = "addresses")
 public class AddressController {
     private final AddressService service;
 

@@ -20,7 +20,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/shopOwner")
+@RequestMapping("shopOwner")
 @RequiredArgsConstructor
 public class ShopOwnerController {
     private final ShopOwnerService shopOwnerService;
