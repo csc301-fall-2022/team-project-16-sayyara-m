@@ -1,7 +1,8 @@
 package com.backend.spring.user.shopowner;
 
 import com.backend.spring.exceptions.InvalidDataException;
-import com.backend.spring.user.appuser.AppUser;
+import com.backend.spring.user.appuser.AppUserDTO;
+import com.backend.spring.user.appuser.AppUserDTOTransfer;
 import com.backend.spring.user.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class ShopOwnerService {
     private final ShopOwnerSaveHelper shopOwnerSaveHelper;
 
     private final ShopOwnerRepository shopOwnerRepository;
+
+    private final AppUserDTOTransfer appUserDTOTransfer;
 
     public void saveShopOwner(ShopOwner shopOwner) {
         try {
@@ -32,9 +35,9 @@ public class ShopOwnerService {
     }
 
     @Transactional
-    public ShopOwner updateShopOwner(AppUser appUser, String authorization) {
+    public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) {
         ShopOwner shopOwner = getShopOwner(authorization);
-        shopOwner.updateUserInfo(appUser);
-        return shopOwner;
+        shopOwner.updateUserInfo(appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO));
+        return appUserDTOTransfer.appUsertoDTO(shopOwner);
     }
 }

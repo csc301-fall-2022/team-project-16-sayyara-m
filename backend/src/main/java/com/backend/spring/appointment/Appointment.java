@@ -3,7 +3,7 @@ package com.backend.spring.appointment;
 import com.backend.spring.quote.Quote;
 import com.backend.spring.shop.Shop;
 import com.backend.spring.user.vehicleowner.VehicleOwner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +23,8 @@ import javax.persistence.Transient;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
 
@@ -42,7 +42,8 @@ public class Appointment {
     @Column(name = "appointment_id")
     private Long id;
 
-    @JsonIgnore
+    @JsonProperty(access = WRITE_ONLY)
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;

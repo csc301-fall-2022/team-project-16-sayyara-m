@@ -86,6 +86,5 @@ public abstract class AppUser {
         this.email = newUser.email;
         this.phoneNumber = newUser.phoneNumber;
         this.username = newUser.username;
-        this.password = newUser.password;
     }
 }
