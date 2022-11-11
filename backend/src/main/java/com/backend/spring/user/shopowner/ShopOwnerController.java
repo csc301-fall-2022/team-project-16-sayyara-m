@@ -1,5 +1,6 @@
 package com.backend.spring.user.shopowner;
 
+import com.backend.spring.exceptions.InvalidPasswordException;
 import com.backend.spring.user.appuser.AppUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,15 @@ public class ShopOwnerController {
     public ResponseEntity<AppUserDTO> updateShopOwner(HttpServletRequest request, @RequestBody AppUserDTO appUserDTO) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         return ResponseEntity.ok(shopOwnerService.updateShopOwner(appUserDTO, authorizationHeader));
+    }
+
+    @PutMapping(path = "/password")
+    public ResponseEntity<?> updateShopOwnerPassword(HttpServletRequest request, @RequestBody Passwords passwords) throws InvalidPasswordException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        shopOwnerService.updateShopOwnerPassword(passwords.oldPassword, passwords.newPassword(), authorizationHeader);
+        return ResponseEntity.ok().build();
+    }
+
+    private record Passwords(String oldPassword, String newPassword) {
     }
 }

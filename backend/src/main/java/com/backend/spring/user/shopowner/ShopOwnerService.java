@@ -1,10 +1,12 @@
 package com.backend.spring.user.shopowner;
 
 import com.backend.spring.exceptions.InvalidDataException;
+import com.backend.spring.exceptions.InvalidPasswordException;
 import com.backend.spring.user.appuser.AppUserDTO;
 import com.backend.spring.user.appuser.AppUserDTOTransfer;
 import com.backend.spring.user.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +19,8 @@ public class ShopOwnerService {
     private final ShopOwnerRepository shopOwnerRepository;
 
     private final AppUserDTOTransfer appUserDTOTransfer;
+
+    private final PasswordEncoder passwordEncoder;
 
     public void saveShopOwner(ShopOwner shopOwner) {
         try {
@@ -39,5 +43,14 @@ public class ShopOwnerService {
         ShopOwner shopOwner = getShopOwner(authorization);
         shopOwner.updateUserInfo(appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO));
         return appUserDTOTransfer.appUsertoDTO(shopOwner);
+    }
+
+    @Transactional
+    public void updateShopOwnerPassword(String oldPassword, String newPassword, String authorization) throws InvalidPasswordException {
+        ShopOwner shopOwner = getShopOwner(authorization);
+        if (!passwordEncoder.matches(oldPassword, shopOwner.getPassword()))
+            throw new InvalidPasswordException("Password is incorrect");
+
+        shopOwner.setPassword(passwordEncoder.encode(newPassword));
     }
 }
