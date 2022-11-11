@@ -2,18 +2,19 @@ import React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { mAppointment as appt } from "src/utilities/mockData";
 import { VehicleOwner } from "src/utilities/interfaces";
+import { Navigate } from "react-router-dom";
 //plan is to use MUI to create a detailed data table of all the appointments for this user
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'firstName', headerName: 'First name', width: 200},
     { field: 'lastName', headerName: 'Last name', width: 200 },
-    { field: 'startDate', headerName: 'Start Date', width: 130 },
-    { field: 'endDate', headerName: 'End Date', width: 130 },
+    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'startDate', headerName: 'Start Time', width: 100 },
+    { field: 'endDate', headerName: 'End Time', width: 100 },
     {
       field: 'Duration',
       headerName: 'Duration',
-      type: 'number',
       width: 90,
     },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
@@ -36,6 +37,7 @@ const generateApptRows = () => {
             id: (appt.id + i),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
+            date: appt.startDate.toISOString().substring(0, 10),
             startDate: appt.startDate.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit"
@@ -54,12 +56,13 @@ const Appointments = () => {
 
     return (
         <div className="h-[650px] w-full">
+            <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Upcoming Appointments</h1>
             <DataGrid
                 rows={generateApptRows()}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
-                onRowClick={(params) => console.log(params.id)}
+                onRowClick={(params) => <Navigate to={`/appointments/${params.id}`} />}
 
             />
         </div>
