@@ -79,4 +79,13 @@ public abstract class AppUser {
         }
         this.roles.add(role);
     }
+
+    public void updateUserInfo(AppUser newUser) {
+        this.firstName = newUser.firstName;
+        this.lastName = newUser.lastName;
+        this.email = newUser.email;
+        this.phoneNumber = newUser.phoneNumber;
+        this.username = newUser.username;
+        this.password = newUser.password;
+    }
 }
