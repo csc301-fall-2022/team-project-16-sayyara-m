@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AppUserDTOTransfer {
-    private final AppUserRepository appUserRepository;
-
     public AppUser DTOtoAppUser(AppUser appUser, AppUserDTO appUserDTO) {
         appUser.setUsername(appUserDTO.getUsername());
         appUser.setFirstName(appUserDTO.getFirstName());
