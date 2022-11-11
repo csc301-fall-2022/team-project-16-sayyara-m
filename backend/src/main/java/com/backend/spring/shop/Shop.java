@@ -73,4 +73,11 @@ public class Shop {
         this.email = email;
     }
 
+    public void updateShop(Shop newShop) {
+        this.name = newShop.name;
+        this.address = newShop.address;
+        this.phoneNumber = newShop.phoneNumber;
+        this.email = newShop.email;
+    }
+
 }

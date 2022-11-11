@@ -1,8 +1,6 @@
 package com.backend.spring.shop;
 
 import com.backend.spring.address.Address;
-import com.backend.spring.shop.Shop;
-import com.backend.spring.shop.ShopService;
 import com.backend.spring.user.shopowner.ShopOwner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/shops")
+@RequestMapping(path = "api/shop")
 public class ShopController {
     private final ShopService service;
 
