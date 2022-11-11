@@ -1,10 +1,12 @@
 package com.backend.spring.user.shopowner;
 
+import com.backend.spring.user.appuser.AppUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,12 @@ public class ShopOwnerController {
     @GetMapping
     public ResponseEntity<ShopOwner> getShopOwner(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        return ResponseEntity.ok().body(shopOwnerService.getShopOwner(authorizationHeader));
+        return ResponseEntity.ok(shopOwnerService.getShopOwner(authorizationHeader));
+    }
+
+    @PutMapping
+    public ResponseEntity<AppUserDTO> updateShopOwner(HttpServletRequest request, @RequestBody AppUserDTO appUserDTO) {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        return ResponseEntity.ok(shopOwnerService.updateShopOwner(appUserDTO, authorizationHeader));
     }
 }
