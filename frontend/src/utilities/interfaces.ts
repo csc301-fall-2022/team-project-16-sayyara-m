@@ -43,8 +43,8 @@ export interface Appointment {
     id: number,
     vehicleOwner: VehicleOwner,
     // TODO: Change to strings instead of dates
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     duration: number
 }
 
@@ -52,4 +52,8 @@ export interface Quote {
     vehicleOwner: VehicleOwner,
     price: number,
     expiryTime: string
+}
+
+export interface APIError {
+    message: string
 }

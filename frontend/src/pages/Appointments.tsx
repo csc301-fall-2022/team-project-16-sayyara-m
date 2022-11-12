@@ -37,15 +37,9 @@ const generateApptRows = () => {
             id: (appt.id + i),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
-            date: appt.startDate.toISOString().substring(0, 10),
-            startDate: appt.startDate.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-            }),
-            endDate: appt.endDate.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-            }),
+            date: appt.startDate,
+            startDate: appt.startDate,
+            endDate: appt.endDate,
             Duration: appt.duration,
             serviceType: "Oil Change"
         });
