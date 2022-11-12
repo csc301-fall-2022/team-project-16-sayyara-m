@@ -1,0 +1,10 @@
+########## TESTING environment ##########
+spring:
+  datasource:
+    url: "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false"
+    username: "sa"
+    password: "password"
+  jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
+    hibernate.ddl-auto: create-drop
+    defer-datasource-initialization: true
