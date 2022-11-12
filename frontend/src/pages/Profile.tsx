@@ -3,6 +3,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import React, { useEffect, useState } from "react";
 import { validatePassword } from '../utilities/ValidatePassword';
+import { MuiTelInput } from 'mui-tel-input'
 
 const DefaultProfilePage = (props: { setChangingPassword: (arg0: boolean) => void; setIsViewingShop: (arg0: boolean) => void; setEditingProfile: (arg0: boolean) => void; userInfo: {
     firstName: string;
@@ -65,6 +66,7 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; sa
     phoneNumber: string;
     password: string;
 } }) => {
+    const [phoneNumber, setPhoneNumber] = React.useState(props.userInfo.phoneNumber)
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
@@ -86,8 +88,8 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; sa
                 <label className='col-span-2 mt-6 font-semibold'>
                     Phone Number
                 </label>
-                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" id="phoneNumber" placeholder="Phone Number" defaultValue={props.userInfo.phoneNumber}/>
+                <MuiTelInput className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-blue-500 focus:shadow-outline" id="phoneNumber" placeholder="Phone Number" value={phoneNumber} onChange={(value) => setPhoneNumber(value)}/>
                 <label className='col-span-2 mt-6 font-semibold'>
                     Username
                 </label>
@@ -105,7 +107,7 @@ const EditProfilePage = (props: { setEditingProfile: (arg0: boolean) => void; sa
                     lastName: (document.getElementById('lastName') as HTMLInputElement).value,
                     username: (document.getElementById('username') as HTMLInputElement).value,
                     email: (document.getElementById('email') as HTMLInputElement).value,
-                    phoneNumber: (document.getElementById('phoneNumber') as HTMLInputElement).value,
+                    phoneNumber: phoneNumber,
                     password: props.userInfo.password
                 })}>
                     Save
@@ -253,6 +255,7 @@ const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveSh
     email: string;
     phoneNumber: string;
 } }) => {
+    const [phoneNumber, setPhoneNumber] = React.useState(props.shopInfo.phoneNumber)
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-10 gap-1 mt-6 mb-6'>
@@ -269,8 +272,8 @@ const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveSh
                 <label className='col-span-2 mt-6 font-semibold'>
                     Phone Number
                 </label>
-                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" id="phoneNumber" placeholder="Phone Number" defaultValue={props.shopInfo.phoneNumber}/>
+                <MuiTelInput className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-blue-500 focus:shadow-outline" id="phoneNumber" value={phoneNumber} onChange={(value) => setPhoneNumber(value)}/>
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -282,7 +285,7 @@ const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveSh
                     id: props.shopInfo.id,
                     address: (document.getElementById('address') as HTMLInputElement).value,
                     email: (document.getElementById('email') as HTMLInputElement).value,
-                    phoneNumber: (document.getElementById('phoneNumber') as HTMLInputElement).value,
+                    phoneNumber: phoneNumber,
                 })}>
                     Save
                 </button>
