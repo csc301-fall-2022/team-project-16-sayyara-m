@@ -1,1 +1,1 @@
-export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
+export const API_ROOT: string = (process.env.NODE_ENV==="development" ? "http://localhost:8080/api" : "https://sayyara.herokuapp.com/api");
