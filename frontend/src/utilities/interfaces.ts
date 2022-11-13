@@ -49,9 +49,11 @@ export interface Appointment {
 }
 
 export interface Quote {
+    id: number,
     vehicleOwner: VehicleOwner,
     price: number,
-    expiryTime: string
+    expiryTime: string,
+    serviceType: string
 }
 
 export interface APIError {

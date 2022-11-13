@@ -22,9 +22,11 @@ export const mAppointment: Appointment = {
     duration: 100
 }
 export const mQuote: Quote = {
+    id: 1,
     vehicleOwner: mVehicleOwner,
     price: 120.00,
-    expiryTime: "2020-12-12"
+    expiryTime: "2020-12-12",
+    serviceType: "Oil Change"
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
