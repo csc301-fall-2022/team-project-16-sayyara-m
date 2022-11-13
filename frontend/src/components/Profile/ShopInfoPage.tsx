@@ -31,7 +31,7 @@ const ShopInfoPage = (props: { setIsEditingShop: (arg0: boolean) => void; setIsV
             </div>
             <div className='flex justify-center mt-8'>
                 <PlaceIcon className="mx-1" />
-                <label className='text-1m mx-1'>{props.shopInfo.address.street}</label>
+                <label className='text-1m mx-1'>{props.shopInfo.address.streetNumber + " " + props.shopInfo.address.street + ", " + props.shopInfo.address.city + ", " + props.shopInfo.address.province + ", " + props.shopInfo.address.postalCode}</label>
             </div>
             <div className='flex justify-center mt-4'>
                 <PhoneIcon className="mx-1" />
