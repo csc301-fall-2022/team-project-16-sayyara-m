@@ -10,15 +10,6 @@ const columns: GridColDef[] = [
     { field: 'price', headerName: 'Price', width: 100 },
     { field: 'expiryTime', headerName: 'Expiry Time', width: 200 },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    // },
   ];
 
   const generateQuoteRows = () => {
