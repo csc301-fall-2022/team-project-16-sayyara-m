@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/quotes")
+@RequestMapping(path = "quotes")
 public class QuoteController {
     private final QuoteService service;
 

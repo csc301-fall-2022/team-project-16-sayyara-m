@@ -5,12 +5,14 @@ export interface User {
     userName: string,
     phoneNumber: string
     email: string,
+    password: string
 }
 
 export interface Address {
     id: number,
     street: string,
     streetNumber: string,
+    city: string,
     postalCode: string,
     province: string
 }
@@ -19,7 +21,8 @@ export interface Shop {
     id: number,
     shopName: string,
     address: Address,
-    email?: string,
+    email: string,
+    phoneNumber: string,
     appointments: Appointment[]
     quotes: Quote[]
 }
@@ -52,4 +55,8 @@ export interface Quote {
     vehicleOwner: VehicleOwner,
     price: number,
     expiryTime: string
+}
+
+export interface APIError {
+    message: string
 }

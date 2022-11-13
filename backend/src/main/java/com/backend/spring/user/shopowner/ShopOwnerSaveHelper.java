@@ -27,10 +27,6 @@ public class ShopOwnerSaveHelper {
 
     private final ShopOwnerRepository shopOwnerRepository;
 
-    private final ShopRepository shopRepository;
-
-    private final AddressRepository addressRepository;
-
     private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -46,7 +42,7 @@ public class ShopOwnerSaveHelper {
      * @return Shop Owner after successfully saving
      */
     public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws IllegalStateException {
-        ShopOwner savedShopOwner = null;
+        ShopOwner savedShopOwner;
         try {
             setShopOwner(shopOwner, shop, address);
             savedShopOwner = shopOwnerRepository.save(shopOwner);
@@ -70,8 +66,8 @@ public class ShopOwnerSaveHelper {
     private void setShopOwner(ShopOwner shopOwner, Shop shop, Address address) {
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
-        shopOwner.setShop(shopRepository.save(shop));
-        shop.setAddress(addressRepository.save(address));
+        shopOwner.setShop(shop);
+        shop.setAddress(address);
         shop.setShopOwner(shopOwner);
     }
 }

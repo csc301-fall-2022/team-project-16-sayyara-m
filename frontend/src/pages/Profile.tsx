@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { API_ROOT } from "../utilities/constants";
+import useAuth from "../utilities/hooks/useAuth";
+import { APIError, ShopOwner } from "../utilities/interfaces";
 import UserInfoPage from '../components/Profile/UserInfoPage';
 import EditUserPage from '../components/Profile/EditUserPage';
 import ChangePasswordPage from '../components/Profile/ChangePasswordPage';
@@ -7,6 +10,7 @@ import EditShopPage from "../components/Profile/EditShopPage";
 
 const Profile = () => {
 
+    const { auth } = useAuth();
     const [isEditingProfile, setEditingProfile] = useState<boolean>(false)
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
     const [isViewingShop, setIsViewingShop] = useState<boolean>(false)
@@ -29,7 +33,7 @@ const Profile = () => {
         password: "password"
     })
     const [shopInfo, setShopInfo] = useState< {
-        id: string;
+        id: number;
         name: string;
         address: {
             streetNumber: string,
@@ -41,7 +45,7 @@ const Profile = () => {
         phoneNumber: string,
         email: string;
     }>({
-        id: "1",
+        id: 1,
         name: "My Shop",
         address: {
             streetNumber: "",
@@ -55,32 +59,41 @@ const Profile = () => {
     })
 
     useEffect(() => {
-        fetch('https://localhost:8080/api/appUsers/' + 'userId') //TODO: Change to live url when possible and figure out how to get user id
-        .then(response => response.json())
-        .then(
-        (result) => {
-            setUserInfo({
-                firstName: result.firstName,
-                lastName: result.lastName,
-                username: result.username,
-                email: result.email,
-                phoneNumber: result.phoneNumber,
-                password: result.password
+        const getData = async () => {
+            const res = await fetch(API_ROOT + "/shopOwner", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${auth}`,
+                }
             })
-            setShopInfo({
-                id: result.shop.id,
-                name: result.shop.name,
-                address: result.shop.address,
-                phoneNumber: result.shop.phoneNumber,
-                email: result.shop.email
-            })
-        },
-        (error) => {
-            console.log("Could not fetch user info from server")
-            console.log(error)
+
+            if(res.ok){
+                const data: ShopOwner = await res.json();
+                console.log(data);
+                setUserInfo({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    username: data.userName,
+                    email: data.email,
+                    phoneNumber: data.phoneNumber,
+                    password: data.password
+                });
+                setShopInfo({
+                    id: data.shop.id,
+                    name: data.shop.shopName,
+                    address: data.shop.address,
+                    phoneNumber: data.shop.phoneNumber,
+                    email: data.shop.email
+                });
+                return;
+            }
+
+            const data: APIError = await res.json();
+            console.log(data.message);
         }
-        )
-    })
+        getData();
+
+    }, [auth]);
 
     const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string; password: string}) => {
         setEditingProfile(false)
@@ -88,7 +101,9 @@ const Profile = () => {
         setUserInfo(newUserInfo)
         const requestOptions = {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(userInfo)
         }
         let url = 'https://localhost:8080/api/appUsers/' + 'userId' //TODO: Change to live url when possible and figure out how to get user id
@@ -105,31 +120,31 @@ const Profile = () => {
       )
     }
 
-    const saveShopInfo = (newShopInfo: {id: string, name: string, address: {streetNumber: string, street: string, city: string, province: string, postalCode: string}, email: string; phoneNumber: string;}) => {
+    const saveShopInfo = (newShopInfo: {id: number, name: string, address: {streetNumber: string, street: string, city: string, province: string, postalCode: string}, email: string; phoneNumber: string;}) => {
         setIsEditingShop(false)
         setShopInfo(newShopInfo)
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: shopInfo.name,
-                address: shopInfo.address,
-                email: shopInfo.email,
-                phoneNumber: shopInfo.phoneNumber
+        const saveShop = async () => {
+            const res = await fetch(API_ROOT + "/shop", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth}`
+                },
+                body: JSON.stringify({
+                    newShopInfo
+                })
             })
+
+            if (res.ok) {
+                setShopInfo(newShopInfo)
+                return;
+            }
+
+            const data: APIError = await res.json();
+            console.log(data.message);
         }
-        let url = 'https://localhost:8080/api/shops/' + shopInfo.id //TODO: Change to live url when possible
-      fetch(url, requestOptions)
-      .then(response => response.json())
-      .then(
-        (result) => {
-          
-        },
-        (error) => {
-          console.log("Could not update user to database")
-          console.log(error)
-        }
-      )
+
+        saveShop();
     }
 
     return (

@@ -3,7 +3,7 @@ import { MuiTelInput } from 'mui-tel-input';
 import DropDown from "../DropDown";
 
 const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveShopInfo: (arg0: {
-    id: string;
+    id: number;
     name: string;
     address: {
         streetNumber: string,
@@ -15,7 +15,7 @@ const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveSh
     email: string;
     phoneNumber: string;
 }) => void; shopInfo: {
-    id: string;
+    id: number;
     name: string;
     address: {
         streetNumber: string,

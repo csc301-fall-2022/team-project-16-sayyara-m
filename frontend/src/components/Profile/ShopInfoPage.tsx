@@ -4,7 +4,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import React from "react";
 
 const ShopInfoPage = (props: { setIsEditingShop: (arg0: boolean) => void; setIsViewingShop: (arg0: boolean) => void; shopInfo: {
-    id: string;
+    id: number;
     name: string;
     address: {
         streetNumber: string,
