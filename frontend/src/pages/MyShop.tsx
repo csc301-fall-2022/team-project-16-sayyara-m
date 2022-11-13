@@ -31,6 +31,27 @@ const MyShop = () => {
 
     }, [auth]);
 
+    interface AppointmentCardProps {
+        ap: Appointment;
+    }
+
+    const AppointmentCard = ({ ap }: AppointmentCardProps) => {
+        const vehicleOwner: VehicleOwner = ap.vehicleOwner;
+        const vehicle: Vehicle = vehicleOwner.vehicle;
+
+        return (
+            <Link to={`/appointments/${ap.id}`}>
+                <div
+                    className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
+                >
+                    <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
+                    <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
+                    <p className="whitespace-nowrap">{new Date(ap.startDate).toISOString().substring(0, 10)}</p>
+                    <p className="whitespace-nowrap">{new Date(ap.startDate).toLocaleTimeString()}-{new Date(ap.endDate).toLocaleTimeString()}</p>
+                </div>
+            </Link>
+        )
+    }
 
     interface QuoteCardProps {
         quote: Quote;
@@ -90,26 +111,6 @@ const MyShop = () => {
     )
 };
 
-interface AppointmentCardProps {
-    ap: Appointment;
-}
 
-const AppointmentCard = ({ ap }: AppointmentCardProps) => {
-    const vehicleOwner: VehicleOwner = ap.vehicleOwner;
-    const vehicle: Vehicle = vehicleOwner.vehicle;
-
-    return (
-        <Link to={`/appointments/${ap.id}`}>
-            <div
-                className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
-            >
-                <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
-                <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                <p className="whitespace-nowrap">{new Date(ap.startDate).toISOString().substring(0, 10)}</p>
-                <p className="whitespace-nowrap">{new Date(ap.startDate).toLocaleTimeString()}-{new Date(ap.endDate).toLocaleTimeString()}</p>
-            </div>
-        </Link>
-    )
-}
 
 export default MyShop;
