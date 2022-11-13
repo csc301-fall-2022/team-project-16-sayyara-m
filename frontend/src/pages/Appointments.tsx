@@ -1,8 +1,8 @@
 import React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import { mAppointment as appt } from "src/utilities/mockData";
 import { VehicleOwner } from "src/utilities/interfaces";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //plan is to use MUI to create a detailed data table of all the appointments for this user
 
 const columns: GridColDef[] = [
@@ -37,9 +37,9 @@ const generateApptRows = () => {
             id: (appt.id + i),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
-            date: appt.startDate,
-            startDate: appt.startDate,
-            endDate: appt.endDate,
+            date: new Date(appt.startDate).toISOString().substring(0, 10),
+            startDate: new Date(appt.startDate).toLocaleTimeString(),
+            endDate: new Date(appt.endDate).toLocaleTimeString(),
             Duration: appt.duration,
             serviceType: "Oil Change"
         });
@@ -47,7 +47,11 @@ const generateApptRows = () => {
     return apptRows;
 }
 const Appointments = () => {
-
+    let navigate = useNavigate();
+    const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
+        console.log("row clicked");
+        navigate(`/appointments/${params.id}`);
+    }
     return (
         <div className="h-[650px] w-full">
             <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Upcoming Appointments</h1>
@@ -56,7 +60,7 @@ const Appointments = () => {
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
-                onRowClick={(params) => <Navigate to={`/appointments/${params.id}`} />}
+                onRowClick={handleRowClick}
 
             />
         </div>
