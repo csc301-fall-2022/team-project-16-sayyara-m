@@ -1,6 +1,7 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Appointment;
+import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class AppointmentService {
         return repository.findAll();
     }
 
-    public Appointment getAppointment(long id) {
-        return repository.findById(id).orElseThrow(IllegalStateException::new);
+    public Appointment getAppointment(long id) throws DataNotFoundException {
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Appointment with id " + id + " doesn't exist"));
     }
 
     public Appointment createAppointment(Appointment appointment) {

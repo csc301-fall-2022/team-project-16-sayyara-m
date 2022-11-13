@@ -1,8 +1,10 @@
 package com.backend.spring.controllers;
 
 import com.backend.spring.entities.Appointment;
+import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +36,8 @@ public class AppointmentController {
     }
 
     @GetMapping(path = "{appointmentId}")
-    public Appointment getAppointment(@PathVariable long appointmentId) {
-        return service.getAppointment(appointmentId);
+    public ResponseEntity<Appointment> getAppointment(@PathVariable long appointmentId) throws DataNotFoundException {
+        return ResponseEntity.ok(service.getAppointment(appointmentId));
     }
 
     @PostMapping
