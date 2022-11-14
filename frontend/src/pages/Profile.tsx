@@ -11,6 +11,7 @@ import EditShopPage from "../components/Profile/EditShopPage";
 const Profile = () => {
 
     const { auth } = useAuth();
+    const [isOldPasswordIncorrect, setIsOldPasswordIncorrect] = useState<boolean>(false)
     const [isEditingProfile, setEditingProfile] = useState<boolean>(false)
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
     const [isViewingShop, setIsViewingShop] = useState<boolean>(false)
@@ -23,14 +24,12 @@ const Profile = () => {
         userName: string;
         email: string;
         phoneNumber: string;
-        password: string;
     }>({
         firstName: "Ahsan",
         lastName: "Saeed",
         userName: "saeedahsan",
         email: "ahsanm.saeed@mail.utoronto.ca",
         phoneNumber: "123456789",
-        password: "password"
     })
     const [shopInfo, setShopInfo] = useState< {
         id: number;
@@ -77,7 +76,6 @@ const Profile = () => {
                     userName: data.userName,
                     email: data.email,
                     phoneNumber: data.phoneNumber,
-                    password: data.password
                 });
                 setShopInfo({
                     id: data.shop.id,
@@ -97,7 +95,7 @@ const Profile = () => {
     }, [auth]);
 
     // Save updated user info to server
-    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; userName: string; email: string; phoneNumber: string; password: string}) => {
+    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; userName: string; email: string; phoneNumber: string}) => {
         setEditingProfile(false)
         const saveInfo = async () => {
             const res = await fetch(API_ROOT + "/shopOwner", {
@@ -126,7 +124,6 @@ const Profile = () => {
 
     // Save user's new password to server
     const saveUserPassword = (oldPassword: string, newPassword: string) => {
-        setChangingPassword(false)
         const savePassword = async () => {
             const res = await fetch(API_ROOT + "/shopOwner/password", {
                 method: 'PUT',
@@ -148,10 +145,17 @@ const Profile = () => {
                     userName: userInfo.userName,
                     email: userInfo.email,
                     phoneNumber: userInfo.phoneNumber,
-                    password: newPassword
                 })
+                setChangingPassword(false)
                 return;
             }
+
+            if (res.status === 400) {
+                setIsOldPasswordIncorrect(true)
+                return;
+            }
+
+            setChangingPassword(false)
 
             const data: APIError = await res.json();
             console.log(data.message);
@@ -210,6 +214,8 @@ const Profile = () => {
                             setChangingPassword={setChangingPassword}
                             userInfo={userInfo}
                             saveUserInfo={saveUserPassword}
+                            isOldPasswordIncorrect={isOldPasswordIncorrect}
+                            setIsOldPasswordIncorrect={setIsOldPasswordIncorrect}
                         />
                         : !isEditingShop ?
                         <ShopInfoPage

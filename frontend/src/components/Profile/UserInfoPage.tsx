@@ -8,7 +8,6 @@ const UserInfoPage = (props: { setChangingPassword: (arg0: boolean) => void; set
     userName: string;
     email: string;
     phoneNumber: string;
-    password: string;
 } }) => {
     return (
         <div className='mx-8'>

@@ -1,24 +1,18 @@
 import React, { useState } from "react";
 import { validatePassword } from '../../utilities/ValidatePassword';
 
-const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; saveUserInfo: (arg0: string, arg1: string) => void; userInfo: {
+const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; setIsOldPasswordIncorrect: (arg0: boolean) => void; saveUserInfo: (arg0: string, arg1: string) => void; isOldPasswordIncorrect: boolean; userInfo: {
     firstName: string;
     lastName: string;
     userName: string;
     email: string;
     phoneNumber: string;
-    password: string;
 } }) => {
-    const [showOldPasswordErrorMsg, setShowOldPasswordErrorMsg] = useState<boolean>(false)
     const [showPasswordsMatchErrorMsg, setShowPasswordsMatchErrorMsg] = useState<boolean>(false)
     const [newPassword, setNewPassword] = useState<string>('')
 
     const checkPassword = (oldPassword: string, newPassword: string, confirmPassword: string) => {
         var valid = true
-        if (oldPassword !== props.userInfo.password) {
-            valid = false
-            setShowOldPasswordErrorMsg(true)
-        }
         if (newPassword !== confirmPassword) {
             valid = false
             setShowPasswordsMatchErrorMsg(true)
@@ -37,10 +31,10 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
                     <label className='font-semibold float-left'>
                         Old Password
                     </label>
-                    {showOldPasswordErrorMsg ? <label className="text-red-500 italic float-right text-xs">Incorrect Password</label> : null}
+                    {props.isOldPasswordIncorrect ? <label className="text-red-500 italic float-right text-xs">Incorrect Password</label> : null}
                 </div>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="password" id='oldPassword' placeholder="************" onChange={(e) => setShowOldPasswordErrorMsg(false)}/>
+                focus:outline-blue-500 focus:shadow-outline" type="password" id='oldPassword' placeholder="************" onChange={(e) => props.setIsOldPasswordIncorrect(false)}/>
                 <div className='col-span-2 flow-root flex flex-row mt-6'>
                     <label className='font-semibold float-left'>
                         New Password

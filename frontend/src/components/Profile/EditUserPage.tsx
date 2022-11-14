@@ -7,14 +7,12 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
     userName: string;
     email: string;
     phoneNumber: string;
-    password: string;
 }) => void; userInfo: {
     firstName: string;
     lastName: string;
     userName: string;
     email: string;
     phoneNumber: string;
-    password: string;
 } }) => {
     const [phoneNumber, setPhoneNumber] = React.useState(props.userInfo.phoneNumber)
     return (
@@ -58,7 +56,6 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                     userName: (document.getElementById('username') as HTMLInputElement).value,
                     email: (document.getElementById('email') as HTMLInputElement).value,
                     phoneNumber: phoneNumber,
-                    password: props.userInfo.password
                 })}>
                     Save
                 </button>
