@@ -1,21 +1,21 @@
 package com.backend.spring;
 
-import com.backend.spring.address.Address;
-import com.backend.spring.appointment.Appointment;
-import com.backend.spring.appointment.AppointmentRepository;
-import com.backend.spring.quote.Quote;
-import com.backend.spring.quote.QuoteRepository;
-import com.backend.spring.shop.Shop;
-import com.backend.spring.user.role.Role;
-import com.backend.spring.user.role.RoleEnum;
-import com.backend.spring.user.role.RoleRepository;
-import com.backend.spring.user.shopowner.ShopOwner;
-import com.backend.spring.user.shopowner.ShopOwnerRepository;
-import com.backend.spring.user.shopowner.ShopOwnerSaveHelper;
-import com.backend.spring.user.vehicleowner.VehicleOwner;
-import com.backend.spring.user.vehicleowner.VehicleOwnerRepository;
-import com.backend.spring.vehicle.Vehicle;
-import com.backend.spring.vehicle.VehicleRepository;
+import com.backend.spring.entities.Address;
+import com.backend.spring.entities.Appointment;
+import com.backend.spring.repositories.AppointmentRepository;
+import com.backend.spring.entities.Quote;
+import com.backend.spring.repositories.QuoteRepository;
+import com.backend.spring.entities.Shop;
+import com.backend.spring.entities.Role;
+import com.backend.spring.entities.RoleEnum;
+import com.backend.spring.repositories.RoleRepository;
+import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.services.ShopOwnerSaveHelper;
+import com.backend.spring.entities.VehicleOwner;
+import com.backend.spring.repositories.VehicleOwnerRepository;
+import com.backend.spring.entities.Vehicle;
+import com.backend.spring.repositories.VehicleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,10 +40,10 @@ public class SetupConfig {
 
             Shop shop = new Shop("Sayyara Shop", address, "416-412-3123", "sayyara@gmail.com");
 
-            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "password", shop);
+            ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "Password1!", shop);
             shopOwner = shopOwnerSaveHelper.save(shopOwner, shop, address);
 
-            VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124", "jackfill", "password");
+            VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124", "jackfill", "Password1!");
             vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
             vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
 
