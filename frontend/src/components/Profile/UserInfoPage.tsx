@@ -5,7 +5,7 @@ import React from "react";
 const UserInfoPage = (props: { setChangingPassword: (arg0: boolean) => void; setIsViewingShop: (arg0: boolean) => void; setEditingProfile: (arg0: boolean) => void; userInfo: {
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     email: string;
     phoneNumber: string;
 } }) => {
@@ -23,7 +23,7 @@ const UserInfoPage = (props: { setChangingPassword: (arg0: boolean) => void; set
                 <label className='text-3xl font-bold'>{props.userInfo.firstName} {props.userInfo.lastName}</label>
             </div>
             <div className='flex justify-center my-8'>
-                <label className='text-1xl font-bold'>{props.userInfo.userName}</label>
+                <label className='text-1xl font-bold'>{props.userInfo.username}</label>
             </div>
             <div className='flex justify-center mt-8'>
                 <PhoneIcon className="mx-1" />

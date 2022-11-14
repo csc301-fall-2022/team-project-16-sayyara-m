@@ -3,7 +3,7 @@ export const mVehicleOwner: VehicleOwner = {
     id: 2,
     firstName: "Hamoon",
     lastName: "Zamiri",
-    userName: "hamoon",
+    username: "hamoon",
     phoneNumber: "747-223-1190",
     email: "hz@gmail.com",
     vehicle: {
@@ -45,12 +45,15 @@ export const mAddress: Address = {
     street: "Daemon Blvd",
     streetNumber: "123",
     postalCode: "M4B192",
-    province: "ON"
+    province: "ON",
+    city: "Toronto"
 }
 export const mShop: Shop = {
     id: 1,
-    shopName: "Uths Garage",
+    name: "Uths Garage",
     address: mAddress,
+    phoneNumber: "+1 416 445 9898",
+    email: "123uth@gmail.com",
     appointments: generateAppointments(),
     quotes: genereateQuotes()
 }
@@ -58,8 +61,8 @@ export const mShopOwner: ShopOwner = {
     id: 1,
     firstName: "Uthman",
     lastName: "Mohammed",
-    userName: "123Uth",
-    phoneNumber: "416-445-9898",
+    username: "123Uth",
+    phoneNumber: "+1 416 445 9898",
     email: "123uth@gmail.com",
     shop: mShop
 }

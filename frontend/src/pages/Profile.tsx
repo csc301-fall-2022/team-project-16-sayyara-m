@@ -7,6 +7,7 @@ import EditUserPage from '../components/Profile/EditUserPage';
 import ChangePasswordPage from '../components/Profile/ChangePasswordPage';
 import ShopInfoPage from '../components/Profile/ShopInfoPage';
 import EditShopPage from "../components/Profile/EditShopPage";
+import { mShop, mShopOwner } from "../utilities/mockData";
 
 const Profile = () => {
 
@@ -21,16 +22,10 @@ const Profile = () => {
     const [userInfo, setUserInfo] = useState< {
         firstName: string;
         lastName: string;
-        userName: string;
+        username: string;
         email: string;
         phoneNumber: string;
-    }>({
-        firstName: "Ahsan",
-        lastName: "Saeed",
-        userName: "saeedahsan",
-        email: "ahsanm.saeed@mail.utoronto.ca",
-        phoneNumber: "123456789",
-    })
+    }>(mShopOwner)
     const [shopInfo, setShopInfo] = useState< {
         id: number;
         name: string;
@@ -43,19 +38,7 @@ const Profile = () => {
         },
         phoneNumber: string,
         email: string;
-    }>({
-        id: 1,
-        name: "My Shop",
-        address: {
-            streetNumber: "",
-            street: "",
-            city: "",
-            province: "",
-            postalCode: ""
-        },
-        phoneNumber: "987654321",
-        email: "myshop@gmail.com"
-    })
+    }>(mShop)
 
     // Fetch shop owner and shop data from server
     useEffect(() => {
@@ -73,13 +56,13 @@ const Profile = () => {
                 setUserInfo({
                     firstName: data.firstName,
                     lastName: data.lastName,
-                    userName: data.userName,
+                    username: data.username,
                     email: data.email,
                     phoneNumber: data.phoneNumber,
                 });
                 setShopInfo({
                     id: data.shop.id,
-                    name: data.shop.shopName,
+                    name: data.shop.name,
                     address: data.shop.address,
                     phoneNumber: data.shop.phoneNumber,
                     email: data.shop.email
@@ -95,7 +78,7 @@ const Profile = () => {
     }, [auth]);
 
     // Save updated user info to server
-    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; userName: string; email: string; phoneNumber: string}) => {
+    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string}) => {
         setEditingProfile(false)
         const saveInfo = async () => {
             const res = await fetch(API_ROOT + "/shopOwner", {
@@ -142,7 +125,7 @@ const Profile = () => {
                 setUserInfo({
                     firstName: userInfo.firstName,
                     lastName: userInfo.lastName,
-                    userName: userInfo.userName,
+                    username: userInfo.username,
                     email: userInfo.email,
                     phoneNumber: userInfo.phoneNumber,
                 })

@@ -4,13 +4,13 @@ import { MuiTelInput } from 'mui-tel-input';
 const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveUserInfo: (arg0: {
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     email: string;
     phoneNumber: string;
 }) => void; userInfo: {
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     email: string;
     phoneNumber: string;
 } }) => {
@@ -38,11 +38,13 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                 </label>
                 <MuiTelInput className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" id="phoneNumber" placeholder="Phone Number" value={phoneNumber} onChange={(value) => setPhoneNumber(value)}/>
-                <label className='col-span-2 mt-6 font-semibold'>
-                    Username
-                </label>
-                <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" id="username" placeholder="Username" defaultValue={props.userInfo.userName}/>
+                {/*
+                    <label className='col-span-2 mt-6 font-semibold'>
+                        Username
+                    </label>
+                    <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                    focus:outline-blue-500 focus:shadow-outline" type="text" id="username" placeholder="Username" defaultValue={props.userInfo.username}/>
+                */}
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -53,7 +55,7 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.saveUserInfo({
                     firstName: (document.getElementById('firstName') as HTMLInputElement).value,
                     lastName: (document.getElementById('lastName') as HTMLInputElement).value,
-                    userName: (document.getElementById('username') as HTMLInputElement).value,
+                    username: props.userInfo.username,   //(document.getElementById('username') as HTMLInputElement).value,
                     email: (document.getElementById('email') as HTMLInputElement).value,
                     phoneNumber: phoneNumber,
                 })}>

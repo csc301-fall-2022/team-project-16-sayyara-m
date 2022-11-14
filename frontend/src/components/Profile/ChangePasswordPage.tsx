@@ -4,7 +4,7 @@ import { validatePassword } from '../../utilities/ValidatePassword';
 const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; setIsOldPasswordIncorrect: (arg0: boolean) => void; saveUserInfo: (arg0: string, arg1: string) => void; isOldPasswordIncorrect: boolean; userInfo: {
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     email: string;
     phoneNumber: string;
 } }) => {

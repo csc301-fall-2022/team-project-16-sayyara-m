@@ -2,7 +2,7 @@ export interface User {
     id: number,
     firstName: string,
     lastName: string,
-    userName: string,
+    username: string,
     phoneNumber: string
     email: string,
 }
@@ -18,7 +18,7 @@ export interface Address {
 
 export interface Shop {
     id: number,
-    shopName: string,
+    name: string,
     address: Address,
     email: string,
     phoneNumber: string,
