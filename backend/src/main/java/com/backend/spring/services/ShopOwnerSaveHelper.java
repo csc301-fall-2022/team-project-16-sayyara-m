@@ -1,15 +1,19 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Address;
-import com.backend.spring.entities.ShopOwner;
-import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.RoleEnum;
+import com.backend.spring.entities.Shop;
+import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.RoleRepository;
+import com.backend.spring.repositories.ShopOwnerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 /**
  * Helper class for Shop Owner that abstracts how it is being saved.
@@ -41,15 +45,40 @@ public class ShopOwnerSaveHelper {
      * @param address   address to assign to the shop of this shop owner
      * @return Shop Owner after successfully saving
      */
-    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws IllegalStateException {
+    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws ViolatedConstraintException {
         ShopOwner savedShopOwner;
         try {
             setShopOwner(shopOwner, shop, address);
             savedShopOwner = shopOwnerRepository.save(shopOwner);
-        } catch (Exception exception) {
-            throw new IllegalStateException(exception.getCause());
+            return savedShopOwner;
+        } catch (DataIntegrityViolationException ex) {
+            String msg = ex.getMessage();
+            if (ex.getCause().getCause() instanceof SQLException e) {
+                if (e.getMessage().contains("Key")) {
+                    msg = formatErrorMessage(e.getMessage());
+                }
+            }
+            throw new ViolatedConstraintException(msg);
         }
-        return savedShopOwner;
+    }
+
+    /**
+     * Format error message of the form
+     *  "Details: key (email)=(email@gmail.com) already exists"
+     *  into
+     *  "email email@gmail.com already exists"
+     */
+    private String formatErrorMessage(String message) {
+        System.out.println(message);
+        StringBuilder stringBuilder = new StringBuilder(message.substring(message.indexOf("Key") + 4));
+        stringBuilder.deleteCharAt(stringBuilder.indexOf("("));
+        stringBuilder.deleteCharAt(stringBuilder.indexOf("("));
+        stringBuilder.deleteCharAt(stringBuilder.indexOf(")"));
+        stringBuilder.deleteCharAt(stringBuilder.indexOf(")"));
+        System.out.println(stringBuilder);
+        stringBuilder.replace(stringBuilder.indexOf("="), stringBuilder.indexOf("=") + 1, " ");
+        System.out.println(stringBuilder);
+        return stringBuilder.toString();
     }
 
     /**

@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.backend.spring.exceptions.InvalidAuthorizationException;
+import com.backend.spring.exceptions.InvalidDataException;
 
 /**
  * Utility class that takes an authorization header in the form "Bearer `token`" and retrieves the username
@@ -13,10 +13,10 @@ import com.backend.spring.exceptions.InvalidAuthorizationException;
  * Use getToken() and getUsername() to retrieve the token and username respectively.
  */
 public class AuthHeaderParser {
-    String username;
-    String token;
+    private final String username;
+    private final String token;
 
-    public AuthHeaderParser(String authorization) {
+    public AuthHeaderParser(String authorization) throws InvalidDataException {
         if (authorization != null && authorization.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             try {
                 this.token = authorization.substring(SecurityConstants.TOKEN_PREFIX.length());
@@ -25,10 +25,10 @@ public class AuthHeaderParser {
                 this.username = decodedJWT.getSubject();
             } catch (JWTVerificationException e) {
                 System.out.println(e.getMessage());
-                throw new InvalidAuthorizationException(e.getLocalizedMessage());
+                throw new InvalidDataException(e.getLocalizedMessage());
             }
         } else {
-            throw new InvalidAuthorizationException("Invalid/Missing Authorization header");
+            throw new InvalidDataException("Invalid/Missing Authorization header");
         }
     }
 

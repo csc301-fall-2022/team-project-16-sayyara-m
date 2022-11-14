@@ -1,8 +1,9 @@
 package com.backend.spring.controllers;
 
-import com.backend.spring.exceptions.InvalidPasswordException;
 import com.backend.spring.dto.AppUserDTO;
 import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.exceptions.InvalidDataException;
+import com.backend.spring.exceptions.InvalidPasswordException;
 import com.backend.spring.services.ShopOwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class ShopOwnerController {
     }
 
     @GetMapping
-    public ResponseEntity<ShopOwner> getShopOwner(HttpServletRequest request) {
+    public ResponseEntity<ShopOwner> getShopOwner(HttpServletRequest request) throws InvalidDataException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         return ResponseEntity.ok(shopOwnerService.getShopOwner(authorizationHeader));
     }

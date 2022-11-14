@@ -1,12 +1,13 @@
 package com.backend.spring.services;
 
-import com.backend.spring.exceptions.InvalidDataException;
-import com.backend.spring.exceptions.InvalidPasswordException;
-import com.backend.spring.repositories.ShopOwnerRepository;
 import com.backend.spring.dto.AppUserDTO;
 import com.backend.spring.dto.AppUserDTOTransfer;
-import com.backend.spring.security.AuthHeaderParser;
 import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.exceptions.InvalidDataException;
+import com.backend.spring.exceptions.InvalidPasswordException;
+import com.backend.spring.exceptions.ViolatedConstraintException;
+import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,26 +25,20 @@ public class ShopOwnerService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public void saveShopOwner(ShopOwner shopOwner) {
-        try {
-            shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
-        } catch (IllegalStateException e) {
-            System.out.println("Error at ShopOwnerService:saveShopOwner");
-            System.out.println(e.getMessage());
-            throw new InvalidDataException(e.getMessage());
-        }
+    public void saveShopOwner(ShopOwner shopOwner) throws ViolatedConstraintException {
+        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
     }
 
-    public ShopOwner getShopOwner(String authorization) {
+    public ShopOwner getShopOwner(String authorization) throws InvalidDataException {
         String username = new AuthHeaderParser(authorization).getUsername();
 
         return shopOwnerRepository.findByUsername(username);
     }
 
-    @Transactional
-    public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) {
+    public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) throws ViolatedConstraintException {
         ShopOwner shopOwner = getShopOwner(authorization);
-        shopOwner.updateUserInfo(appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO));
+        appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO);
+        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
         return appUserDTOTransfer.appUsertoDTO(shopOwner);
     }
 
@@ -51,7 +46,7 @@ public class ShopOwnerService {
     public void updateShopOwnerPassword(String oldPassword, String newPassword, String authorization) throws InvalidPasswordException {
         ShopOwner shopOwner = getShopOwner(authorization);
         if (!passwordEncoder.matches(oldPassword, shopOwner.getPassword()))
-            throw new InvalidPasswordException("Password is incorrect");
+            throw new InvalidPasswordException("Old password is incorrect");
 
         shopOwner.setPassword(passwordEncoder.encode(newPassword));
     }
