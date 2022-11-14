@@ -17,14 +17,16 @@ export const mVehicleOwner: VehicleOwner = {
 export const mAppointment: Appointment = {
     id: 1,
     vehicleOwner: mVehicleOwner,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "2022-11-15T15:45:00",
+    endDate: "2022-11-15T15:45:00",
     duration: 100
 }
 export const mQuote: Quote = {
+    id: 1,
     vehicleOwner: mVehicleOwner,
     price: 120.00,
-    expiryTime: "2020-12-12"
+    expiryTime: "2020-12-12",
+    serviceType: "Oil Change"
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
