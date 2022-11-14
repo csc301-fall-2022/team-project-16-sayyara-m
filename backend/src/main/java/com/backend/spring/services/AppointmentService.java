@@ -3,7 +3,9 @@ package com.backend.spring.services;
 import com.backend.spring.entities.Appointment;
 import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.AppointmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.security.AuthHeaderParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,33 +13,33 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AppointmentService {
-    private final AppointmentRepository repository;
+    private final AppointmentRepository appointmentRepository;
 
-    @Autowired
-    public AppointmentService(AppointmentRepository repository) {
-        this.repository = repository;
-    }
+    private final ShopOwnerRepository shopOwnerRepository;
 
-    public List<Appointment> getAllAppointments() {
-        return repository.findAll();
+    public List<Appointment> getAllAppointments(String authorization) {
+        String username = new AuthHeaderParser(authorization).getUsername();
+
+        return shopOwnerRepository.findByUsername(username).getShop().getAppointments();
     }
 
     public Appointment getAppointment(long id) throws DataNotFoundException {
-        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Appointment with id " + id + " doesn't exist"));
+        return appointmentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Appointment with id " + id + " doesn't exist"));
     }
 
     public Appointment createAppointment(Appointment appointment) {
-        return repository.save(appointment);
+        return appointmentRepository.save(appointment);
     }
 
     public void deleteAppointment(long id) {
-        repository.deleteById(id);
+        appointmentRepository.deleteById(id);
     }
 
     @Transactional
     public void updateAppointment(long id, LocalDateTime startDate, LocalDateTime endDate) {
-        Appointment appointment = repository.findById(id).orElseThrow(IllegalStateException::new);
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(IllegalStateException::new);
 
         if (startDate != null) {
             appointment.setStartDate(startDate);

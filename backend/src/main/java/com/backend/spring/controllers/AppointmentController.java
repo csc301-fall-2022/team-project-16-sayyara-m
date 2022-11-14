@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,8 +32,9 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<Appointment> getAllAppointments() {
-        return service.getAllAppointments();
+    public List<Appointment> getAllAppointments(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        return service.getAllAppointments(authorizationHeader);
     }
 
     @GetMapping(path = "{appointmentId}")
