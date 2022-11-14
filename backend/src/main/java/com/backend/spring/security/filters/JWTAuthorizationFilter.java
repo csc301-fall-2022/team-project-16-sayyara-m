@@ -34,7 +34,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
                 try {
                     String token = authorizationHeader.substring(SecurityConstants.TOKEN_PREFIX.length());
-                    // TODO: Encrypt this (must be the same secret)
                     JWTVerifier verifier = JWT.require(SecurityConstants.ALGORITHM).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
