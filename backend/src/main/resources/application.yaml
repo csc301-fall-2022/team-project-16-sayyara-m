@@ -15,4 +15,5 @@ server:
 
 springdoc:
   swagger-ui:
+    url: /api/open-api.yaml
     path: /docs
