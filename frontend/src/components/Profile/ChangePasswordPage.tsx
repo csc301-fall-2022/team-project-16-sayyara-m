@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { validatePassword } from '../../utilities/ValidatePassword';
 
-const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; saveUserInfo: (arg0: {
+const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => void; saveUserInfo: (arg0: string, arg1: string) => void; userInfo: {
     firstName: string;
     lastName: string;
-    username: string;
-    email: string;
-    phoneNumber: string;
-    password: string;
-}) => void; userInfo: {
-    firstName: string;
-    lastName: string;
-    username: string;
+    userName: string;
     email: string;
     phoneNumber: string;
     password: string;
@@ -34,14 +27,7 @@ const ChangePasswordPage = (props: { setChangingPassword: (arg0: boolean) => voi
             valid = false
         }
         if (valid) {
-            props.saveUserInfo({
-                firstName: props.userInfo.firstName,
-                lastName: props.userInfo.lastName,
-                username: props.userInfo.username,
-                email: props.userInfo.email,
-                phoneNumber: props.userInfo.phoneNumber,
-                password: newPassword
-            })
+            props.saveUserInfo(oldPassword, newPassword)
         }
     }
     return (

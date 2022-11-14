@@ -20,14 +20,14 @@ const Profile = () => {
     const [userInfo, setUserInfo] = useState< {
         firstName: string;
         lastName: string;
-        username: string;
+        userName: string;
         email: string;
         phoneNumber: string;
         password: string;
     }>({
         firstName: "Ahsan",
         lastName: "Saeed",
-        username: "saeedahsan",
+        userName: "saeedahsan",
         email: "ahsanm.saeed@mail.utoronto.ca",
         phoneNumber: "123456789",
         password: "password"
@@ -58,6 +58,7 @@ const Profile = () => {
         email: "myshop@gmail.com"
     })
 
+    // Fetch shop owner and shop data from server
     useEffect(() => {
         const getData = async () => {
             const res = await fetch(API_ROOT + "/shopOwner", {
@@ -73,7 +74,7 @@ const Profile = () => {
                 setUserInfo({
                     firstName: data.firstName,
                     lastName: data.lastName,
-                    username: data.userName,
+                    userName: data.userName,
                     email: data.email,
                     phoneNumber: data.phoneNumber,
                     password: data.password
@@ -95,34 +96,73 @@ const Profile = () => {
 
     }, [auth]);
 
-    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string; password: string}) => {
+    // Save updated user info to server
+    const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; userName: string; email: string; phoneNumber: string; password: string}) => {
         setEditingProfile(false)
-        setChangingPassword(false)
-        setUserInfo(newUserInfo)
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userInfo)
+        const saveInfo = async () => {
+            const res = await fetch(API_ROOT + "/shopOwner", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth}`
+                },
+                body: JSON.stringify(
+                    newUserInfo
+                )
+            })
+
+            // Only update on frontend if server call was successful
+            if (res.ok) {
+                setUserInfo(newUserInfo)
+                return;
+            }
+
+            const data: APIError = await res.json();
+            console.log(data.message);
         }
-        let url = 'https://localhost:8080/api/appUsers/' + 'userId' //TODO: Change to live url when possible and figure out how to get user id
-      fetch(url, requestOptions)
-      .then(response => response.json())
-      .then(
-        (result) => {
-          
-        },
-        (error) => {
-          console.log("Could not update user to database")
-          console.log(error)
-        }
-      )
+
+        saveInfo();
     }
 
+    // Save user's new password to server
+    const saveUserPassword = (oldPassword: string, newPassword: string) => {
+        setChangingPassword(false)
+        const savePassword = async () => {
+            const res = await fetch(API_ROOT + "/shopOwner/password", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth}`
+                },
+                body: JSON.stringify({
+                    oldPassword: oldPassword,
+                    newPassword: newPassword
+                })
+            })
+
+            // Only update on frontend if server call was successful
+            if (res.ok) {
+                setUserInfo({
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    userName: userInfo.userName,
+                    email: userInfo.email,
+                    phoneNumber: userInfo.phoneNumber,
+                    password: newPassword
+                })
+                return;
+            }
+
+            const data: APIError = await res.json();
+            console.log(data.message);
+        }
+
+        savePassword();
+    }
+
+    // Save updated shop info to server
     const saveShopInfo = (newShopInfo: {id: number, name: string, address: {streetNumber: string, street: string, city: string, province: string, postalCode: string}, email: string; phoneNumber: string;}) => {
         setIsEditingShop(false)
-        setShopInfo(newShopInfo)
         const saveShop = async () => {
             const res = await fetch(API_ROOT + "/shop", {
                 method: 'PUT',
@@ -130,11 +170,12 @@ const Profile = () => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${auth}`
                 },
-                body: JSON.stringify({
+                body: JSON.stringify(
                     newShopInfo
-                })
+                )
             })
 
+            // Only update on frontend if server call was successful
             if (res.ok) {
                 setShopInfo(newShopInfo)
                 return;
@@ -168,7 +209,7 @@ const Profile = () => {
                         <ChangePasswordPage 
                             setChangingPassword={setChangingPassword}
                             userInfo={userInfo}
-                            saveUserInfo={saveUserInfo}
+                            saveUserInfo={saveUserPassword}
                         />
                         : !isEditingShop ?
                         <ShopInfoPage

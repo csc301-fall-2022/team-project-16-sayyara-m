@@ -4,14 +4,14 @@ import { MuiTelInput } from 'mui-tel-input';
 const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveUserInfo: (arg0: {
     firstName: string;
     lastName: string;
-    username: string;
+    userName: string;
     email: string;
     phoneNumber: string;
     password: string;
 }) => void; userInfo: {
     firstName: string;
     lastName: string;
-    username: string;
+    userName: string;
     email: string;
     phoneNumber: string;
     password: string;
@@ -44,7 +44,7 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                     Username
                 </label>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" id="username" placeholder="Username" defaultValue={props.userInfo.username}/>
+                focus:outline-blue-500 focus:shadow-outline" type="text" id="username" placeholder="Username" defaultValue={props.userInfo.userName}/>
             </div>
             <div className='flex justify-evenly my-8'>
                 <button className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100 text-black
@@ -55,7 +55,7 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.saveUserInfo({
                     firstName: (document.getElementById('firstName') as HTMLInputElement).value,
                     lastName: (document.getElementById('lastName') as HTMLInputElement).value,
-                    username: (document.getElementById('username') as HTMLInputElement).value,
+                    userName: (document.getElementById('username') as HTMLInputElement).value,
                     email: (document.getElementById('email') as HTMLInputElement).value,
                     phoneNumber: phoneNumber,
                     password: props.userInfo.password
