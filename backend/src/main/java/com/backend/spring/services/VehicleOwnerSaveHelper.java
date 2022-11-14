@@ -49,7 +49,7 @@ public class VehicleOwnerSaveHelper {
     private void setVehicleOwner(VehicleOwner vehicleOwner, Vehicle vehicle) {
         vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
         vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
-        vehicleOwner.setVehicle(vehicleRepository.save(vehicle));
+        vehicleOwner.setVehicle(vehicle);
         vehicle.setOwner(vehicleOwner);
     }
 

@@ -40,7 +40,7 @@ class VehicleOwnerTest {
 
         vehicle = new Vehicle(2022, "Honda", "Civic", "123456VIN", "ABC1234");
 
-        vehicleOwner = vehicleOwnerRepository.save(vehicleOwner);
+        vehicleOwner = saveHelper.save(vehicleOwner, vehicle);
 
     }
 

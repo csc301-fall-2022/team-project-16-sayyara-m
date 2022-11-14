@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
 
@@ -57,7 +58,7 @@ public class Appointment {
     @Getter(NONE) // to override getter
     private Duration duration;
 
-    @OneToOne(cascade = ALL)
+    @OneToOne(cascade = MERGE)
     @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
     private Quote quote;
 
