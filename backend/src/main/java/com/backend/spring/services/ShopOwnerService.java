@@ -47,6 +47,8 @@ public class ShopOwnerService {
         ShopOwner shopOwner = getShopOwner(authorization);
         if (!passwordEncoder.matches(oldPassword, shopOwner.getPassword()))
             throw new InvalidPasswordException("Old password is incorrect");
+        if (passwordEncoder.matches(newPassword, shopOwner.getPassword()))
+            throw new InvalidPasswordException("New password is the same as previous. Try changing to something stronger!");
 
         shopOwner.setPassword(passwordEncoder.encode(newPassword));
     }
