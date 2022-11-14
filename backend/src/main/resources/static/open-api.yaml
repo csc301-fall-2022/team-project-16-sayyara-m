@@ -1,0 +1,533 @@
+---
+openapi: 3.0.1
+info:
+  title: Sayyara Backend
+  version: v0
+  description: "# How to Authenticate
+  \n\nThis API uses Bearer/Token authentication to authenticate a user that is logged in. Once successfully logged in using the `/api/user/login` endpoint, you will receive a JWT `access_token` and `refresh_token`. Both tokens are encrypted and contain information about the user like their username, and can be decrypted by the backend to retrieve that information.
+  
+  \n\nWhen accessing an endpoint that requires a user's info, you can just pass in the JWT access token using the header `Authorization: \"Bearer <token>\"`. The API will decrypt the `access_token` and retrieve the username and use that to get data for the specific user. This way, you don't need to pass in any information about the user through a parameter or request body.
+  
+  \n\n For security reasons, the `access_token` will expire every few minutes, and will need to be refreshed. To refresh the token, pass in the `refresh_token` to the endpoint `/api/token/refresh` (see below), which will give you a new `access_token`.\n\n
+  **Note:** The lock icon on the right side of each endpoint indicates that this endpoint can only be accessed by an authorized Shop Owner, meaning that an access token must be passed from the `Authorization` header. Likewise, an endpoint without the lock can be accessed by a user that isn't logged in."
+paths:
+
+  ############## AUTHENTICATION ##############
+  /api/user/login:
+    post:
+      operationId: login
+      summary: Attempt to login a user
+      description: Attempt to login the user with the given login info.
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInfo"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tokens"
+        '401':
+          description: Invalid login info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+  ############## TOKENS ##############
+  /token/refresh:
+    get:
+      tags:
+        - Tokens
+      operationId: getRefreshToken
+      summary: Refresh the existing access token with a new one
+      description: Attempt to refresh the `access_token` given a `refresh_token`
+      responses:
+        '200':
+          description: Retrieved new access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tokens"
+        '401':
+          description: Invalid/Missing Authorization header
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+  ############## SHOP OWNER ##############
+  /api/shopOwner:
+    get:
+      tags:
+        - Shop Owner
+      operationId: getShopOwner
+      summary: Get Shop Owner
+      description: Get the Shop Owners object of the user that is currently logged in.
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully retrieved the shop owner
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/ShopOwner"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+    put:
+      tags:
+        - Shop Owner
+      operationId: updateShopOwner
+      summary: Update Shop Owner info
+      description: Update a shop owner's user info and retrieve the updated info back. Not all fields are required, but all can be passed in even if they don't update the value.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AppUserDTO"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AppUserDTO"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - Shop Owner
+      operationId: signUp
+      security:
+        - bearerAuth: [ ]
+      summary: Sign up
+      description: Create a new Shop Owner in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShopOwner"
+        required: true
+      responses:
+        '201':
+          description: Successfully created new Shop Owner
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+  "/shopOwner/password":
+    put:
+      tags:
+        - Shop Owner
+      summary: Update password
+      description: Validate that the given `oldPassword` matches the logged in user's password and if so, update the password of the user
+      operationId: updateShopOwnerPassword
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Passwords"
+        required: true
+      responses:
+        '200':
+          description: Successfully updated password
+        '400':
+          $ref: "#/components/responses/InvalidPassword"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+
+
+
+
+
+  ############## SHOP ##############
+  "/api/shop":
+    put:
+      tags:
+        - Shop
+      summary: Update Shop
+      description: Update an existing shop of the current logged in shop owner
+      operationId: updateShop
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Shop"
+        required: true
+      responses:
+        '200':
+          description: Successfully updated Shop
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '400':
+          $ref: "#/components/responses/InvalidData"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+
+
+
+  ############## Appointments ##############
+  "/appointments":
+    get:
+      tags:
+        - Appointment
+      operationId: getAllAppointments
+      security:
+        - bearerAuth: [ ]
+      summary: Get all Appointments
+      description: Get the list of all appointments associated to the Shop Owner that is currently logged in
+      responses:
+        '200':
+          description: Successfully retrieved all Appointments
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Appointment"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+
+  "/appointments/{appointmentId}":
+    get:
+      tags:
+        - Appointment
+      operationId: getAppointment
+      summary: Get Appointment
+      description: Get details of a specific appointment determined by its `appointmentId`
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved Appointment
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Appointment"
+        '400':
+          description: Appointment associated with the id not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+
+
+
+############## SCHEMAS ##############
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    Unauthorized:
+      description: Invalid/Missing Authorization header
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InvalidPassword:
+      description: Incorrect old password. Response will give a `message` that can be displayed to the user.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvalidPasswordError"
+    InvalidData:
+      description: Invalid data passed. Cannot update. This will return a `message` that will benefit the user of the application.
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/InvalidDataError"
+  # parameters:
+  #   authHeader:
+  #     in: header
+  #     name: Authorization
+  #     schema:
+  #       type: string
+  #     required: true
+  #     description: In the form "Bearer <access_token>"
+  schemas:
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: '2022-11-12T21:35:03.905+00:00'
+        status:
+          type: number
+          example: 401
+        error:
+          type: string
+          example: Unauthorized
+        message:
+          type: string
+          example: Unauthorized
+        path:
+          type: string
+          example: /api/user/login
+    InvalidDataError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: '2022-11-12T21:35:03.905+00:00'
+        status:
+          type: number
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: email jack@gmail.com already exists.
+        path:
+          type: string
+          example: /api/shopOwner
+    InvalidPasswordError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: '2022-11-12T21:35:03.905+00:00'
+        status:
+          type: number
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: Old password is incorrect
+        path:
+          type: string
+          example: /api/shopOwner/password
+    LoginInfo:
+      type: object
+      properties:
+        username:
+          type: string
+          example: bob123
+        password:
+          type: string
+          example: Password1!
+    Tokens:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    Vehicle:
+      type: object
+      properties:
+        year:
+          type: integer
+          format: int32
+        make:
+          type: string
+        model:
+          type: string
+        vin:
+          type: string
+        plate:
+          type: string
+        owner:
+          "$ref": "#/components/schemas/VehicleOwner"
+    VehicleOwner:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        username:
+          type: string
+          writeOnly: true
+        vehicle:
+          "$ref": "#/components/schemas/Vehicle"
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        streetNumber:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        province:
+          type: string
+        postalCode:
+          type: string
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        shop:
+          "$ref": "#/components/schemas/Shop"
+        vehicleOwner:
+          "$ref": "#/components/schemas/VehicleOwner"
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        duration:
+          type: object
+          properties:
+            seconds:
+              type: integer
+              format: int64
+            nano:
+              type: integer
+              format: int32
+            negative:
+              type: boolean
+            zero:
+              type: boolean
+            units:
+              type: array
+              items:
+                type: object
+                properties:
+                  dateBased:
+                    type: boolean
+                  timeBased:
+                    type: boolean
+                  duration:
+                    type: object
+                    properties:
+                      seconds:
+                        type: integer
+                        format: int64
+                      nano:
+                        type: integer
+                        format: int32
+                      negative:
+                        type: boolean
+                      zero:
+                        type: boolean
+                  durationEstimated:
+                    type: boolean
+        quote:
+          "$ref": "#/components/schemas/Quote"
+    Quote:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        shop:
+          "$ref": "#/components/schemas/Shop"
+        vehicleOwner:
+          "$ref": "#/components/schemas/VehicleOwner"
+        service:
+          type: string
+        price:
+          type: number
+          format: double
+        expiryTime:
+          type: string
+          format: date-time
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          "$ref": "#/components/schemas/Address"
+        appointments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Appointment"
+        quotes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Quote"
+        phoneNumber:
+          type: string
+        email:
+          type: string
+    AppUserDTO:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        username:
+          type: string
+    Passwords:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+    ShopOwner:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+        shop:
+          "$ref": "#/components/schemas/Shop"
