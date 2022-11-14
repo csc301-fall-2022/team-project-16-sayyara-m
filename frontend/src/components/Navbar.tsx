@@ -11,6 +11,7 @@ import useAuth from "src/utilities/hooks/useAuth";
 const navigation = [
     {name: "Home", to: "/", current: true},
     {name: "Appointments", to: "/appointments", current: false},
+    {name: "Quotes", to: "/quotes", current: false},
 ];
 
 const MobileNavMap = () => {
