@@ -2,7 +2,7 @@ export interface User {
     id: number,
     firstName: string,
     lastName: string,
-    userName: string,
+    username: string,
     phoneNumber: string
     email: string,
 }
@@ -11,15 +11,17 @@ export interface Address {
     id: number,
     street: string,
     streetNumber: string,
+    city: string,
     postalCode: string,
     province: string
 }
 
 export interface Shop {
     id: number,
-    shopName: string,
+    name: string,
     address: Address,
-    email?: string,
+    email: string,
+    phoneNumber: string,
     appointments: Appointment[]
     quotes: Quote[]
 }

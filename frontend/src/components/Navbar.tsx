@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Disclosure} from "@headlessui/react"
 import ProfileDropdown from "./ProfileDropdown";
 import MenuIcon from '@mui/icons-material/Menu';
-import useAuth from "src/utilities/hooks/useAuth";
+import useAuth from "../utilities/hooks/useAuth";
 
 //hidden on web version
 //sm:hidden on mobile version
