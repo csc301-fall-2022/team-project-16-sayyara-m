@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -33,6 +35,8 @@ public class Quote {
     @Column(name = "quote_id")
     private Long id;
 
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(optional = false, cascade = MERGE)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
