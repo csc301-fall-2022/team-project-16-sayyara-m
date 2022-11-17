@@ -65,9 +65,12 @@ const validateInput = () => {
     return (
         <div className="mx-8">
             <div className='grid grid-cols-3 grid-rows-10 gap-1 mt-6 mb-6'>
-                <label className='col-span-2 mt-6 font-semibold'>
-                    Name
-                </label>
+                <div className="col-span-3 flow-root flex flex-row mt-6">
+                    <label className='font-semibold float-left'>
+                        Name
+                    </label>
+                    {name === "" ? <label className="text-red-500 italic float-right text-xs">Must enter a name</label> : null}
+                </div>
                 <input className="col-span-3 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" type="text" id="name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <div className="col-span-3 flow-root flex flex-row mt-6">

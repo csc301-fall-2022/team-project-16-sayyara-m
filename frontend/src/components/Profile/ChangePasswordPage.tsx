@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { validatePassword } from '../../utilities/ValidatePassword';
+import { validatePassword } from '../../utilities/ValidationUtil';
 
 interface ChangePasswordProps { 
     setChangingPassword: (arg0: boolean) => void; 
