@@ -90,9 +90,17 @@ const MyShop = () => {
             return <QuoteCard key={q.vehicleOwner.id + i} quote={q}/>
         })
     }
-
+    const generateServiceCards = () => {
+        let services: JSX.Element[] = [];
+        for(let i = 0; i < 5; i++){
+            services.push(
+                <div className="border-2 bg-green-200 rounded-lg text-center p-3 mr-2 my-1">Oil Change</div>
+            )
+        }
+        return services;
+    }
     return (
-        <div className="pt-2">
+        <div className="pt-2 ml-2">
             <div>
                 <h1 className="flex justify-center text-2xl text-blue-800 font-semibold sm:text-4xl">{shop.name}</h1>
             </div>
@@ -109,26 +117,28 @@ const MyShop = () => {
                 </div>
             </div>
             <br></br>
-            <div className="flex justify-center">
-                <form className="block">
-                    <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Add a New Service</h3>
-                    <label className="pr-2">Service:</label>
-                    <input
-                        className="p-2 mt-3 mb-5 border-2 rounded box-border"
-                        type="text"
-                        onChange={(e) => setService(e.target.value)}
-                        value={service}
-                    />
-                    <br></br>
-                    <button
-                        className="cursor-pointer bg-blue-700 p-2.5 rounded text-white text-center "
-                        onClick={(e) => {e.preventDefault()
-                            setService("")}}
-                    >
-                        Add Service
-                    </button>
-                </form>
+            <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
+            <div className="flex flex-wrap">
+                {generateServiceCards()}
             </div>
+            <form className="block">
+                <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Add a New Service</h3>
+                <label className="pr-2">Service:</label>
+                <input
+                    className="p-2 mt-3 mb-5 border-2 rounded box-border"
+                    type="text"
+                    onChange={(e) => setService(e.target.value)}
+                    value={service}
+                />
+                <br></br>
+                <button
+                    className="cursor-pointer bg-blue-700 p-2.5 rounded text-white text-center "
+                    onClick={(e) => {e.preventDefault()
+                        setService("")}}
+                >
+                    Add Service
+                </button>
+            </form>
         </div>
     )
 };
