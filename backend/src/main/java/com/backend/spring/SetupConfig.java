@@ -2,20 +2,20 @@ package com.backend.spring;
 
 import com.backend.spring.entities.Address;
 import com.backend.spring.entities.Appointment;
-import com.backend.spring.repositories.AppointmentRepository;
 import com.backend.spring.entities.Quote;
-import com.backend.spring.repositories.QuoteRepository;
-import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.Role;
 import com.backend.spring.entities.RoleEnum;
-import com.backend.spring.repositories.RoleRepository;
+import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.ShopOwner;
-import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.services.ShopOwnerSaveHelper;
-import com.backend.spring.entities.VehicleOwner;
-import com.backend.spring.repositories.VehicleOwnerRepository;
 import com.backend.spring.entities.Vehicle;
+import com.backend.spring.entities.VehicleOwner;
+import com.backend.spring.repositories.AppointmentRepository;
+import com.backend.spring.repositories.QuoteRepository;
+import com.backend.spring.repositories.RoleRepository;
+import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.repositories.VehicleOwnerRepository;
 import com.backend.spring.repositories.VehicleRepository;
+import com.backend.spring.services.ShopOwnerSaveHelper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,15 +23,26 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 public class SetupConfig {
 
     @Bean
     @Profile("!test") // run on all profiles except test
-    CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder, RoleRepository roleRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, VehicleOwnerRepository vehicleOwnerRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
+    CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder,
+                                        RoleRepository roleRepository,
+                                        ShopOwnerSaveHelper shopOwnerSaveHelper,
+                                        ShopOwnerRepository shopOwnerRepository,
+                                        VehicleRepository vehicleRepository,
+                                        VehicleOwnerRepository vehicleOwnerRepository,
+                                        AppointmentRepository appointmentRepository,
+                                        QuoteRepository quoteRepository) {
         return args -> {
             Set<Role> roles = new HashSet<>(Set.of(new Role(RoleEnum.SHOP_OWNER), new Role(RoleEnum.VEHICLE_OWNER)));
             roleRepository.saveAll(roles);
@@ -50,12 +61,37 @@ public class SetupConfig {
             Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
             vehicleOwner.setVehicle(vehicle);
 
-            Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, LocalDateTime.of(2022, 11, 15, 15, 45), LocalDateTime.of(2022, 11, 15, 16, 30)));
+            int i = 0;
+            while (i < 20) {
+                i++;
 
-            Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, "tires", 100.0, LocalDateTime.of(2022, 12, 1, 11, 59)));
-            System.out.println(shopOwner);
-            System.out.println(appointment);
-            System.out.println(quote);
+                // Appointments
+                long minStartEpoch = LocalDateTime.of(2022, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+                long maxStartEpoch = LocalDateTime.of(2023, 12, 31, 23, 59).toEpochSecond(ZoneOffset.UTC);
+                long randomStartEpoch = ThreadLocalRandom.current().nextLong(minStartEpoch, maxStartEpoch);
+                LocalDateTime randomStartDate = LocalDateTime.ofEpochSecond(randomStartEpoch, 0, ZoneOffset.UTC);
+
+                long minEndEpoch = randomStartDate.plusMinutes(15).toEpochSecond(ZoneOffset.UTC);
+                long maxEndEpoch = randomStartDate.plusHours(1).toEpochSecond(ZoneOffset.UTC);
+                long randomEndEpoch = ThreadLocalRandom.current().nextLong(minEndEpoch, maxEndEpoch);
+                LocalDateTime randomEndDate = LocalDateTime.ofEpochSecond(randomEndEpoch, 0, ZoneOffset.UTC);
+
+                Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, randomStartDate, randomEndDate));
+
+                // Quotes
+                List<String> serviceTypes = Arrays.asList("Oil change", "Change tires", "Rotate tires", "Spark plugs", "Air filter");
+                int randomInt = ThreadLocalRandom.current().nextInt(0, serviceTypes.size());
+                String randomService = serviceTypes.get(randomInt);
+
+                double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
+
+                Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, randomService, randomPrice, randomEndDate));
+
+                System.out.println();
+                System.out.println(shopOwner);
+                System.out.println(appointment);
+                System.out.println(quote);
+            }
         };
     }
 
