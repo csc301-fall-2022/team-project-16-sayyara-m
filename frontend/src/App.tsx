@@ -15,8 +15,6 @@ import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 
-export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
-
 function App() {
 
   const [cookies] = useCookies(['refresh_token']);
