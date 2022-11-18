@@ -14,6 +14,7 @@ import useAuth from './utilities/hooks/useAuth';
 import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
+import ShopDetails from './pages/ShopDetails';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/appointments/:id' element={auth ? <AppointmentDetails /> : <Navigate to="/login" />} />
           <Route path='/quotes' element={auth ? <Quotes /> : <Navigate to="/login" />} />
           <Route path='/quotes/:id' element={auth ? <QuoteDetails /> : <Navigate to="/login" />} />
+          <Route path='/shop/:id' element={<ShopDetails />} />
         </Routes>
       </Router>
     </div>
