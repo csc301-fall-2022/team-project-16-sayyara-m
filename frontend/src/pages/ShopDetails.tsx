@@ -1,4 +1,5 @@
 import React from "react";
+import CreateAppointmentForm from "src/components/CreateAppointmentForm";
 import { mShop as shop } from "../utilities/mockData";
 const generateServiceCards = () => {
     let services: JSX.Element[] = [];
@@ -22,6 +23,9 @@ const ShopDetails = () => {
             <div className="flex flex-wrap">
                 {generateServiceCards()}
             </div>
+            <section>
+                <CreateAppointmentForm />
+            </section>
         </div>
     )
 }
