@@ -47,7 +47,7 @@ export interface Appointment {
     quote?: Quote,
     startDate: string,
     endDate: string,
-    duration: number
+    duration?: number
 }
 
 export interface Quote {
