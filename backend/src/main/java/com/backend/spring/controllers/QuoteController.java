@@ -3,6 +3,7 @@ package com.backend.spring.controllers;
 import com.backend.spring.entities.Quote;
 import com.backend.spring.services.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,13 +31,15 @@ public class QuoteController {
     }
 
     @GetMapping
-    public List<Quote> getAllQuotes() {
-        return service.getAllQuotes();
+    public ResponseEntity<List<Quote>> getAllQuotes(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+
+        return ResponseEntity.ok(service.getAllQuotes(authorizationHeader));
     }
 
-    @GetMapping(path = "{quote_id}")
-    public Quote getQuote(long id) {
-        return service.getQuote(id);
+    @GetMapping(path = "{quoteId}")
+    public ResponseEntity<Quote> getQuote(@PathVariable long quoteId) {
+        return ResponseEntity.ok(service.getQuote(quoteId));
     }
 
     @PostMapping

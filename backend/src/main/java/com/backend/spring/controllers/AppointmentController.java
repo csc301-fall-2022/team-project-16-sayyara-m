@@ -32,9 +32,9 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<Appointment> getAllAppointments(HttpServletRequest request) {
+    public ResponseEntity<List<Appointment>> getAllAppointments(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
-        return service.getAllAppointments(authorizationHeader);
+        return ResponseEntity.ok(service.getAllAppointments(authorizationHeader));
     }
 
     @GetMapping(path = "{appointmentId}")
