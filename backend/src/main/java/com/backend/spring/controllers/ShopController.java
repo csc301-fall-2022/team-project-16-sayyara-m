@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -26,8 +25,8 @@ public class ShopController {
     }
 
     @PutMapping
-    public ResponseEntity<Shop> updateShop(HttpServletRequest request, @RequestBody Shop shop) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    public ResponseEntity<Shop> updateShop(@RequestBody Shop shop,
+                                           @RequestHeader(AUTHORIZATION) String authorizationHeader) {
         return ResponseEntity.ok().body(service.updateShop(shop, authorizationHeader));
     }
 }

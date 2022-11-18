@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @CrossOrigin
@@ -31,9 +33,7 @@ public class QuoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Quote>> getAllQuotes(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-
+    public ResponseEntity<List<Quote>> getAllQuotes(@RequestHeader(AUTHORIZATION) String authorizationHeader) {
         return ResponseEntity.ok(service.getAllQuotes(authorizationHeader));
     }
 
@@ -54,8 +54,8 @@ public class QuoteController {
 
     @PutMapping(path = "{quote_id}")
     public void updateQuote(@PathVariable("quote_id") Long id,
-                                  @RequestParam(required = false) Double price,
-                                  @RequestParam(required = false) LocalDateTime expiryDate) {
+                            @RequestParam(required = false) Double price,
+                            @RequestParam(required = false) LocalDateTime expiryDate) {
         service.updateQuote(id, price, expiryDate);
     }
 }
