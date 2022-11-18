@@ -1,8 +1,7 @@
 package com.backend.spring.entities;
 
 public enum RoleEnum {
-    SHOP_OWNER("ROLE_SHOP_OWNER"),
-    VEHICLE_OWNER("ROLE_VEHICLE_OWNER");
+    SHOP_OWNER("ROLE_SHOP_OWNER");
 
     private final String value;
 

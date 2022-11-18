@@ -15,12 +15,12 @@ import static javax.persistence.CascadeType.ALL;
 @Setter
 @ToString(callSuper = true)
 @Entity
-public class VehicleOwner extends AppUser {
+public class VehicleOwner extends UserInfo {
 
     @OneToOne(cascade = ALL, mappedBy = "owner")
     private Vehicle vehicle;
 
-    public VehicleOwner(String firstName, String lastName, String email, String phoneNumber, String username, String password) {
-        super(firstName, lastName, email, phoneNumber, username, password);
+    public VehicleOwner(String firstName, String lastName, String email, String phoneNumber) {
+        super(firstName, lastName, email, phoneNumber);
     }
 }
