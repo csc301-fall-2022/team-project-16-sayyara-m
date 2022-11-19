@@ -155,7 +155,7 @@ paths:
 
 
   ############## SHOP ##############
-  "/api/shop":
+  /api/shop:
     put:
       tags:
         - Shop
@@ -181,6 +181,24 @@ paths:
           $ref: "#/components/responses/InvalidData"
         '401':
           $ref: "#/components/responses/Unauthorized"
+  /api/shops:
+    get:
+      tags:
+        - Shop
+      summary: Get all Shops
+      description: Get the list of all shops
+      operationId: getAllShops
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully retrieved all Shops
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shop"
 
 
 
