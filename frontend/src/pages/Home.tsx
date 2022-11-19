@@ -1,19 +1,28 @@
-import { Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../App";
 import useAuth from "../utilities/hooks/useAuth";
 import { Shop } from "../utilities/interfaces";
-import { mShop } from "../utilities/mockData";
-import PlaceIcon from '@mui/icons-material/Place';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
+import { useNavigate } from "react-router-dom";
 
 
 const columns: GridColDef[] = [
     { field: 'name', headerName: 'Shop Name', width: 200},
     { field: 'phoneNumber', headerName: 'Phone Number', width: 200 },
     { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'address', headerName: 'Address', width: 200, valueGetter(params) {
+        return (params.row.address.streetNumber + ' ' + params.row.address.street)
+    } },
+    { field: 'city', headerName: 'City', width: 200, valueGetter(params) {
+        return params.row.address.city
+    } },
+    { field: 'province', headerName: 'Province', width: 200, valueGetter(params) {
+        return params.row.address.province
+    } },
+    { field: 'postalCode', headerName: 'Postal Code', width: 200, valueGetter(params) {
+        return params.row.address.postalCode
+    } }
   ];
   
 const generateRows = (text: string) => {
@@ -71,7 +80,7 @@ const generateRows = (text: string) => {
 
     rows.push({
         id: 3,
-        name: "Ball's Shop",
+        name: "Some Shop",
         address: {
             id: 3,
             streetNumber: "123",
@@ -81,7 +90,7 @@ const generateRows = (text: string) => {
             postalCode: "M4T2T1",
         },
         phoneNumber: "+1 647 766 4732",
-        email: "ballshop@gmail.com",
+        email: "someshop@gmail.com",
         appointments: [],
         quotes: []
     })
@@ -111,10 +120,9 @@ const generateRows = (text: string) => {
 const Home = () => {
 
     const { auth } = useAuth();
+    let navigate = useNavigate();
     const [shops, setShops] = useState<Shop[]>([])
-    const [viewingShop, setViewingShop] = useState<Shop>(mShop)
     const [searchText, setsearchText] = useState<string>('')
-    const [showShopInfo, setShowShopInfo] = useState<boolean>(false)
 
     useEffect(() => {
         const getData = async () => {
@@ -134,16 +142,7 @@ const Home = () => {
     })
 
     const openShopInfo = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
-        setViewingShop({
-            id: params.row.id,
-            name: params.row.name,
-            address: params.row.address,
-            phoneNumber: params.row.phoneNumber,
-            email: params.row.email,
-            appointments: params.row.appointments,
-            quotes: params.row.quotes
-        })
-        setShowShopInfo(true)
+        navigate(`/shop/${params.id}`);
     }
 
     return (
@@ -165,31 +164,6 @@ const Home = () => {
                 onRowClick={openShopInfo}
 
             />
-
-            <Dialog
-                open={showShopInfo}
-                onClose={() => setShowShopInfo(false)}
-            >
-                <DialogTitle>
-                    <div className='flex justify-center mt-8'>
-                        <label className='text-3xl font-bold'>{viewingShop.name}</label>
-                    </div>    
-                </DialogTitle>
-                <DialogContent>
-                    <div className='flex justify-center mt-8'>
-                        <PlaceIcon className="mx-1" />
-                        <label className='text-1m mx-1'>{viewingShop.address.streetNumber + " " + viewingShop.address.street + ", " + viewingShop.address.city + ", " + viewingShop.address.province + ", " + viewingShop.address.postalCode}</label>
-                    </div>
-                    <div className='flex justify-center mt-4'>
-                        <PhoneIcon className="mx-1" />
-                        <label className='text-1m mx-1'>{viewingShop.phoneNumber}</label>
-                    </div>
-                    <div className='flex justify-center mt-4 mb-8'>
-                        <EmailIcon className="mx-1" />
-                        <label className='text-1m mx-1'>{viewingShop.email}</label>
-                    </div>
-                </DialogContent>
-            </Dialog>
         </div>
     )
 }
