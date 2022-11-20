@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { carModels } from "src/utilities/constants";
+import { serviceTypes } from "src/utilities/mockData";
 interface FormData {
     firstName: string,
     lastName: string,
@@ -9,39 +11,12 @@ interface FormData {
     vehicleYear: string,
     vehicleVIN: string,
     liscensePlate: string,
+    serviceType: string,
     notes: string,
 }
 
 //list of all car models
-const carModels = {
-    "": ["default"],
-    "Acura": ["Choose a Model","ILX", "MDX", "NSX", "RDX", "RLX", "TLX", "TL", "TSX", "ZDX"],
-    "Alfa Romeo": ["Choose a Model","4C", "Giulia", "Stelvio"],
-    "Aston Martin": ["Choose a Model","DB11", "DB9", "DBS", "Rapide", "V12 Vantage", "V8 Vantage", "Vanquish", "Vantage"],
-    "Audi": ["Choose a Model","A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7", "R8", "RS 3", "RS 5", "RS 7", "S3", "S4", "S5", "S6", "S7", "S8", "SQ5", "TT", "TTS"],
-    "Bentley": ["Choose a Model","Arnage", "Azure", "Bentayga", "Brooklands", "Continental", "Continental Flying Spur", "Continental GT", "Continental GTC", "Continental Supersports", "Eight", "Mulsanne", "Turbo R"],
-    "BMW": ["Choose a Model","1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "6 Series", "7 Series", "8 Series", "i3", "i8", "M2", "M3", "M4", "M5", "M6", "X1", "X2", "X3", "X4", "X5", "X6", "X7", "Z3", "Z4", "Z8"],
-    "Bugatti": ["Choose a Model","Chiron", "Veyron"],
-    "Buick": ["Choose a Model","Cascada", "Enclave", "Encore", "Envision", "LaCrosse", "Regal", "Verano"],
-    "Cadillac": ["Choose a Model","ATS", "CT6", "CTS", "DeVille", "DTS", "ELR", "Escalade", "Escalade ESV", "Escalade EXT", "Fleetwood", "SRX", "STS", "XT5", "XTS"],
-    "Chevrolet": ["Choose a Model","Aveo", "Bolt EV", "Camaro", "Caprice", "Cavalier", "City Express", "Cobalt", "Cruze", "Cruze Limited", "Equinox", "Express", "HHR", "Impala", "Malibu", "Malibu Limited", "Metro", "Monte Carlo", "Sonic", "Spark", "SS", "Suburban", "Tahoe", "Traverse", "Trax", "Uplander", "Volt"],
-    "Chrysler": ["Choose a Model","200", "300", "Aspen", "Crossfire", "Pacifica", "Prowler", "Sebring", "Town & Country", "Voyager"],
-    "Dodge": ["Choose a Model","Avenger", "Caliber", "Caravan", "Challenger", "Charger", "Dakota", "Durango", "Grand Caravan", "Journey", "Magnum", "Neon", "Nitro", "Ram", "Ram 1500", "Ram 2500", "Ram 3500", "Ram 4500", "Ram 5500", "Ram 1500 Classic", "Ram 2500 Classic", "Ram 3500 Classic", "Ram 4500 Classic", "Ram 5500 Classic", "Ram 1500 Limited", "Ram 2500 Limited", "Ram 3500 Limited", "Ram 4500 Limited", "Ram 5500 Limited", "Ram 1500 Rebel", "Ram 2500 Rebel", "Ram 3500 Rebel", "Ram 4500 Rebel", "Ram 5500 Rebel", "Ram 1500 Warlock", "Ram 2500 Warlock", "Ram 3500 Warlock", "Ram 4500 Warlock", "Ram 5500 Warlock", "Ram 1500 Laramie", "Ram 2500 Laramie", "Ram 3500 Laramie", "Ram 4500 Laramie", "Ram 5500 Laramie", "Ram 1500 Laramie Longhorn", "Ram 2500 Laramie Longhorn", "Ram 3500 Laramie Longhorn", "Ram 4500 Laramie Longhorn", "Ram 5500 Laramie Longhorn", "Ram 1500 Laramie Limited", "Ram 2500 Laramie Limited", "Ram 3500 Laramie Limited", "Ram 4500 Laramie Limited", "Ram 5500 Laramie Limited", "Ram 1500 Laramie Limited Tungsten", "Ram 2500 Laramie Limited Tungsten", "Ram 3500 Laramie Limited Tungsten", "Ram 4500 Laramie Limited Tungsten", "Ram 5500 Laramie Limited Tungsten", "Ram 1500 Laramie Limited 10th Anniversary", "Ram 2500 Laramie Limited 10th Anniversary", "Ram 3500 Laramie Limited 10th Anniversary", "Ram 4500 Laramie Limited"],
-    "Ferrari": ["Choose a Model","488 GTB", "488 Spider", "California T", "F12berlinetta", "F355", "F430", "F50", "FF", "GTC4Lusso", "LaFerrari", "Portofino", "Testarossa"],
-    "FIAT": ["Choose a Model","124 Spider", "500", "500 Abarth", "500L", "500X", "Abarth", "Abarth 595", "Abarth 595 Competizione", "Abarth 595 Esseesse", "Abarth 595 Turismo", "Abarth 695", "Abarth 695 Biposto", "Abarth 695 Esseesse", "Abarth 695 Rivale", "Abarth 695 Tributo Ferrari", "Abarth 695 Turismo", "Abarth 695 XSR", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695 XSR Competizione", "Abarth 695 XSR Esseesse", "Abarth 695 XSR Rivale", "Abarth 695 XSR Tributo Ferrari", "Abarth 695 XSR Turismo", "Abarth 695"],
-    "Fisker": ["Choose a Model","Karma"],
-    "Ford": ["Choose a Model","Bronco", "Bronco Sport", "C-MAX", "EcoSport", "Edge", "Escape", "Escort", "Excursion", "Expedition", "Expedition MAX", "Explorer", "Explorer Sport Trac", "F-150", "F-250", "F-350", "F-450", "F-550", "F-650", "F-750", "F-150 Raptor", "Fiesta", "Five Hundred", "Flex", "Focus", "Focus Electric", "Focus ST", "Focus RS", "Freestar", "Freestyle", "Fusion", "Fusion Energi", "Fusion Hybrid", "GT", "Mustang", "Mustang Mach-E", "Ranger", "Taurus", "Taurus X", "Thunderbird", "Transit", "Transit Connect", "Transit Connect Wagon", "Transit Courier", "Transit Cutaway"],
-    "Genesis": ["Choose a Model","G70", "G80", "G90"],
-    "GMC": ["Choose a Model","Acadia", "Acadia Limited", "Canyon", "Envoy", "Envoy XL", "Envoy XUV", "Jimmy", "Safari", "Savana", "Savana 1500", "Savana 2500", "Savana 3500", "Sierra 1500", "Sierra 2500", "Sierra 3500", "Sierra 1500 Limited", "Sierra 2500 Limited", "Sierra 3500 Limited", "Sierra 1500 Denali", "Sierra 2500 Denali", "Sierra 3500 Denali", "Sierra 1500 AT4"],
-    "Honda": ["Choose a Model","Accord", "Accord Hybrid", "Accord Plug-In Hybrid", "Civic", "Civic Type R", "Clarity", "Clarity Electric", "Clarity Fuel Cell", "Clarity Plug-In Hybrid", "CR-V", "CR-Z", "Crosstour", "CRX", "Del Sol", "Element", "Fit", "HR-V", "Insight", "Odyssey", "Passport", "Pilot", "Prelude", "Ridgeline"],
-    "Hyundai": ["Choose a Model","Accent", "Azera", "Elantra", "Elantra GT", "Elantra GT N Line", "Elantra N Line", "Elantra Touring", "Genesis", "Genesis Coupe", "Ioniq", "Ioniq Electric", "Ioniq Hybrid", "Ioniq Plug-In Hybrid", "Kona", "Kona Electric", "Kona N Line", "Palisade", "Santa Fe", "Santa Fe XL", "Santa Fe N Line", "Sonata", "Sonata Hybrid", "Sonata Plug-In Hybrid", "Sonata N Line", "Tucson", "Tucson N Line", "Veloster", "Veloster N"],
-    "Infiniti": ["Choose a Model","EX", "FX", "G", "IPL G", "Q30", "Q50", "Q60", "Q60 Convertible", "Q70", "Q70L", "QX30", "QX50", "QX60", "QX70", "QX80"],
-    "Isuzu": ["Choose a Model","Ascender", "Axiom", "Hombre", "i-280", "i-290", "i-350", "i-370", "Impulse", "Oasis", "Rodeo", "Rodeo Sport", "Stylus", "Trooper", "VehiCROSS"],
-    //all Jaguar cars
-    "Jaguar": ["Choose a Model","E-PACE", "F-PACE", "F-TYPE", "I-PACE", "XE", "XF", "XJ", "XJ220", "XK", "XK8", "XKR", "XKR-S", "XKSS", "X-Type"],
-    "Jeep": ["Choose a Model","Cherokee", "Comanche", "Compass", "Grand Cherokee", "Gladiator", "Liberty", "Patriot", "Renegade", "Scrambler", "Wrangler", "Wrangler JK", "Wrangler Unlimited", "Wrangler Unlimited JK"],
-    //all Kia cars
-}
+
 interface AppointmentFormProps {
     setVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -54,9 +29,10 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
         phoneNumber: "",
         vehicleMake: "Acura",
         vehicleModel: "ILX",
-        vehicleYear: "",
+        vehicleYear: "2022",
         vehicleVIN: "",
         liscensePlate: "",
+        serviceType: "",
         notes: "",
     }
     const [formData, setFormData] = useState<FormData>(initialForm);
@@ -72,7 +48,7 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
         // create drop down with all car makes
         return (
             <div>
-                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: carModels[e.target.value[0]]})}>
+                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})}>
                     {Object.keys(carModels).map((make) => {
                         return (
                             <option value={make}>{make}</option>
@@ -80,6 +56,33 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                     })}
                 </select>
             </div>
+        )
+    }
+    interface YearDropDownProps {
+        start: number,
+        currentYear: number
+    }
+    const YearDropDown = ({start, currentYear}: YearDropDownProps) => {
+        let options: JSX.Element[] = [];
+        for(let i = start; i <= currentYear; i++){
+            options.push(<option key={i} value={i}>{i}</option>)
+        };
+        return (
+            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})}>
+                {options}
+            </select>
+        )
+    }
+    const ServiceTypeDropDown = () => {
+        const options = serviceTypes.map(service => {
+            return (
+                <option value={service}>{service}</option>
+            )
+        })
+        return (
+            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
+                {options}
+            </select>
         )
     }
     const CarModelDropdown = () => {
@@ -94,9 +97,9 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                     {modelOptions}
                 </select>
             </div>
-        )
-
+        );
     }
+
     return (
         <div className="flex justify-center mb-8">
             <form className="grid grid-cols-1 gap-2 w-[400px]">
@@ -155,13 +158,8 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                 </section>
                 <label>Vehicle Year: </label>
                 <div>
-                    <input
-                        className="border-2 border-black w-full"
-                        type="text"
-                        name="vehicleYear"
-                        value={formData.vehicleYear}
-                        onChange={handleChange}
-                    />
+                    {/* {YearDropDown(1990, 2022)} */}
+                    <YearDropDown start={1990} currentYear={2022} />
                 </div>
                 <label>Vehicle VIN: </label>
                 <div>
@@ -182,6 +180,10 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                         value={formData.liscensePlate}
                         onChange={handleChange}
                     />
+                </div>
+                <label className="">Service Type</label>
+                <div className="">
+                    <ServiceTypeDropDown />
                 </div>
                 <label className="align-top">Additional Notes: </label>
                 <div>
