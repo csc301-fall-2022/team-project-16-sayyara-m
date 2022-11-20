@@ -42,8 +42,11 @@ const carModels = {
     "Jeep": ["Choose a Model","Cherokee", "Comanche", "Compass", "Grand Cherokee", "Gladiator", "Liberty", "Patriot", "Renegade", "Scrambler", "Wrangler", "Wrangler JK", "Wrangler Unlimited", "Wrangler Unlimited JK"],
     //all Kia cars
 }
+interface AppointmentFormProps {
+    setVisibility: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const CreateAppointmentForm = () => {
+const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
     const initialForm: FormData = {
         firstName: "",
         lastName: "",
@@ -188,6 +191,18 @@ const CreateAppointmentForm = () => {
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"
                     />
+                </div>
+                <div className="flex justify-between">
+                    <button
+                        onClick={() => setVisibility(false)}
+                        className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
+                        text-black font-semibold py-2 px-4 rounded border border-black">Cancel
+                    </button>
+                    <button
+                        onClick={() => setVisibility(false)}
+                        className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
+                        text-black font-semibold py-2 px-4 rounded border border-black">Submit
+                    </button>
                 </div>
             </form>
         </div>
