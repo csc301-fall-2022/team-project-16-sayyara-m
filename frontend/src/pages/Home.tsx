@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid"
 import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../App";
 import useAuth from "../utilities/hooks/useAuth";
-import { Shop } from "../utilities/interfaces";
+import { APIError, Shop } from "../utilities/interfaces";
 import { useNavigate } from "react-router-dom";
 
 
@@ -25,7 +25,7 @@ const columns: GridColDef[] = [
     } }
   ];
   
-const generateRows = (text: string) => {
+const generateRows = (text: string, shops: Shop[]) => {
     let rows: Shop[] = []
     rows.push({
         id: 0,
@@ -84,7 +84,7 @@ const generateRows = (text: string) => {
         address: {
             id: 3,
             streetNumber: "123",
-            street: "Obamna Rd",
+            street: "Some Rd",
             city: "Toronto",
             province: "ON",
             postalCode: "M4T2T1",
@@ -112,8 +112,13 @@ const generateRows = (text: string) => {
         quotes: []
     })
 
-    return rows.filter((row) => {
-        return row.name.toLowerCase().includes(text.toLowerCase()) || row.phoneNumber.includes(text) || row.email.toLowerCase().includes(text.toLowerCase())
+    // return rows.filter()... in order to test with the mock data above
+
+    return shops.filter((row) => {
+        return row.name.toLowerCase().includes(text.toLowerCase()) || row.phoneNumber.includes(text) || 
+        row.email.toLowerCase().includes(text.toLowerCase()) || (row.address.streetNumber + ' ' + row.address.street).toLowerCase().includes(text.toLowerCase()) ||
+        row.address.city.toLowerCase().includes(text.toLowerCase()) || row.address.province.toLowerCase().includes(text.toLowerCase()) ||
+        row.address.postalCode.toLowerCase().includes(text.toLowerCase())
     })
 }
 
@@ -136,7 +141,11 @@ const Home = () => {
             if (res.ok) {
                 const data: Shop[] = await res.json();
                 setShops(data)
+                return;
             }
+
+            const data: APIError = await res.json();
+            console.log(data.message);
         }
         getData();
     })
@@ -157,7 +166,7 @@ const Home = () => {
             onChange={(e) => setsearchText(e.target.value)}
             />
             <DataGrid
-                rows={generateRows(searchText)}
+                rows={generateRows(searchText, shops)}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
