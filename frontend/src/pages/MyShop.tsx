@@ -4,6 +4,8 @@ import useAuth from "../utilities/hooks/useAuth";
 import { APIError, Appointment, Quote, ShopOwner, Vehicle, VehicleOwner } from "../utilities/interfaces";
 import { mShop as shop } from "../utilities/mockData";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import useRefreshToken from "src/utilities/hooks/useRefreshToken";
 interface AppointmentCardProps {
     ap: Appointment;
 }
@@ -15,6 +17,16 @@ const MyShop = () => {
     const [shopOwner, setShopOwner] = useState<ShopOwner | null>(null);
     const [error, setError] = useState<string>("");
     const [service, setService] = useState<string>("")
+    const [cookies] = useCookies(['refresh_token']);
+    const refresh = useRefreshToken();
+
+    // If there is a stored refresh token, attempt a refresh.
+    useEffect(() => {
+      if (cookies.refresh_token == null) return;
+      console.log('Attempting a refresh');
+      refresh?.();
+    }, []);
+
     useEffect(() => {
         const getShopOwner = async () => {
             const res = await fetch(API_ROOT + "/shopOwner", {
@@ -67,6 +79,7 @@ const MyShop = () => {
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">Price: ${quote.price}</p>
                     <p className="whitespace-nowrap">Expires: {quote.expiryTime}</p>
+                    <p className="whitespace-nowrap">{quote.serviceType}</p>
                 </div>
             </Link>
         )
