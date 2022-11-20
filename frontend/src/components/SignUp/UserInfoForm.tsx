@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input';
 
 import { SignUpInfo, UserInfoValidationStates } from '../../pages/SignUp';
-import { validatePassword } from '../../utilities/ValidatePassword';
+import { validatePassword } from '../../utilities/ValidationUtil';
 
 // THIS COMPONENT IS NOT DESIGNED TO BE REUSABLE - this may change if it is needed elsewhere
 
