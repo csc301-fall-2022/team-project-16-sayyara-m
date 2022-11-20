@@ -21,6 +21,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 public class SetupConfig {
@@ -44,12 +48,37 @@ public class SetupConfig {
             Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
             vehicleOwner.setVehicle(vehicle);
 
-            Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, LocalDateTime.of(2022, 11, 15, 15, 45), LocalDateTime.of(2022, 11, 15, 16, 30)));
+            int i = 0;
+            while (i < 20) {
+                i++;
 
-            Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, "tires", 100.0, LocalDateTime.of(2022, 12, 1, 11, 59)));
-            System.out.println(shopOwner);
-            System.out.println(appointment);
-            System.out.println(quote);
+                // Appointments
+                long minStartEpoch = LocalDateTime.of(2022, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+                long maxStartEpoch = LocalDateTime.of(2023, 12, 31, 23, 59).toEpochSecond(ZoneOffset.UTC);
+                long randomStartEpoch = ThreadLocalRandom.current().nextLong(minStartEpoch, maxStartEpoch);
+                LocalDateTime randomStartDate = LocalDateTime.ofEpochSecond(randomStartEpoch, 0, ZoneOffset.UTC);
+
+                long minEndEpoch = randomStartDate.plusMinutes(15).toEpochSecond(ZoneOffset.UTC);
+                long maxEndEpoch = randomStartDate.plusHours(1).toEpochSecond(ZoneOffset.UTC);
+                long randomEndEpoch = ThreadLocalRandom.current().nextLong(minEndEpoch, maxEndEpoch);
+                LocalDateTime randomEndDate = LocalDateTime.ofEpochSecond(randomEndEpoch, 0, ZoneOffset.UTC);
+
+                Appointment appointment = appointmentRepository.save(new Appointment(shop, vehicleOwner, randomStartDate, randomEndDate));
+
+                // Quotes
+                List<String> serviceTypes = Arrays.asList("Oil change", "Change tires", "Rotate tires", "Spark plugs", "Air filter");
+                int randomInt = ThreadLocalRandom.current().nextInt(0, serviceTypes.size());
+                String randomService = serviceTypes.get(randomInt);
+
+                double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
+
+                Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, randomService, randomPrice, randomEndDate));
+
+                System.out.println();
+                System.out.println(shopOwner);
+                System.out.println(appointment);
+                System.out.println(quote);
+            }
         };
     }
 
