@@ -13,39 +13,28 @@ import com.backend.spring.repositories.AppointmentRepository;
 import com.backend.spring.repositories.QuoteRepository;
 import com.backend.spring.repositories.RoleRepository;
 import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.repositories.VehicleOwnerRepository;
 import com.backend.spring.repositories.VehicleRepository;
 import com.backend.spring.services.ShopOwnerSaveHelper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 public class SetupConfig {
 
     @Bean
-    @Profile("!test") // run on all profiles except test
-    CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder,
-                                        RoleRepository roleRepository,
-                                        ShopOwnerSaveHelper shopOwnerSaveHelper,
-                                        ShopOwnerRepository shopOwnerRepository,
-                                        VehicleRepository vehicleRepository,
-                                        VehicleOwnerRepository vehicleOwnerRepository,
-                                        AppointmentRepository appointmentRepository,
-                                        QuoteRepository quoteRepository) {
+    @Profile("!test")
+        // run on all profiles except test
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
         return args -> {
-            Set<Role> roles = new HashSet<>(Set.of(new Role(RoleEnum.SHOP_OWNER), new Role(RoleEnum.VEHICLE_OWNER)));
-            roleRepository.saveAll(roles);
+            roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
 
             Address address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
 
@@ -54,9 +43,7 @@ public class SetupConfig {
             ShopOwner shopOwner = new ShopOwner("abc", "Bob", "bob@gmail.com", "416-123-1234", "bob123", "Password1!", shop);
             shopOwner = shopOwnerSaveHelper.save(shopOwner, shop, address);
 
-            VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124", "jackfill", "Password1!");
-            vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
-            vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
+            VehicleOwner vehicleOwner = new VehicleOwner("jack", "fill", "jack@gmail.com", "416-142-5124");
 
             Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
             vehicleOwner.setVehicle(vehicle);

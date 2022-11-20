@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -35,20 +35,19 @@ public class ShopOwnerController {
     }
 
     @GetMapping
-    public ResponseEntity<ShopOwner> getShopOwner(HttpServletRequest request) throws InvalidDataException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    public ResponseEntity<ShopOwner> getShopOwner(@RequestHeader(AUTHORIZATION) String authorizationHeader) throws InvalidDataException {
         return ResponseEntity.ok(shopOwnerService.getShopOwner(authorizationHeader));
     }
 
     @PutMapping
-    public ResponseEntity<AppUserDTO> updateShopOwner(HttpServletRequest request, @RequestBody AppUserDTO appUserDTO) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    public ResponseEntity<AppUserDTO> updateShopOwner(@RequestBody AppUserDTO appUserDTO,
+                                                      @RequestHeader(AUTHORIZATION) String authorizationHeader) {
         return ResponseEntity.ok(shopOwnerService.updateShopOwner(appUserDTO, authorizationHeader));
     }
 
     @PutMapping(path = "/password")
-    public ResponseEntity<?> updateShopOwnerPassword(HttpServletRequest request, @RequestBody Passwords passwords) throws InvalidPasswordException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    public ResponseEntity<?> updateShopOwnerPassword(@RequestBody Passwords passwords,
+                                                     @RequestHeader(AUTHORIZATION) String authorizationHeader) throws InvalidPasswordException {
         shopOwnerService.updateShopOwnerPassword(passwords.oldPassword, passwords.newPassword(), authorizationHeader);
         return ResponseEntity.ok().build();
     }

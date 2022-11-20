@@ -2,29 +2,28 @@ package com.backend.spring.services;
 
 import com.backend.spring.entities.Shop;
 import com.backend.spring.exceptions.InvalidDataException;
-import com.backend.spring.security.AuthHeaderParser;
-import com.backend.spring.entities.ShopOwner;
-import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.repositories.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ShopService {
-    private final ShopOwnerRepository shopOwnerRepository;
+    private final ShopOwnerRetriever shopOwnerRetriever;
+
+    private final ShopRepository shopRepository;
 
     @Transactional
     public Shop updateShop(Shop newShop, String authorization) throws InvalidDataException {
-        Shop shop = getShopOwner(authorization).getShop();
+        Shop shop = shopOwnerRetriever.getShop(authorization);
         shop.update(newShop);
         return shop;
     }
 
-    private ShopOwner getShopOwner(String authorization) throws InvalidDataException {
-        String username = new AuthHeaderParser(authorization).getUsername();
-
-        return shopOwnerRepository.findByUsername(username);
+    public List<Shop> getAllShops() {
+        return shopRepository.findAll();
     }
 }

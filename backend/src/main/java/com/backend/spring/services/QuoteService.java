@@ -1,8 +1,9 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Quote;
+import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.QuoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,20 +11,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuoteService {
     private final QuoteRepository repository;
 
-    @Autowired
-    public QuoteService(QuoteRepository repository) {
-        this.repository = repository;
-    }
+    private final ShopOwnerRetriever shopOwnerRetriever;
 
-    public List<Quote> getAllQuotes() {
-        return repository.findAll();
+    public List<Quote> getAllQuotes(String authorization) {
+        return shopOwnerRetriever.getShop(authorization).getQuotes();
     }
 
     public Quote getQuote(long id) {
-        return repository.findById(id).orElseThrow(IllegalStateException::new);
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
     }
 
     public Quote createQuote(Quote quote) {

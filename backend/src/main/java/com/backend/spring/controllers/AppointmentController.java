@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @CrossOrigin
@@ -32,9 +34,8 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<Appointment> getAllAppointments(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-        return service.getAllAppointments(authorizationHeader);
+    public ResponseEntity<List<Appointment>> getAllAppointments(@RequestHeader(AUTHORIZATION) String authorizationHeader) {
+        return ResponseEntity.ok(service.getAllAppointments(authorizationHeader));
     }
 
     @GetMapping(path = "{appointmentId}")
