@@ -57,6 +57,9 @@ public class Shop {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "shop")
+    private List<Service> services = new ArrayList<>();
+
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "email")
