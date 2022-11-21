@@ -1,0 +1,37 @@
+name: Backend Unit Tests
+
+on:
+  - push:
+      branches:
+        - main
+  - workflow_dispatch
+  - pull_request
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 4
+
+    env:
+      SPRING_PROFILES_ACTIVE: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Build
+        run: mvn -f backend/pom.xml --batch-mode -DskipTests package
+
+      - name: Unit Tests
+        run: mvn -f backend/pom.xml --batch-mode test
+
+
