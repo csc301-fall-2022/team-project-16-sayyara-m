@@ -1,4 +1,13 @@
 FROM amazoncorretto:17
-VOLUME /tmp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+# Run with ./mvnw
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+#ENV SPRING_PROFILES_ACTIVE prod
+
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]

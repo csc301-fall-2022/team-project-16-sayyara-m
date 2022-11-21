@@ -19,7 +19,7 @@ services:
   backend:
     build: .
     container_name: sayyara-backend
-    image: 1239uth/sayyara-backend:latest
+    image: sayyara/sayyara-backend:latest
     depends_on:
       - postgres
     environment:
