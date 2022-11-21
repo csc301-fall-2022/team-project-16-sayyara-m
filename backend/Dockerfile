@@ -1,9 +1,9 @@
-FROM maven:3.8.1-openjdk-17-slim AS build
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 COPY src ./src
 COPY pom.xml ./
 RUN mvn -f ./pom.xml clean package -DskipTests
 
-FROM openjdk:17-jdk-alpine
+FROM amazoncorretto:17
 VOLUME /tmp
 COPY --from=build target/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
