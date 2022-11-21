@@ -20,24 +20,28 @@ function useRefreshToken() {
     const { setAuth } = useAuth();
     const [cookies, setCookie] = useCookies(['refresh_token']);
 
-    if (cookies.refresh_token == null) {
-        console.log("There is no stored refresh token. User must log in");
-        return;
-    }
-
-    const refresh = async (): Promise<string> => {
+    const refresh = async (): Promise<string | null> => {
+        if (cookies.refresh_token == null) {
+            console.log("There is no stored refresh token. User must log in");
+            return null;
+        }
         const refreshStr: string = 'Bearer ' + cookies.refresh_token;
         const response = await axios.get('/token/refresh', {
             headers: {
                 Authorization: refreshStr
             }
         });
+        if (response.status === 401) {
+            console.log("Refresh token expired. User must log in");
+            return null;
+        }
         const auth: string = response.data.access_token;
         setAuth(auth);
         setCookie('refresh_token', response.data.refresh_token, {path: '/'});
         console.log('Successfully refreshed');
         return auth;
     }
+
     return refresh;
 }
 
