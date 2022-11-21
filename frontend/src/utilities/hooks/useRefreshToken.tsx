@@ -3,17 +3,18 @@ import useAuth from './useAuth';
 import { useCookies } from 'react-cookie';
 
 // This hook can be used to easily gain a new access token in the event that a request fails
-// due to an expired token.
+// due to an expired token. Returns a promise that resolves to the new access token string.
 
 // ===== Usage: =====
-// import useAuth from '.../hooks/useAuth'
 // import useRefreshToken from '.../hooks/useRefreshToken'
 // ...
-// const [useAuth, setAuth] = useAuth();
 // const refresh = useRefreshToken();
 // ...
-// // Some request fails due to expired token, handle it by doing this:
-// setAuth(refresh());
+// if (--some condition--)
+//     refresh?.()
+
+// Note that the authentication context and cookie are set automatically by this function.
+// You do not have to set them yourself
 
 function useRefreshToken() {
     const { setAuth } = useAuth();
@@ -24,16 +25,18 @@ function useRefreshToken() {
         return;
     }
 
-    const refresh = async () => {
+    const refresh = async (): Promise<string> => {
         const refreshStr: string = 'Bearer ' + cookies.refresh_token;
         const response = await axios.get('/token/refresh', {
             headers: {
                 Authorization: refreshStr
             }
         });
-        setAuth(response.data.access_token);
+        const auth: string = response.data.access_token;
+        setAuth(auth);
         setCookie('refresh_token', response.data.refresh_token, {path: '/'});
         console.log('Successfully refreshed');
+        return auth;
     }
     return refresh;
 }

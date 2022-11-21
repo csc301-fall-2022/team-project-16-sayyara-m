@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input';
 
 import { SignUpInfo, UserInfoValidationStates } from '../../pages/SignUp';
-import { validatePassword } from '../../utilities/ValidationUtil';
+import { validatePassword, validateEmail } from '../../utilities/ValidationUtil';
 
 // THIS COMPONENT IS NOT DESIGNED TO BE REUSABLE - this may change if it is needed elsewhere
 
@@ -39,9 +39,7 @@ function UserInfoForm(props: Props) {
     const emailFieldOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         setSignUpInfo(prevState => ({...prevState, email: newVal}));
-        
-        const eReg: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const validity: boolean = (newVal === "" || eReg.test(newVal.toLowerCase()));
+        const validity: boolean = (newVal === "" || validateEmail(newVal));
         setValidation(prevState => ({...prevState, emailValid: validity}));
     }
     const phoneFieldOnChange = (newVal: string): void => {
