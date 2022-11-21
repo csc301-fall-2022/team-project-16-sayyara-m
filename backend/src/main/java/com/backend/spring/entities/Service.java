@@ -1,6 +1,5 @@
 package com.backend.spring.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,5 +42,5 @@ public class Service {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
-    private Double price;
+    private Double defaultPrice;
 }
