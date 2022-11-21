@@ -1,13 +1,9 @@
-FROM amazoncorretto:17
-
-# Run with ./mvnw
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-#ENV SPRING_PROFILES_ACTIVE prod
-
-RUN ./mvnw dependency:go-offline
-
+FROM maven:3.8.1-openjdk-17-slim AS build
 COPY src ./src
+COPY pom.xml ./
+RUN mvn -f ./pom.xml clean package -DskipTests
 
-CMD ["./mvnw", "spring-boot:run"]
+FROM openjdk:17-jdk-alpine
+VOLUME /tmp
+COPY --from=build target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
