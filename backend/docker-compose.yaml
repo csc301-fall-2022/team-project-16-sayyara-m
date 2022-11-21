@@ -1,0 +1,39 @@
+
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+#      PGDATA: /data/postgres
+#    volumes:
+#      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - webapp
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: sayyara-backend
+    image: 1239uth/sayyara-backend:latest
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
+    networks:
+      - webapp
+
+networks:
+  webapp:
+    driver: bridge
+
+volumes:
+  postgres:
