@@ -2,11 +2,11 @@ import useAuth from "./useAuth";
 import useRefreshToken from "./useRefreshToken";
 
 /*
-    This hook returns a function that is basically a modified fetch.
-    Use the returned function the same way you would use fetch.
+    This hook returns a function that is used EXACTLY as a `fetch` call.
 
-    authFetch adds some additional functionality such as passing in the access token as a header and
-    refreshing the token to call the api again if you get a 401 response.
+    `authFetch` is the function returned, and it does 2 things:
+        1. It adds the Authorization header to the request with the access_token
+        2. It refreshes the token and calls fetch again if the request fails with a 401 error
 
     ======= Usage =======
     const { authFetch } = useAuthFetch();
@@ -18,6 +18,7 @@ import useRefreshToken from "./useRefreshToken";
         }
     });
 
+    Return type is the same as the fetch call, so can be used with either `await` or `.then()`
  */
 const useAuthFetch = () => {
     let { auth: token } = useAuth();
