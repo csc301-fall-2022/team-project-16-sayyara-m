@@ -62,22 +62,30 @@ public class ShopOwnerSaveHelper {
         }
     }
 
+    private void replaceCharacter(StringBuilder sb, char c, String replacement) {
+        int index = sb.indexOf(String.valueOf(c));
+        if (index != -1) {
+            sb.replace(index, index + 1, replacement);
+        }
+    }
+
     /**
      * Format error message of the form
-     *  "Details: key (email)=(email@gmail.com) already exists"
-     *  into
-     *  "email email@gmail.com already exists"
+     * "Details: key (email)=(email@gmail.com) already exists"
+     * into
+     * "Email 'email@gmail.com' already exists"
      */
     private String formatErrorMessage(String message) {
-        System.out.println(message);
         StringBuilder stringBuilder = new StringBuilder(message.substring(message.indexOf("Key") + 4));
-        stringBuilder.deleteCharAt(stringBuilder.indexOf("("));
-        stringBuilder.deleteCharAt(stringBuilder.indexOf("("));
-        stringBuilder.deleteCharAt(stringBuilder.indexOf(")"));
-        stringBuilder.deleteCharAt(stringBuilder.indexOf(")"));
-        System.out.println(stringBuilder);
-        stringBuilder.replace(stringBuilder.indexOf("="), stringBuilder.indexOf("=") + 1, " ");
-        System.out.println(stringBuilder);
+
+        replaceCharacter(stringBuilder, '(', "");
+        replaceCharacter(stringBuilder, ')', " ");
+        replaceCharacter(stringBuilder, '(', "'");
+        replaceCharacter(stringBuilder, ')', "'");
+        replaceCharacter(stringBuilder, '=', "");
+        replaceCharacter(stringBuilder, '_', " ");
+
+        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
         return stringBuilder.toString();
     }
 

@@ -1,5 +1,6 @@
 import React from "react";
-import { MuiTelInput } from 'mui-tel-input';
+import { matchIsValidTel, MuiTelInput } from 'mui-tel-input';
+import { validateEmail } from "../../utilities/ValidationUtil";
 
 const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveUserInfo: (arg0: {
     firstName: string;
@@ -14,7 +15,26 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
     email: string;
     phoneNumber: string;
 } }) => {
+    const [firstName, setFirstName] = React.useState(props.userInfo.firstName)
+    const [lastName, setLastName] = React.useState(props.userInfo.lastName)
+    //const [username, setUsername] = React.useState(props.userInfo.username)
+    const [email, setEmail] = React.useState(props.userInfo.email)
     const [phoneNumber, setPhoneNumber] = React.useState(props.userInfo.phoneNumber)
+
+    const validateInput = () => {
+        if (!validateEmail(email) || !matchIsValidTel(phoneNumber) || firstName === "" || lastName === "") {
+            return;
+        }
+
+        props.saveUserInfo({
+            firstName: firstName,
+            lastName: lastName,
+            username: props.userInfo.username,   //username,
+            email: email,
+            phoneNumber: phoneNumber,
+        })
+    }
+
     return (
         <div className="mx-8">
             <div className='grid grid-cols-2 grid-rows-12 gap-1 mt-6 mb-6'>
@@ -22,20 +42,26 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                 <label className='ml-2 font-semibold'>Last Name</label>
                 <div className='mr-2'>
                     <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                    focus:outline-blue-500 focus:shadow-outline" type="text" id="firstName" placeholder="First Name" defaultValue={props.userInfo.firstName}/>
+                    focus:outline-blue-500 focus:shadow-outline" type="text" id="firstName" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
                 </div>
                 <div className='ml-2'>
                     <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                    focus:outline-blue-500 focus:shadow-outline" type="text" id="lastName" placeholder="Last Name" defaultValue={props.userInfo.lastName}/>
+                    focus:outline-blue-500 focus:shadow-outline" type="text" id="lastName" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                 </div>
-                <label className='col-span-2 mt-6 font-semibold'>
-                    Email Address
-                </label>
+                <div className="col-span-2 flow-root flex flex-row mt-6">
+                    <label className='font-semibold float-left'>
+                        Email Address
+                    </label>
+                    {!validateEmail(email) ? <label className="text-red-500 italic float-right text-xs">Must be a valid email</label> : null}
+                </div>
                 <input className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                focus:outline-blue-500 focus:shadow-outline" type="text" id="email" placeholder="Email Address" defaultValue={props.userInfo.email}/>
-                <label className='col-span-2 mt-6 font-semibold'>
-                    Phone Number
-                </label>
+                focus:outline-blue-500 focus:shadow-outline" type="text" id="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <div className="col-span-2 flow-root flex flex-row mt-6">
+                    <label className='font-semibold float-left'>
+                        Phone Number
+                    </label>
+                    {!matchIsValidTel(phoneNumber) ? <label className="text-red-500 italic float-right text-xs">Must be a valid number</label> : null}
+                </div>
                 <MuiTelInput className="col-span-2 shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-blue-500 focus:shadow-outline" id="phoneNumber" placeholder="Phone Number" value={phoneNumber} onChange={(value) => setPhoneNumber(value)}/>
                 {/*
@@ -52,13 +78,7 @@ const EditUserPage = (props: { setEditingProfile: (arg0: boolean) => void; saveU
                     Cancel
                 </button>
                 <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
-                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => props.saveUserInfo({
-                    firstName: (document.getElementById('firstName') as HTMLInputElement).value,
-                    lastName: (document.getElementById('lastName') as HTMLInputElement).value,
-                    username: props.userInfo.username,   //(document.getElementById('username') as HTMLInputElement).value,
-                    email: (document.getElementById('email') as HTMLInputElement).value,
-                    phoneNumber: phoneNumber,
-                })}>
+                font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={validateInput}>
                     Save
                 </button>
             </div>

@@ -5,7 +5,7 @@ import { matchIsValidTel } from 'mui-tel-input';
 
 import ShopCreationForm from '../components/SignUp/ShopCreationForm';
 import UserInfoForm from '../components/SignUp/UserInfoForm';
-import { API_ROOT } from 'src/App';
+import { API_ROOT } from 'src/utilities/constants';
 import useRequestLogin from 'src/utilities/hooks/useRequestLogin';
 
 export interface SignUpInfo {

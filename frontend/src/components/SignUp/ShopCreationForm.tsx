@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { matchIsValidTel, MuiTelInput } from 'mui-tel-input';
 import clsx from 'clsx';
 
+import { validateEmail, validateStreetNumber, validatePostalCode } from 'src/utilities/ValidationUtil';
 import { SignUpInfo, ShopInfo, ShopInfoValidationStates } from '../../pages/SignUp';
 import DropDown from '../DropDown';
 
@@ -35,9 +36,7 @@ function ShopCreationForm(props: Props) {
         const newVal: string = event.currentTarget.value;
         setSignUpInfo(prevState => ({...prevState, shop: {...prevState.shop, email: newVal}}));
         // Accept only valid emails
-        const eReg: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const validity: boolean = (eReg.test(newVal.toLowerCase()));
-        setValidation(prevState => ({...prevState, emailValid: validity}));
+        setValidation(prevState => ({...prevState, emailValid: validateEmail(newVal)}));
     }
     const phoneFieldOnChange = (newVal: string): void => {
         setSignUpInfo(prevState => ({...prevState, shop: {...prevState.shop, phoneNumber: newVal}}));
@@ -46,8 +45,7 @@ function ShopCreationForm(props: Props) {
     const streetNumberOnChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const newVal: string = event.currentTarget.value;
         // Allow only numerical inputs
-        const snReg: RegExp = /^[0-9\b]+$/;
-        if (newVal === "" || snReg.test(newVal)) {
+        if (validateStreetNumber(newVal)) {
             setSignUpInfo(prevState => ({...prevState, shop: {...prevState.shop, address: {...prevState.shop.address, streetNumber: newVal}}}));
         }
         setValidation(prevState => ({...prevState, streetNoValid: newVal.length > 0}));
@@ -71,8 +69,7 @@ function ShopCreationForm(props: Props) {
         const newVal: string = event.currentTarget.value;
         setSignUpInfo(prevState => ({...prevState, shop: {...prevState.shop, address: {...prevState.shop.address, postalCode: newVal}}}));
         // Accept only valid postal codes
-        const pcReg: RegExp = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
-        setValidation(prevState => ({...prevState, postalValid: pcReg.test(newVal)}));
+        setValidation(prevState => ({...prevState, postalValid: validatePostalCode(newVal)}));
     }
     
     return(<>

@@ -1,14 +1,10 @@
 package com.backend.spring.services;
 
+import com.backend.spring.entities.Vehicle;
 import com.backend.spring.entities.VehicleOwner;
 import com.backend.spring.repositories.VehicleOwnerRepository;
-import com.backend.spring.entities.RoleEnum;
-import com.backend.spring.repositories.RoleRepository;
-import com.backend.spring.entities.Vehicle;
-import com.backend.spring.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,12 +22,6 @@ import org.springframework.stereotype.Service;
 public class VehicleOwnerSaveHelper {
     private final VehicleOwnerRepository vehicleOwnerRepository;
 
-    private final VehicleRepository vehicleRepository;
-
-    private final RoleRepository roleRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
     /**
      * Saves a vehicle owner in the database as well as the vehicle assigned to it.
      * The appropriate role will be pulled from the database and assigned to this vehicle owner.
@@ -47,8 +37,6 @@ public class VehicleOwnerSaveHelper {
     }
 
     private void setVehicleOwner(VehicleOwner vehicleOwner, Vehicle vehicle) {
-        vehicleOwner.addRole(roleRepository.findByName(RoleEnum.VEHICLE_OWNER.getValue()));
-        vehicleOwner.setPassword(passwordEncoder.encode(vehicleOwner.getPassword()));
         vehicleOwner.setVehicle(vehicle);
         vehicle.setOwner(vehicleOwner);
     }

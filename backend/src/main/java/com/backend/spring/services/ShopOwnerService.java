@@ -19,24 +19,21 @@ import javax.transaction.Transactional;
 public class ShopOwnerService {
     private final ShopOwnerSaveHelper shopOwnerSaveHelper;
 
-    private final ShopOwnerRepository shopOwnerRepository;
-
     private final AppUserDTOTransfer appUserDTOTransfer;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ShopOwnerRetriever shopOwnerRetriever;
+
+    public ShopOwner getShopOwner(String authorization) throws InvalidDataException {
+        return shopOwnerRetriever.getShopOwner(authorization);
+    }
     public void saveShopOwner(ShopOwner shopOwner) throws ViolatedConstraintException {
         shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
     }
 
-    public ShopOwner getShopOwner(String authorization) throws InvalidDataException {
-        String username = new AuthHeaderParser(authorization).getUsername();
-
-        return shopOwnerRepository.findByUsername(username);
-    }
-
-    public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) throws ViolatedConstraintException {
-        ShopOwner shopOwner = getShopOwner(authorization);
+    public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) throws ViolatedConstraintException, InvalidDataException {
+        ShopOwner shopOwner = shopOwnerRetriever.getShopOwner(authorization);
         appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO);
         shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
         return appUserDTOTransfer.appUsertoDTO(shopOwner);
@@ -44,7 +41,7 @@ public class ShopOwnerService {
 
     @Transactional
     public void updateShopOwnerPassword(String oldPassword, String newPassword, String authorization) throws InvalidPasswordException {
-        ShopOwner shopOwner = getShopOwner(authorization);
+        ShopOwner shopOwner = shopOwnerRetriever.getShopOwner(authorization);
         if (!passwordEncoder.matches(oldPassword, shopOwner.getPassword()))
             throw new InvalidPasswordException("Old password is incorrect");
         if (passwordEncoder.matches(newPassword, shopOwner.getPassword()))

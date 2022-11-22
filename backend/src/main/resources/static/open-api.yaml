@@ -155,7 +155,7 @@ paths:
 
 
   ############## SHOP ##############
-  "/api/shop":
+  /api/shop:
     put:
       tags:
         - Shop
@@ -181,6 +181,24 @@ paths:
           $ref: "#/components/responses/InvalidData"
         '401':
           $ref: "#/components/responses/Unauthorized"
+  /api/shops:
+    get:
+      tags:
+        - Shop
+      summary: Get all Shops
+      description: Get the list of all shops
+      operationId: getAllShops
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Successfully retrieved all Shops
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shop"
 
 
 
@@ -206,7 +224,7 @@ paths:
         '401':
           $ref: "#/components/responses/Unauthorized"
 
-  "/appointments/{appointmentId}":
+  /appointments/{appointmentId}:
     get:
       tags:
         - Appointment
@@ -227,13 +245,63 @@ paths:
             "application/json":
               schema:
                 "$ref": "#/components/schemas/Appointment"
-        '400':
+        '404':
           description: Appointment associated with the id not found
           content:
             "application/json":
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/DataNotFoundError"
 
+
+  ############## QUOTES ##############
+  "/quotes":
+    get:
+      tags:
+        - Quotes
+      operationId: getAllQuotes
+      security:
+        - bearerAuth: [ ]
+      summary: Get all Quotes
+      description: Get the list of all quotes associated to the Shop Owner that is currently logged in
+      responses:
+        '200':
+          description: Successfully retrieved all Quotes
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Quote"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+
+  /quotes/{quoteId}:
+    get:
+      tags:
+        - Quotes
+      operationId: getQuote
+      summary: Get Quote
+      description: Get details of a specific Quote determined by its `quoteId`
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved Quote
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Quote"
+        '404':
+          description: Quote associated with the id not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
 
 
 
@@ -328,6 +396,24 @@ components:
         path:
           type: string
           example: /api/shopOwner/password
+    DataNotFoundError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: '2022-11-12T21:35:03.905+00:00'
+        status:
+          type: number
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: data with id 4 not found.
+        path:
+          type: string
+          example: /api/quotes/4
     LoginInfo:
       type: object
       properties:
@@ -401,8 +487,6 @@ components:
         id:
           type: integer
           format: int64
-        shop:
-          "$ref": "#/components/schemas/Shop"
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
         startDate:
@@ -412,42 +496,7 @@ components:
           type: string
           format: date-time
         duration:
-          type: object
-          properties:
-            seconds:
-              type: integer
-              format: int64
-            nano:
-              type: integer
-              format: int32
-            negative:
-              type: boolean
-            zero:
-              type: boolean
-            units:
-              type: array
-              items:
-                type: object
-                properties:
-                  dateBased:
-                    type: boolean
-                  timeBased:
-                    type: boolean
-                  duration:
-                    type: object
-                    properties:
-                      seconds:
-                        type: integer
-                        format: int64
-                      nano:
-                        type: integer
-                        format: int32
-                      negative:
-                        type: boolean
-                      zero:
-                        type: boolean
-                  durationEstimated:
-                    type: boolean
+          type: string
         quote:
           "$ref": "#/components/schemas/Quote"
     Quote:
@@ -455,9 +504,6 @@ components:
       properties:
         id:
           type: integer
-          format: int64
-        shop:
-          "$ref": "#/components/schemas/Shop"
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
         service:
