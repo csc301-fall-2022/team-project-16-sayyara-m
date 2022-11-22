@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
@@ -46,7 +45,7 @@ public class Appointment {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
-    @ManyToOne(cascade = ALL, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
     @Column(name = "start_date", nullable = false, columnDefinition = "timestamp without time zone")

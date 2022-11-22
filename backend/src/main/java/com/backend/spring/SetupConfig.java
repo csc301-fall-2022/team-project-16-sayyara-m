@@ -13,6 +13,7 @@ import com.backend.spring.repositories.AppointmentRepository;
 import com.backend.spring.repositories.QuoteRepository;
 import com.backend.spring.repositories.RoleRepository;
 import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.repositories.VehicleOwnerRepository;
 import com.backend.spring.repositories.VehicleRepository;
 import com.backend.spring.services.ShopOwnerSaveHelper;
 import org.springframework.boot.CommandLineRunner;
@@ -32,7 +33,7 @@ public class SetupConfig {
     @Bean
     @Profile("!test")
         // run on all profiles except test
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository, VehicleOwnerRepository vehicleOwnerRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
         return args -> {
             roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
 
@@ -47,6 +48,8 @@ public class SetupConfig {
 
             Vehicle vehicle = new Vehicle(2022, "Toyota", "Sienna", "4123114", "M2H0F2", vehicleOwner);
             vehicleOwner.setVehicle(vehicle);
+
+            vehicleOwnerRepository.save(vehicleOwner);
 
             int i = 0;
             while (i < 20) {
@@ -74,10 +77,6 @@ public class SetupConfig {
 
                 Quote quote = quoteRepository.save(new Quote(shop, vehicleOwner, randomService, randomPrice, randomEndDate));
 
-                System.out.println();
-                System.out.println(shopOwner);
-                System.out.println(appointment);
-                System.out.println(quote);
             }
         };
     }

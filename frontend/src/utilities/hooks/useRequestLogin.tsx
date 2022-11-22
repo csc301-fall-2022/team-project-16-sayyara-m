@@ -1,4 +1,4 @@
-import { API_ROOT } from "src/utilities/constants";
+import { API_ROOT } from "../constants";
 import { useCookies } from 'react-cookie';
 import useAuth from "./useAuth";
 
