@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../utilities/constants";
-import useAuth from "../utilities/hooks/useAuth";
+// import useAuth from "../utilities/hooks/useAuth";
 import { APIError, Appointment, Quote, ShopOwner, Vehicle, VehicleOwner } from "../utilities/interfaces";
 import { mShop as shop } from "../utilities/mockData";
 import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import useRefreshToken from "src/utilities/hooks/useRefreshToken";
+import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 interface AppointmentCardProps {
     ap: Appointment;
 }
@@ -13,27 +12,16 @@ interface QuoteCardProps {
     quote: Quote;
 }
 const MyShop = () => {
-    const { auth } = useAuth();
+    // const { auth } = useAuth();
     const [shopOwner, setShopOwner] = useState<ShopOwner | null>(null);
     const [error, setError] = useState<string>("");
     const [service, setService] = useState<string>("")
-    const [cookies] = useCookies(['refresh_token']);
-    const refresh = useRefreshToken();
-
-    // If there is a stored refresh token, attempt a refresh.
-    useEffect(() => {
-      if (cookies.refresh_token == null) return;
-      console.log('Attempting a refresh');
-      refresh?.();
-    }, []);
+    const { authFetch } = useAuthFetch();
 
     useEffect(() => {
         const getShopOwner = async () => {
-            const res = await fetch(API_ROOT + "/shopOwner", {
+            const res = await authFetch(API_ROOT + "/shopOwner", {
                 method: "GET",
-                headers: {
-                    authorization: `Bearer ${auth}`,
-                }
             })
 
             if(res.ok){
@@ -49,7 +37,7 @@ const MyShop = () => {
         }
         getShopOwner();
 
-    }, [auth]);
+    },[]);
 
     const AppointmentCard = ({ ap }: AppointmentCardProps) => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
