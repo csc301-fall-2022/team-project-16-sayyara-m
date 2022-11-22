@@ -43,4 +43,17 @@ public class Service {
     private Shop shop;
 
     private Double defaultPrice;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof Service service)) {
+            return false;
+        }
+
+        return service.getName().equals(this.name);
+    }
 }
