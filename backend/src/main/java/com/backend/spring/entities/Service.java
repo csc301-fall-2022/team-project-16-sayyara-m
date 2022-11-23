@@ -27,7 +27,7 @@ public class Service {
     @Id
     @SequenceGenerator(
             name = "service_sequence",
-//            sequenceName = "service_sequence",
+            sequenceName = "service_sequence",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -37,7 +37,6 @@ public class Service {
 
     private String name;
 
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
