@@ -62,7 +62,6 @@ public class Shop {
     private List<Quote> quotes = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private List<Service> services = new ArrayList<>();
 
     @Column(name = "phone_number")
