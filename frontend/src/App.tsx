@@ -14,6 +14,7 @@ import useAuth from './utilities/hooks/useAuth';
 import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
+import Home from './pages/Home';
 
 export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
@@ -35,7 +36,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' element={auth ? <MyShop /> : <Navigate to="/login" />}/>
+          <Route path='/' element={auth ? <MyShop /> : <Home />}/>
           <Route path='/login' element={!auth ? <Login /> : <Navigate to ="/" />} />
           <Route path='/signup' element={!auth ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={auth ? <Profile /> : <Navigate to="/login"/>} />
