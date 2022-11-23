@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -57,7 +58,8 @@ public class Shop {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shop")
+    @ManyToMany
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private List<Service> services = new ArrayList<>();
 
     @Column(name = "phone_number")

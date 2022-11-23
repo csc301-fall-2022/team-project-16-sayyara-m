@@ -12,9 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,9 +38,8 @@ public class Service {
 
     private String name;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
-    private Shop shop;
+    @ManyToMany(mappedBy = "services")
+    private List<Shop> shops;
 
     private Double defaultPrice;
 
