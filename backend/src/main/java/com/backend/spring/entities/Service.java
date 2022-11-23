@@ -15,7 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -39,7 +41,7 @@ public class Service {
     private String name;
 
     @ManyToMany(mappedBy = "services")
-    private List<Shop> shops;
+    private Set<Shop> shops = new HashSet<>();
 
     private Double defaultPrice;
 

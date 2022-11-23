@@ -13,13 +13,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -59,8 +62,12 @@ public class Shop {
     private List<Quote> quotes = new ArrayList<>();
 
     @ManyToMany
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
-    private List<Service> services = new ArrayList<>();
+    @JoinTable(
+            name = "services",
+            joinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    )
+    private Set<Service> services = new HashSet<>();
 
     @Column(name = "phone_number")
     private String phoneNumber;
