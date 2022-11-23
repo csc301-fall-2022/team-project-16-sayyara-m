@@ -87,9 +87,9 @@ const MyShop = () => {
         }
     }
     const generateQuoteCards = () => {
-        let quotes: Quote[] = shop.quotes;
+        let quotes: Quote[] = shopOwner?.shop.quotes || [];
         return quotes.map((q, i) => {
-            return <QuoteCard key={q.vehicleOwner.id + i} quote={q}/>
+            return <QuoteCard key={q.id} quote={q}/>
         })
     }
     const generateServiceCards = () => {
