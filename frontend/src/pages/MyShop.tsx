@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../utilities/constants";
 // import useAuth from "../utilities/hooks/useAuth";
 import { APIError, Appointment, Quote, ShopOwner, Vehicle, VehicleOwner } from "../utilities/interfaces";
-import { mShop as shop } from "../utilities/mockData";
 import { Link } from "react-router-dom";
 import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 interface AppointmentCardProps {
@@ -104,7 +103,7 @@ const MyShop = () => {
     return (
         <div className="pt-2 ml-2">
             <div>
-                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold sm:text-4xl">{shop.name}</h1>
+                <h1 className="flex justify-center text-2xl text-blue-800 font-semibold sm:text-4xl">{shopOwner?.shop.name}</h1>
             </div>
             <div>
                 <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Appointments</h1>
