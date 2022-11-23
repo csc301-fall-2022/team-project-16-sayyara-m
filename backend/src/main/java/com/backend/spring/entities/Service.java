@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.HashSet;
@@ -40,8 +41,8 @@ public class Service {
 
     private String name;
 
-    @ManyToMany(mappedBy = "services")
-    private Set<Shop> shops = new HashSet<>();
+    @ManyToOne(optional = false)
+    private Shop shop;
 
     private Double defaultPrice;
 

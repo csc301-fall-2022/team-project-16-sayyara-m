@@ -61,14 +61,9 @@ public class Shop {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "shop_services",
-            joinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id")
-    )
-
-    private Set<Service> services = new HashSet<>();
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    private List<Service> services = new ArrayList<>();
 
     @Column(name = "phone_number")
     private String phoneNumber;
