@@ -42,7 +42,7 @@ public class Service {
     private String name;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
     private Double defaultPrice;
