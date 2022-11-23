@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SetupConfig {
 
     @Bean
-    @Profile("!test")
+    @Profile("dev")
         // run on all profiles except test
     CommandLineRunner commandLineRunner(RoleRepository roleRepository, VehicleOwnerRepository vehicleOwnerRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, ShopOwnerRepository shopOwnerRepository, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository) {
         return args -> {

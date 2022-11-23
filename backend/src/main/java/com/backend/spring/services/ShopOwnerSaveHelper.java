@@ -7,6 +7,7 @@ import com.backend.spring.entities.ShopOwner;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.RoleRepository;
 import com.backend.spring.repositories.ShopOwnerRepository;
+import com.backend.spring.validators.AppUserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.lang.NonNull;
@@ -46,11 +47,9 @@ public class ShopOwnerSaveHelper {
      * @return Shop Owner after successfully saving
      */
     public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws ViolatedConstraintException {
-        ShopOwner savedShopOwner;
         try {
             setShopOwner(shopOwner, shop, address);
-            savedShopOwner = shopOwnerRepository.save(shopOwner);
-            return savedShopOwner;
+            return shopOwnerRepository.save(shopOwner);
         } catch (DataIntegrityViolationException ex) {
             String msg = ex.getMessage();
             if (ex.getCause().getCause() instanceof SQLException e) {
@@ -102,9 +101,10 @@ public class ShopOwnerSaveHelper {
 
     private void setShopOwner(ShopOwner shopOwner, Shop shop, Address address) {
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
         shopOwner.setShop(shop);
         shop.setAddress(address);
         shop.setShopOwner(shopOwner);
+        new AppUserValidator(shopOwner).validate(); // validate before encrypting password
+        shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
     }
 }

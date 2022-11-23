@@ -45,6 +45,10 @@ class ShopOwnerTest {
         roleRepository.deleteAll();
     }
 
+    private ShopOwner newShopOwner() {
+        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob234", "Password1!", shop);
+    }
+
     @BeforeEach
     void setUp() {
         roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
@@ -53,7 +57,7 @@ class ShopOwnerTest {
 
         shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
 
-        shopOwner = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password", shop);
+        shopOwner = newShopOwner();
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
         shopOwner = shopOwnerRepository.save(shopOwner);
 
@@ -61,12 +65,12 @@ class ShopOwnerTest {
 
     @Test
     void checkShopOwnerSaved() {
-        assertThat(shopOwnerRepository.findByUsername(shopOwner.getUsername()).getUsername()).isEqualTo(shopOwner.getUsername());
+        assertThat(shopOwnerRepository.findByUsername(shopOwner.getUsername()).orElseThrow().getUsername()).isEqualTo(shopOwner.getUsername());
     }
 
     @Test
     void checkShopsUnique() {
-        ShopOwner shopOwner1 = new ShopOwner("abc2", "Bob2", "bob2@gmail.com", "416-123-1234", "bob2", "password");
+        ShopOwner shopOwner1 = newShopOwner();
         try {
             shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
             shopOwner1 = saveHelper.saveAndFlush(shopOwner1, shop, address);
@@ -79,7 +83,7 @@ class ShopOwnerTest {
 
     @Test
     void checkShopOwnerExists() {
-        assertThat(shopOwner.getFirstName()).isEqualTo("abc2");
+        assertThat(shopOwner.getFirstName()).isEqualTo("abc");
     }
 
     @Test
