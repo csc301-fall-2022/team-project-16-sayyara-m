@@ -63,10 +63,11 @@ public class Shop {
 
     @ManyToMany
     @JoinTable(
-            name = "services",
+            name = "shop_services",
             joinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     )
+
     private Set<Service> services = new HashSet<>();
 
     @Column(name = "phone_number")
