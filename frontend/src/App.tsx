@@ -14,6 +14,8 @@ import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 import ShopDetails from './pages/ShopDetails';
+import Home from './pages/Home';
+export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
 function App() {
 
@@ -31,7 +33,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' element={cookies.refresh_token ? <MyShop /> : <Navigate to="/login" />}/>
+          <Route path='/' element={cookies.refresh_token ? <MyShop /> : <Home />}/>
           <Route path='/login' element={!cookies.refresh_token ? <Login /> : <Navigate to ="/" />} />
           <Route path='/signup' element={!cookies.refresh_token ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={cookies.refresh_token ? <Profile /> : <Navigate to="/login"/>} />
