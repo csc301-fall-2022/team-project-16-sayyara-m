@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Getter
 @Setter
@@ -37,6 +40,8 @@ public class Service {
 
     private String name;
 
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;

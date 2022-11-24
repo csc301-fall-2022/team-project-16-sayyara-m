@@ -140,11 +140,11 @@ public class SetupConfig {
                 long randomEndEpoch = ThreadLocalRandom.current().nextLong(minEndEpoch, maxEndEpoch);
                 LocalDateTime randomEndDate = LocalDateTime.ofEpochSecond(randomEndEpoch, 0, ZoneOffset.UTC);
 
-                Appointment appointment = appointmentRepository.save(new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate));
-
                 // Service
                 randomInt = ThreadLocalRandom.current().nextInt(0, randomShop.getServices().size());
                 Service randomService = randomShop.getServices().get(randomInt);
+
+                Appointment appointment = appointmentRepository.save(new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService));
 
                 // Quote
                 double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
