@@ -43,12 +43,16 @@ public class Quote {
     @ManyToOne(cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
-    private String service;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    private Service service;
+
     private Double price;
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryTime;
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, String service, Double price, LocalDateTime expiryTime) {
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, Double price, LocalDateTime expiryTime) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
