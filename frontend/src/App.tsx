@@ -15,6 +15,8 @@ import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 import Home from './pages/Home';
+import VehicleOwnerAppointments from './pages/VehicleOwnerAppointments';
+import VehicleOwnerQuotes from './pages/VehicleOwnerQuotes';
 
 export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
@@ -40,9 +42,9 @@ function App() {
           <Route path='/login' element={!auth ? <Login /> : <Navigate to ="/" />} />
           <Route path='/signup' element={!auth ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={auth ? <Profile /> : <Navigate to="/login"/>} />
-          <Route path='/appointments' element={auth ? <Appointments /> : <Navigate to="/login" />} />
+          <Route path='/appointments' element={auth ? <Appointments /> : <VehicleOwnerAppointments />} />
           <Route path='/appointments/:id' element={auth ? <AppointmentDetails /> : <Navigate to="/login" />} />
-          <Route path='/quotes' element={auth ? <Quotes /> : <Navigate to="/login" />} />
+          <Route path='/quotes' element={auth ? <Quotes /> : <VehicleOwnerQuotes />} />
           <Route path='/quotes/:id' element={auth ? <QuoteDetails /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
