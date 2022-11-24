@@ -32,7 +32,7 @@ const useAuthFetch = () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        if (response.status == 401) {
+        if (response.status === 401) {
             token = await refresh?.()
             if (token !== null) {
                 response = await fetch(url, {

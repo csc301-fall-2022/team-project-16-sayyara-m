@@ -17,12 +17,10 @@ import java.util.List;
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
-    private final ShopOwnerRepository shopOwnerRepository;
+    private final ShopOwnerRetriever shopOwnerRetriever;
 
     public List<Appointment> getAllAppointments(String authorization) {
-        String username = new AuthHeaderParser(authorization).getUsername();
-
-        return shopOwnerRepository.findByUsername(username).getShop().getAppointments();
+        return shopOwnerRetriever.getShop(authorization).getAppointments();
     }
 
     public Appointment getAppointment(long id) throws DataNotFoundException {
