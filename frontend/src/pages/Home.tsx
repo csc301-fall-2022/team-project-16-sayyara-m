@@ -2,7 +2,6 @@ import { TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../App";
-import useAuth from "../utilities/hooks/useAuth";
 import { APIError, Shop } from "../utilities/interfaces";
 import { useNavigate } from "react-router-dom";
 
@@ -124,18 +123,14 @@ const generateRows = (text: string, shops: Shop[]) => {
 
 const Home = () => {
 
-    const { auth } = useAuth();
     let navigate = useNavigate();
     const [shops, setShops] = useState<Shop[]>([])
     const [searchText, setsearchText] = useState<string>('')
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch(API_ROOT + "/shop", {
+            const res = await fetch(API_ROOT + "/shops", {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${auth}`,
-                }
             })
 
             if (res.ok) {
@@ -148,7 +143,7 @@ const Home = () => {
             console.log(data.message);
         }
         getData();
-    })
+    }, [])
 
     const openShopInfo = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
         navigate(`/shop/${params.id}`);
