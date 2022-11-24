@@ -46,7 +46,7 @@ class ShopOwnerTest {
     }
 
     private ShopOwner newShopOwner() {
-        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob234", "Password1!", shop);
+        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob12345", "Password1!", shop);
     }
 
     @BeforeEach
