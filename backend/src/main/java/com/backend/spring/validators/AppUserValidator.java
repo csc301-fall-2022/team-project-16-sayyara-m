@@ -6,7 +6,7 @@ import com.backend.spring.exceptions.ViolatedConstraintException;
 public class AppUserValidator implements Validator {
     private final AppUser appUser;
 
-    private final Validator userInfoValidator;
+    private final UserInfoValidator userInfoValidator;
 
     public AppUserValidator(AppUser appUser) {
         this.appUser = appUser;
@@ -25,8 +25,8 @@ public class AppUserValidator implements Validator {
     private void validateUsername() {
         String username = this.appUser.getUsername();
 
-        if (username == null || username.length() < 6)
-            throw new ViolatedConstraintException("Username must be at least 6 characters.");
+        if (username == null || username.length() < 8)
+            throw new ViolatedConstraintException("Username must be at least 8 characters.");
 
         if (username.length() > 20)
             throw new ViolatedConstraintException("Username must be at most 20 characters.");
