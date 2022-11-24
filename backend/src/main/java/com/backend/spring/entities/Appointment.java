@@ -61,11 +61,16 @@ public class Appointment {
     @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
     private Quote quote;
 
-    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startDate, LocalDateTime endDate) {
+    @ManyToOne
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    private Service service;
+
+    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startDate, LocalDateTime endDate, Service service) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.service = service;
     }
 
     /**
