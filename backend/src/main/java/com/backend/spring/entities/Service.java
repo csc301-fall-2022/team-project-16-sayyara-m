@@ -12,13 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -41,11 +37,16 @@ public class Service {
 
     private String name;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
     private Double defaultPrice;
+
+    public Service(String name, Double defaultPrice) {
+        this.name = name;
+        this.defaultPrice = defaultPrice;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -58,9 +59,5 @@ public class Service {
         }
 
         return service.getName().equals(this.name);
-    }
-    public Service(String name, Double defaultPrice) {
-        this.name = name;
-        this.defaultPrice = defaultPrice;
     }
 }
