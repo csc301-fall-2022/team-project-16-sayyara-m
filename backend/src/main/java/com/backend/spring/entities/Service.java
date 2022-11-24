@@ -59,4 +59,8 @@ public class Service {
 
         return service.getName().equals(this.name);
     }
+    public Service(String name, Double defaultPrice) {
+        this.name = name;
+        this.defaultPrice = defaultPrice;
+    }
 }
