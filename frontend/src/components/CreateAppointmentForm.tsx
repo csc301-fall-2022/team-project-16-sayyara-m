@@ -203,7 +203,7 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                 <label className="align-top">Additional Notes: </label>
                 <div>
                     <textarea
-                        className="border-2 border-black w-full h-48 text-start"
+                        className="border-2 border-black w-full h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"
