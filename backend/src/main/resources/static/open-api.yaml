@@ -300,6 +300,47 @@ paths:
             "application/json":
               schema:
                 $ref: "#/components/schemas/DataNotFoundError"
+    patch:
+      tags:
+        - Quotes
+      operationId: updateQuoteStatus
+      summary: Update Status of a Quote
+      description: "Update the status of a Quote determined by its `quoteId`.
+      Viable statuses currently are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - Pending Approval
+                    - Pending Review
+                    - Accepted
+                    - Rejected
+                    - Expired
+              required: true
+        required: true
+      responses:
+        '200':
+          description: Successfully updated Quote status
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Quote"
+        '400':
+          $ref: "#/components/responses/InvalidData"
+        '404':
+          description: Quote associated with the id not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
+
+
+
 
   /api/vehicleOwner/{vehicleOwnerId}/quotes:
     get:
@@ -576,6 +617,23 @@ components:
         expiryTime:
           type: string
           format: date-time
+        status:
+          type: string
+          enum:
+            - PENDING
+            - ACCEPTED
+            - DECLINED
+            - EXPIRED
+    Service:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        defaultPrice:
+          type: number
+          format: double
     Shop:
       type: object
       properties:
