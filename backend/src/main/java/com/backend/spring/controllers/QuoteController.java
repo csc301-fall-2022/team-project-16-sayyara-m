@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,15 +36,16 @@ public class QuoteController {
         return ResponseEntity.ok(quoteService.getQuote(quoteId));
     }
 
-    @DeleteMapping(path = "{quote_id}")
-    public void deleteQuote(@PathVariable("quote_id") long id) {
-        quoteService.deleteQuote(id);
+    @DeleteMapping(path = "{quoteId}")
+    public void deleteQuote(@PathVariable long quoteId) {
+        quoteService.deleteQuote(quoteId);
     }
 
-    @PatchMapping(path = "{quote_id}")
-    public ResponseEntity<Quote> updateQuote(@PathVariable("quote_id") long id,
-                                             @RequestParam("status") String status,
-                                             @RequestHeader(AUTHORIZATION) String authorizationHeader) {
-        return ResponseEntity.ok(quoteService.updateQuoteStatus(id, status, authorizationHeader));
+    @PatchMapping(path = "{quoteId}")
+    public ResponseEntity<Quote> updateQuoteStatus(@PathVariable long quoteId,
+                                                   @RequestBody QuoteStatusString quoteStatus) {
+        return ResponseEntity.ok(quoteService.updateQuoteStatus(quoteId, quoteStatus.status));
     }
+
+    private record QuoteStatusString(String status){}
 }
