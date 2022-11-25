@@ -35,7 +35,7 @@ public class SetupConfig {
 
     private final String[] firstNames = {"John", "Jane", "Bob", "Alice", "Joe", "Mary", "Tom", "Sally", "Bill", "Sarah"};
     private final String[] lastNames = {"Smith", "Jones", "Brown", "Wilson", "Davis", "Miller", "Taylor", "Anderson", "Thomas", "Jackson"};
-    private final String[] usernames = {"bob123", "johnsmith", "janejones", "bobbrown", "alicewilson", "joedavis", "marymiller", "tomtaylor", "sallyanderson", "billthomas", "sarahjackson"};
+    private final String[] usernames = {"bob12345", "johnsmith", "janejones", "bobbrown", "alicewilson", "joedavis", "marymiller", "tomtaylor", "sallyanderson", "billthomas", "sarahjackson"};
     private final String PASSWORD = "Password1!";
     private final String[] emails = {"bob@gmail.com", "johnsmith@gmail.com", "janejones@gmail.com", "bobbrown@gmail.com", "alicewilson@gmail.com", "joedavis@gmail.com", "marymiller@gmail.com", "tomtaylor@gmail.com", "sallyanderson@gmail.com", "billthomas@gmail.com", "sarahjackson@gmail.com"};
     private final String[] canadianPhoneNumbers = {"+14164513123", "+14164513124", "+14164513125", "+14164513126", "+14164513127", "+14164513128", "+14164513129", "+14164513130", "+14164513131", "+14164513132"};
@@ -64,7 +64,6 @@ public class SetupConfig {
 
     @Bean
     @Profile("dev")
-        // run on all profiles except test
     CommandLineRunner commandLineRunner(RoleRepository roleRepository, AddressRepository addressRepository, ShopRepository shopRepository, VehicleOwnerRepository vehicleOwnerRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository, ServiceRepository serviceRepository) {
         return args -> {
             System.out.println("Inserting data...");

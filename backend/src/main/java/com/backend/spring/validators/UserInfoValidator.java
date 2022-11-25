@@ -13,6 +13,7 @@ public class UserInfoValidator implements Validator {
     /**
      * Validates the first name, last name, username, email, and password of the shop owner.
      */
+    @Override
     public void validate() {
         validateFirstName();
         validateLastName();

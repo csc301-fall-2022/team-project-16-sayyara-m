@@ -49,9 +49,9 @@ public class Appointment {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
     @Column(name = "start_date", nullable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime startDate;
+    private LocalDateTime startTime;
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime endDate;
+    private LocalDateTime endTime;
     // endDate - startDate
     @Transient
     @Getter(NONE) // to override getter
@@ -65,11 +65,11 @@ public class Appointment {
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
 
-    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startDate, LocalDateTime endDate, Service service) {
+    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.service = service;
     }
 
@@ -79,6 +79,6 @@ public class Appointment {
      * @return difference between endDate and startDate for this appointment
      */
     public Duration getDuration() {
-        return Duration.between(startDate, endDate);
+        return Duration.between(startTime, endTime);
     }
 }
