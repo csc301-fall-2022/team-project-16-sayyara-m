@@ -105,7 +105,7 @@ public class SetupConfig {
                 shops.add(shop);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
-                shopOwner = shopOwnerSaveHelper.save(shopOwner);
+                shopOwnerSaveHelper.save(shopOwner);
 
                 i++;
             }
@@ -155,9 +155,11 @@ public class SetupConfig {
                 // Quote
                 Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate);
 
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate);
+
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);
-                vehicleOwnerSaveHelper.save(randomVehicleOwner);
+                vehicleOwnerRepository.save(randomVehicleOwner);
                 i++;
             }
             System.out.println("Data inserted.");
