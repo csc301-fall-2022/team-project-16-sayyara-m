@@ -105,7 +105,7 @@ public class SetupConfig {
                 shops.add(shop);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
-                shopOwnerSaveHelper.save(shopOwner);
+                shopOwner = shopOwnerSaveHelper.save(shopOwner);
 
                 i++;
             }
@@ -136,7 +136,7 @@ public class SetupConfig {
                 VehicleOwner randomVehicleOwner = vehicleOwners.get(randomInt);
 
                 // Appointment
-                long minStartEpoch = LocalDateTime.of(2022, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+                long minStartEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
                 long maxStartEpoch = LocalDateTime.of(2023, 12, 31, 23, 59).toEpochSecond(ZoneOffset.UTC);
                 long randomStartEpoch = ThreadLocalRandom.current().nextLong(minStartEpoch, maxStartEpoch);
                 LocalDateTime randomStartDate = LocalDateTime.ofEpochSecond(randomStartEpoch, 0, ZoneOffset.UTC);
