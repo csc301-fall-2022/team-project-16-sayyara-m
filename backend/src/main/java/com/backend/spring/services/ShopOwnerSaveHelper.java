@@ -47,6 +47,7 @@ public class ShopOwnerSaveHelper {
 
     private void setShopOwner(ShopOwner shopOwner) {
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+        shopOwner.getShop().setShopOwner(shopOwner);
         new ShopOwnerValidator(shopOwner).validate(); // validate before encrypting password
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
     }

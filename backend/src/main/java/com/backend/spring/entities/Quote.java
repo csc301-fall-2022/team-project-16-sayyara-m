@@ -59,9 +59,9 @@ public class Quote {
 
     @Getter(value = NONE)
     @NotNull
-    private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
+    private QuoteStatus quoteStatus = QuoteStatus.PENDING;
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryTime) {
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, Double price, LocalDateTime expiryTime) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
