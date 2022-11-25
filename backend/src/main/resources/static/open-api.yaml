@@ -303,16 +303,23 @@ paths:
     patch:
       tags:
         - Quotes
-      operationId: updateQuoteStatus
-      summary: Update Status of a Quote
-      description: "Update the status of a Quote determined by its `quoteId`. 
-      Viable statuses currently are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
+      operationId: updateQuote
+      summary: Update either the status or the price of a Quote
+      description: "Update the quote determined by its `quoteId` with either a new status, or a price.\n\n
+      **Note:** Only the status or the price can be updated at a time. If both are provided, there will be an error.\n\n 
+      Once the price is updated, the status of this quote will automatically be set to `Pending Approval`.\n\n
+      Viable statuses are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
+                price:
+                  required: false
+                  type: number
+                  format: double
+                  example: 49.99
                 status:
                   type: string
                   enum:
@@ -321,7 +328,7 @@ paths:
                     - Accepted
                     - Rejected
                     - Expired
-              required: true
+              required: false
         required: true
       responses:
         '200':
@@ -330,8 +337,14 @@ paths:
             "application/json":
               schema:
                 "$ref": "#/components/schemas/Quote"
+        204:
+          description: No content was provided. Nothing was updated
         '400':
-          $ref: "#/components/responses/InvalidData"
+          description: Invalid data passed. Remember to either pass in a price or a status, but not both at the same time.
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/InvalidDataError"
         '404':
           description: Quote associated with the id not found
           content:
