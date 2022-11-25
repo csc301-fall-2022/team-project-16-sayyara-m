@@ -1,21 +1,19 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Quote;
+import com.backend.spring.entities.QuoteStatus;
 import com.backend.spring.exceptions.DataNotFoundException;
+import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.QuoteRepository;
-import com.backend.spring.repositories.ShopRepository;
-import com.backend.spring.repositories.VehicleOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class QuoteService {
-    private final QuoteRepository repository;
+    private final QuoteRepository quoteRepository;
 
     private final ShopOwnerRetriever shopOwnerRetriever;
 
@@ -24,23 +22,23 @@ public class QuoteService {
     }
 
     public Quote getQuote(long id) {
-        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
+        return quoteRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
     }
 
     public void deleteQuote(long id) {
-        repository.deleteById(id);
+        quoteRepository.deleteById(id);
     }
 
-    @Transactional
-    public void updateQuote(long id, Double price, LocalDateTime expiryDate) {
-        Quote quote = repository.findById(id).orElseThrow(IllegalStateException::new);
-
-        if (price != null) {
-            quote.setPrice(price);
-        }
-
-        if (expiryDate != null) {
-            quote.setExpiryTime(expiryDate);
-        }
+    public Quote updateQuoteStatus(long id, String quoteStatus, String authorization) {
+        Quote quote = getQuote(id);
+        shopOwnerRetriever.getShop(authorization).getQuotes().stream()
+                .filter(curQuote -> curQuote.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not associated to this shop."));
+        QuoteStatus status = QuoteStatus.getStatus(quoteStatus);
+        if (status == null)
+            throw new ViolatedConstraintException("Quote status " + quoteStatus + " is not a valid status.");
+        quote.setQuoteStatus(status);
+        return quoteRepository.save(quote);
     }
 }

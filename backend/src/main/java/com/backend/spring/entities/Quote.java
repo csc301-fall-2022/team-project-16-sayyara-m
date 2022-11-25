@@ -15,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
@@ -54,11 +56,22 @@ public class Quote {
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryTime;
 
+    @Getter(value = NONE)
+    @NotNull
+    private QuoteStatus quoteStatus = QuoteStatus.PENDING;
+
     public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, Double price, LocalDateTime expiryTime) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
         this.price = price;
         this.expiryTime = expiryTime;
+    }
+
+    public QuoteStatus getQuoteStatus() {
+        if (expiryTime.isBefore(LocalDateTime.now())) {
+            this.quoteStatus = QuoteStatus.EXPIRED;
+        }
+        return quoteStatus;
     }
 }
