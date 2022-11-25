@@ -155,8 +155,6 @@ public class SetupConfig {
                 // Quote
                 Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate);
 
-                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate);
-
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);
                 vehicleOwnerSaveHelper.save(randomVehicleOwner);

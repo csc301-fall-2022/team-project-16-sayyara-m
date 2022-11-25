@@ -36,4 +36,11 @@ public class QuoteService {
         quote.setQuoteStatus(QuoteStatus.getStatus(status));
         return quoteRepository.save(quote);
     }
+
+    public Quote updateQuotePrice(long quoteId, Double price) {
+        Quote quote = getQuote(quoteId);
+        quote.setPrice(price);
+        quote.setQuoteStatus(QuoteStatus.PENDING_APPROVAL);
+        return quoteRepository.save(quote);
+    }
 }
