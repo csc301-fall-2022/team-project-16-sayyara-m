@@ -4,7 +4,7 @@ import { APIError, Quote } from "src/utilities/interfaces";
 import useAuthFetch from "../useAuthFetch";
 
 //if a user is logged in this hook will return all appointments at their shop
-export const useGetAllAppointments = () => {
+export const useGetAllQuotes = () => {
     const [quotes, setQuotes] = useState<Quote[]>([]);
     const { authFetch } = useAuthFetch();
     const getAllQuotes = async() => {
