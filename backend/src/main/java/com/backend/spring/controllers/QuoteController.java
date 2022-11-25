@@ -42,10 +42,16 @@ public class QuoteController {
     }
 
     @PatchMapping(path = "{quoteId}")
-    public ResponseEntity<Quote> updateQuoteStatus(@PathVariable long quoteId,
-                                                   @RequestBody QuoteStatusString quoteStatus) {
-        return ResponseEntity.ok(quoteService.updateQuoteStatus(quoteId, quoteStatus.status));
+    public ResponseEntity<Quote> updateQuote(@PathVariable long quoteId,
+                                             @RequestBody QuoteInfo quoteInfo) {
+        if (quoteInfo.price == null && quoteInfo.status == null)
+            return ResponseEntity.noContent().build();
+        if (quoteInfo.price == null)
+            return ResponseEntity.ok(quoteService.updateQuoteStatus(quoteId, quoteInfo.status));
+        if (quoteInfo.status == null)
+            return ResponseEntity.ok(quoteService.updateQuotePrice(quoteId, quoteInfo.price));
+        throw new InvalidDataException("Invalid data. Must provide either price or status.");
     }
 
-    private record QuoteStatusString(String status){}
+    private record QuoteInfo(String status, Double price){}
 }
