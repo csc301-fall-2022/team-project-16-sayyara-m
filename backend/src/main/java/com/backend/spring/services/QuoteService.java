@@ -7,6 +7,8 @@ import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.QuoteRepository;
+import com.backend.spring.repositories.ShopRepository;
+import com.backend.spring.repositories.VehicleOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class QuoteService {
     }
 
     public Quote getQuote(long id) {
-        return quoteRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
+        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
     }
 
     public void deleteQuote(long id) {
