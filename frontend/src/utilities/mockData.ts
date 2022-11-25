@@ -26,7 +26,8 @@ export const mQuote: Quote = {
     vehicleOwner: mVehicleOwner,
     price: 120.00,
     expiryTime: "2020-12-12",
-    serviceType: "Oil Change"
+    serviceType: "Oil Change",
+    status: "Accepted"
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];

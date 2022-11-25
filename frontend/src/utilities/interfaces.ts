@@ -55,7 +55,8 @@ export interface Quote {
     vehicleOwner: VehicleOwner,
     price: number,
     expiryTime: string,
-    serviceType: string
+    serviceType: string,
+    status: "Accepted" | "Declined" | "Pending" | "Expired",
 }
 
 export interface APIError {
