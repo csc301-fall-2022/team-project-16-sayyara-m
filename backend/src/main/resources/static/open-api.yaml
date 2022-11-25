@@ -624,6 +624,7 @@ components:
         price:
           type: number
           format: double
+          nullable: true
         expiryTime:
           type: string
           format: date-time
