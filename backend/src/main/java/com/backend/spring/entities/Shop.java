@@ -60,9 +60,9 @@ public class Shop {
     @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER)
     private List<Service> services = new ArrayList<>();
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     public Shop(String name, Address address, String phoneNumber, String email) {

@@ -63,7 +63,7 @@ public class SetupConfig {
     private final int NUM_APPOINTMENTS = 20;
 
     @Bean
-    @Profile("!test")
+    @Profile("dev")
         // run on all profiles except test
     CommandLineRunner commandLineRunner(RoleRepository roleRepository, AddressRepository addressRepository, ShopRepository shopRepository, VehicleOwnerRepository vehicleOwnerRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository, ServiceRepository serviceRepository) {
         return args -> {
