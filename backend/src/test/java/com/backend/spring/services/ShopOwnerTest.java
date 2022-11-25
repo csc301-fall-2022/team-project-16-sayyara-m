@@ -37,15 +37,15 @@ class ShopOwnerTest {
     }
 
     private ShopOwner newShopOwner() {
-        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob12345", "Password1!", shop);
+        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "+14161231234", "bob12345", "Password1!", shop);
     }
 
     @BeforeEach
     void setUp() {
 
-        Address address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
+        Address address = new Address("StreetNum", "Street", "PostalCode", "City", "M2M 2M2");
 
-        shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
+        shop = new Shop("Sayyara Shop2", address, "+14164123123", "sayyara@gmail.com");
 
         shopOwner = saveHelper.save(newShopOwner());
 

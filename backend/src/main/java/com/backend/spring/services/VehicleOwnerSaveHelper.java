@@ -3,6 +3,7 @@ package com.backend.spring.services;
 import com.backend.spring.entities.VehicleOwner;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.VehicleOwnerRepository;
+import com.backend.spring.validators.VehicleOwnerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class VehicleOwnerSaveHelper {
     }
 
     private void setVehicleOwner(VehicleOwner vehicleOwner) {
+        new VehicleOwnerValidator(vehicleOwner).validate();
         vehicleOwner.getVehicle().setOwner(vehicleOwner);
     }
 }
