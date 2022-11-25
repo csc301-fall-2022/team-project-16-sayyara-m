@@ -1,7 +1,7 @@
 package com.backend.spring.services;
 
-import com.backend.spring.entities.Vehicle;
 import com.backend.spring.entities.VehicleOwner;
+import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.VehicleOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -28,27 +28,14 @@ public class VehicleOwnerSaveHelper {
      * Also assigns the vehicle owner to the vehicle and the vehicle to the vehicle owner.
      *
      * @param vehicleOwner Vehicle Owner to save
-     * @param vehicle      Vehicle to be assigned to Vehicle Owner
      * @return Vehicle Owner after saving
      */
-    public VehicleOwner save(@NonNull VehicleOwner vehicleOwner, @NonNull Vehicle vehicle) {
-        setVehicleOwner(vehicleOwner, vehicle);
-        return vehicleOwnerRepository.save(vehicleOwner);
+    public VehicleOwner save(@NonNull VehicleOwner vehicleOwner) throws ViolatedConstraintException {
+        setVehicleOwner(vehicleOwner);
+        return new SaveErrorTrapper().checkConstraintViolation(() -> vehicleOwnerRepository.save(vehicleOwner));
     }
 
-    private void setVehicleOwner(VehicleOwner vehicleOwner, Vehicle vehicle) {
-        vehicleOwner.setVehicle(vehicle);
-        vehicle.setOwner(vehicleOwner);
-    }
-
-    /**
-     * Mainly used for testing.
-     * <p>
-     * Flushing allows for insertions to take place right away in the middle of a transaction, which allows
-     * for easier testing of database constraint violations.
-     */
-    VehicleOwner saveAndFlush(@NonNull VehicleOwner vehicleOwner, @NonNull Vehicle vehicle) {
-        setVehicleOwner(vehicleOwner, vehicle);
-        return vehicleOwnerRepository.saveAndFlush(vehicleOwner);
+    private void setVehicleOwner(VehicleOwner vehicleOwner) {
+        vehicleOwner.getVehicle().setOwner(vehicleOwner);
     }
 }
