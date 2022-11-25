@@ -45,8 +45,8 @@ export interface Appointment {
     id: number,
     vehicleOwner: VehicleOwner,
     quote?: Quote,
-    startDate: string,
-    endDate: string,
+    startTime: string,
+    endTime: string,
     duration?: number
 }
 

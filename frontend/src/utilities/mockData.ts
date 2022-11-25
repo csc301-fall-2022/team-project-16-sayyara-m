@@ -17,8 +17,8 @@ export const mVehicleOwner: VehicleOwner = {
 export const mAppointment: Appointment = {
     id: 1,
     vehicleOwner: mVehicleOwner,
-    startDate: "2022-11-15T15:45:00",
-    endDate: "2022-11-15T15:45:00",
+    startTime: "2022-11-15T15:45:00",
+    endTime: "2022-11-15T15:45:00",
     duration: 100
 }
 export const mQuote: Quote = {

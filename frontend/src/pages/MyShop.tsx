@@ -49,8 +49,8 @@ const MyShop = () => {
                 >
                     <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">{new Date(ap.startDate).toISOString().substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{new Date(ap.startDate).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endDate).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
+                    <p className="whitespace-nowrap">{ap.startTime.substring(0, 10)}</p>
+                    <p className="whitespace-nowrap">{new Date(ap.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
                     <p>{ap.quote?.serviceType}</p>
                 </div>
             </Link>

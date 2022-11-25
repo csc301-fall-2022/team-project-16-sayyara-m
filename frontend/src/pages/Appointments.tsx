@@ -10,8 +10,8 @@ const columns: GridColDef[] = [
     { field: 'firstName', headerName: 'First name', width: 200},
     { field: 'lastName', headerName: 'Last name', width: 200 },
     { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'startDate', headerName: 'Start Time', width: 100 },
-    { field: 'endDate', headerName: 'End Time', width: 100 },
+    { field: 'startTime', headerName: 'Start Time', width: 100 },
+    { field: 'endTime', headerName: 'End Time', width: 100 },
     {
       field: 'Duration',
       headerName: 'Duration',
@@ -37,9 +37,9 @@ const generateApptRows = () => {
             id: (appt.id + i),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
-            date: new Date(appt.startDate).toISOString().substring(0, 10),
-            startDate: new Date(appt.startDate).toLocaleTimeString(),
-            endDate: new Date(appt.endDate).toLocaleTimeString(),
+            date: new Date(appt.startTime).toISOString().substring(0, 10),
+            startTime: new Date(appt.startTime).toLocaleTimeString(),
+            endTime: new Date(appt.endTime).toLocaleTimeString(),
             Duration: appt.duration,
             serviceType: "Oil Change"
         });
