@@ -97,7 +97,7 @@ public class SetupConfig {
                 shops.add(shop);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
-                shopOwnerSaveHelper.save(shopOwner, shop, address);
+                shopOwnerSaveHelper.save(shopOwner);
 
                 i++;
             }
@@ -143,13 +143,16 @@ public class SetupConfig {
                 randomInt = ThreadLocalRandom.current().nextInt(0, randomShop.getServices().size());
                 Service randomService = randomShop.getServices().get(randomInt);
 
-                Appointment appointment = appointmentRepository.save(new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService));
+                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService);
 
                 // Quote
                 double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
 
-                Quote quote = quoteRepository.save(new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate));
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate);
 
+                randomVehicleOwner.getAppointments().add(appointment);
+                randomVehicleOwner.getQuotes().add(quote);
+                vehicleOwnerRepository.save(randomVehicleOwner);
                 i++;
             }
             System.out.println("Data inserted.");
