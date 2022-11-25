@@ -44,10 +44,10 @@ export interface VehicleOwner extends User {
 export interface Appointment {
     id: number,
     vehicleOwner: VehicleOwner,
-    // TODO: Change to strings instead of dates
+    quote?: Quote,
     startDate: string,
     endDate: string,
-    duration: number
+    duration?: number
 }
 
 export interface Quote {

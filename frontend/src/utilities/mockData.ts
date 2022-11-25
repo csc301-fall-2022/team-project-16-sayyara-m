@@ -69,3 +69,6 @@ export const mShopOwner: ShopOwner = {
     shop: mShop
 }
 
+export const serviceTypes = ["Oil Change", "Tire Rotation", "Wiper Replacement", "Exterior Repair",
+    "Interior Repair", "Engine Repair", "Transmission Repair", "Brake Repair", "Suspension Repair",
+    "Electrical Repair", "Other"];
