@@ -40,45 +40,9 @@ public class ShopOwnerSaveHelper {
      * @return Shop Owner after successfully saving
      */
     public ShopOwner save(@NonNull ShopOwner shopOwner) throws ViolatedConstraintException {
-        try {
-            setShopOwner(shopOwner);
-            return shopOwnerRepository.save(shopOwner);
-        } catch (DataIntegrityViolationException ex) {
-            String msg = ex.getMessage();
-            if (ex.getCause().getCause() instanceof SQLException e) {
-                if (e.getMessage().contains("Key")) {
-                    msg = formatErrorMessage(e.getMessage());
-                }
-            }
-            throw new ViolatedConstraintException(msg);
-        }
-    }
-
-    private void replaceCharacter(StringBuilder sb, char c, String replacement) {
-        int index = sb.indexOf(String.valueOf(c));
-        if (index != -1) {
-            sb.replace(index, index + 1, replacement);
-        }
-    }
-
-    /**
-     * Format error message of the form
-     * "Details: key (email)=(email@gmail.com) already exists"
-     * into
-     * "Email 'email@gmail.com' already exists"
-     */
-    private String formatErrorMessage(String message) {
-        StringBuilder stringBuilder = new StringBuilder(message.substring(message.indexOf("Key") + 4));
-
-        replaceCharacter(stringBuilder, '(', "");
-        replaceCharacter(stringBuilder, ')', " ");
-        replaceCharacter(stringBuilder, '(', "'");
-        replaceCharacter(stringBuilder, ')', "'");
-        replaceCharacter(stringBuilder, '=', "");
-        replaceCharacter(stringBuilder, '_', " ");
-
-        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-        return stringBuilder.toString();
+        setShopOwner(shopOwner);
+        return new SaveErrorTrapper()
+                .checkConstraintViolation(() -> shopOwnerRepository.save(shopOwner));
     }
 
     private void setShopOwner(ShopOwner shopOwner) {

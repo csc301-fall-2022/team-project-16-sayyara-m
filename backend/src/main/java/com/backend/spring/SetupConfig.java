@@ -159,7 +159,7 @@ public class SetupConfig {
 
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);
-                vehicleOwnerRepository.save(randomVehicleOwner);
+                vehicleOwnerSaveHelper.save(randomVehicleOwner);
                 i++;
             }
             System.out.println("Data inserted.");
