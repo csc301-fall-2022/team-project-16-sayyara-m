@@ -52,7 +52,8 @@ public class Quote {
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
 
-    private Double price;
+    private Double price = null;
+
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryTime;
 
@@ -60,11 +61,10 @@ public class Quote {
     @NotNull
     private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, Double price, LocalDateTime expiryTime) {
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryTime) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
-        this.price = price;
         this.expiryTime = expiryTime;
     }
 

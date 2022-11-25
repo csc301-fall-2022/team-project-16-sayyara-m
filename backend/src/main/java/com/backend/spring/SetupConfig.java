@@ -153,9 +153,7 @@ public class SetupConfig {
                 Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService);
 
                 // Quote
-                double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
-
-                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate);
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate);
 
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);
