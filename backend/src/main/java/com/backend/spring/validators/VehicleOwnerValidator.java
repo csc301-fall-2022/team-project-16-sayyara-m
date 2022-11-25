@@ -4,18 +4,23 @@ import com.backend.spring.entities.VehicleOwner;
 
 public class VehicleOwnerValidator implements Validator {
 
-    private final UserInfoValidator userInfoValidator;
-
-    private final VehicleValidator vehicleValidator;
+    private final VehicleOwner vehicleOwner;
 
     public VehicleOwnerValidator(VehicleOwner vehicleOwner) {
-        this.userInfoValidator = new UserInfoValidator(vehicleOwner);
-        this.vehicleValidator = new VehicleValidator(vehicleOwner.getVehicle());
+        this.vehicleOwner = vehicleOwner;
     }
 
     @Override
     public void validate() {
-        userInfoValidator.validate();
-        vehicleValidator.validate();
+        validateUserInfo();
+        validateVehicle();
+    }
+
+    private void validateUserInfo() {
+        new UserInfoValidator(vehicleOwner).validate();
+    }
+
+    private void validateVehicle() {
+        new VehicleValidator(vehicleOwner.getVehicle()).validate();
     }
 }

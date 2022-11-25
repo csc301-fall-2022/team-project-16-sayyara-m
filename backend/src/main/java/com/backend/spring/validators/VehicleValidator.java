@@ -5,10 +5,10 @@ import com.backend.spring.exceptions.ViolatedConstraintException;
 
 import java.util.Calendar;
 
-public class VehicleValidator implements Validator {
+class VehicleValidator implements Validator {
     private final Vehicle vehicle;
 
-    public VehicleValidator(Vehicle vehicle) {
+    VehicleValidator(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
@@ -37,9 +37,6 @@ public class VehicleValidator implements Validator {
 
         if (vehicleMake.length() > 20)
             throw new ViolatedConstraintException("Vehicle make must be at most 20 characters.");
-
-        if (!vehicleMake.matches("^[a-zA-Z]+$"))
-            throw new ViolatedConstraintException("Vehicle make must only contain letters.");
     }
 
     private void validateVehicleModel() {
@@ -50,9 +47,6 @@ public class VehicleValidator implements Validator {
 
         if (vehicleModel.length() > 20)
             throw new ViolatedConstraintException("Vehicle model must be at most 20 characters.");
-
-        if (!vehicleModel.matches("^[a-zA-Z]+$"))
-            throw new ViolatedConstraintException("Vehicle model must only contain letters.");
     }
 
     private void validateVehicleLicensePlate() {

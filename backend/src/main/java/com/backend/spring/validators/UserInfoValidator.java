@@ -3,10 +3,10 @@ package com.backend.spring.validators;
 import com.backend.spring.entities.UserInfo;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 
-public class UserInfoValidator implements Validator {
+class UserInfoValidator implements Validator {
     private final UserInfo userInfo;
 
-    public UserInfoValidator(UserInfo userInfo) {
+    UserInfoValidator(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 

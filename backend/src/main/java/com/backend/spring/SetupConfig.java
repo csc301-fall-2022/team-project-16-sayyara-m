@@ -16,9 +16,9 @@ import com.backend.spring.repositories.QuoteRepository;
 import com.backend.spring.repositories.RoleRepository;
 import com.backend.spring.repositories.ServiceRepository;
 import com.backend.spring.repositories.ShopRepository;
-import com.backend.spring.repositories.VehicleOwnerRepository;
 import com.backend.spring.repositories.VehicleRepository;
 import com.backend.spring.services.ShopOwnerSaveHelper;
+import com.backend.spring.services.VehicleOwnerSaveHelper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,7 +64,15 @@ public class SetupConfig {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository, AddressRepository addressRepository, ShopRepository shopRepository, VehicleOwnerRepository vehicleOwnerRepository, ShopOwnerSaveHelper shopOwnerSaveHelper, VehicleRepository vehicleRepository, AppointmentRepository appointmentRepository, QuoteRepository quoteRepository, ServiceRepository serviceRepository) {
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository,
+                                        AddressRepository addressRepository,
+                                        ShopRepository shopRepository,
+                                        VehicleOwnerSaveHelper vehicleOwnerSaveHelper,
+                                        ShopOwnerSaveHelper shopOwnerSaveHelper,
+                                        VehicleRepository vehicleRepository,
+                                        AppointmentRepository appointmentRepository,
+                                        QuoteRepository quoteRepository,
+                                        ServiceRepository serviceRepository) {
         return args -> {
             System.out.println("Inserting data...");
 
@@ -97,7 +105,7 @@ public class SetupConfig {
                 shops.add(shop);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
-                shopOwnerSaveHelper.save(shopOwner, shop, address);
+                shopOwner = shopOwnerSaveHelper.save(shopOwner);
 
                 i++;
             }
@@ -106,13 +114,12 @@ public class SetupConfig {
             List<VehicleOwner> vehicleOwners = new ArrayList<>();
             i = 0;
             while (i < NUM_VEHICLES) {
+                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i]);
 
-                VehicleOwner vehicleOwner = new VehicleOwner(firstNames[i], lastNames[i], "vo_" + emails[i], canadianPhoneNumbers[i]);
-
-                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i], vehicleOwner);
+                VehicleOwner vehicleOwner = new VehicleOwner(firstNames[i], lastNames[i], "vo_" + emails[i], canadianPhoneNumbers[i], vehicle);
 
                 vehicleOwner.setVehicle(vehicle);
-                vehicleOwnerRepository.save(vehicleOwner);
+                vehicleOwnerSaveHelper.save(vehicleOwner);
                 vehicleOwners.add(vehicleOwner);
 
                 i++;
@@ -129,7 +136,7 @@ public class SetupConfig {
                 VehicleOwner randomVehicleOwner = vehicleOwners.get(randomInt);
 
                 // Appointment
-                long minStartEpoch = LocalDateTime.of(2022, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+                long minStartEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
                 long maxStartEpoch = LocalDateTime.of(2023, 12, 31, 23, 59).toEpochSecond(ZoneOffset.UTC);
                 long randomStartEpoch = ThreadLocalRandom.current().nextLong(minStartEpoch, maxStartEpoch);
                 LocalDateTime randomStartDate = LocalDateTime.ofEpochSecond(randomStartEpoch, 0, ZoneOffset.UTC);
@@ -143,13 +150,14 @@ public class SetupConfig {
                 randomInt = ThreadLocalRandom.current().nextInt(0, randomShop.getServices().size());
                 Service randomService = randomShop.getServices().get(randomInt);
 
-                Appointment appointment = appointmentRepository.save(new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService));
+                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService);
 
                 // Quote
-                double randomPrice = ThreadLocalRandom.current().nextDouble(0, 1000.00);
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate);
 
-                Quote quote = quoteRepository.save(new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomEndDate));
-
+                randomVehicleOwner.getAppointments().add(appointment);
+                randomVehicleOwner.getQuotes().add(quote);
+                vehicleOwnerSaveHelper.save(randomVehicleOwner);
                 i++;
             }
             System.out.println("Data inserted.");

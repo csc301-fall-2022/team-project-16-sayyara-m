@@ -1,20 +1,16 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Address;
-import com.backend.spring.entities.ShopOwner;
-import com.backend.spring.repositories.ShopOwnerRepository;
 import com.backend.spring.entities.Shop;
+import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.exceptions.ViolatedConstraintException;
+import com.backend.spring.repositories.ShopOwnerRepository;
 import com.backend.spring.repositories.ShopRepository;
-import com.backend.spring.entities.Role;
-import com.backend.spring.entities.RoleEnum;
-import com.backend.spring.repositories.RoleRepository;
-import com.backend.spring.services.ShopOwnerSaveHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -25,41 +21,33 @@ class ShopOwnerTest {
     private ShopOwnerRepository shopOwnerRepository;
 
     @Autowired
-    private ShopRepository shopRepository;
+    private ShopOwnerSaveHelper saveHelper;
 
     @Autowired
-    private ShopOwnerSaveHelper saveHelper;
+    private ShopRepository shopRepository;
 
     private ShopOwner shopOwner;
 
     private Shop shop;
-    private Address address;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @AfterEach
     void tearDown() {
-        shopRepository.deleteAll();
         shopOwnerRepository.deleteAll();
-        roleRepository.deleteAll();
+        shopRepository.deleteAll();
     }
 
     private ShopOwner newShopOwner() {
-        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "416-123-1234", "bob12345", "Password1!", shop);
+        return new ShopOwner("abc", "Bob", "bob2@gmail.com", "+14161231234", "bob12345", "Password1!", shop);
     }
 
     @BeforeEach
     void setUp() {
-        roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
 
-        address = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
+        Address address = new Address("StreetNum", "Street", "PostalCode", "City", "M2M 2M2");
 
-        shop = new Shop("Sayyara Shop2", address, "416-412-3123", "sayyara@gmail.com");
+        shop = new Shop("Sayyara Shop2", address, "+14164123123", "sayyara@gmail.com");
 
-        shopOwner = newShopOwner();
-        shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shopOwner = shopOwnerRepository.save(shopOwner);
+        shopOwner = saveHelper.save(newShopOwner());
 
     }
 
@@ -70,12 +58,13 @@ class ShopOwnerTest {
 
     @Test
     void checkShopsUnique() {
-        ShopOwner shopOwner1 = newShopOwner();
+        Address address2 = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
+        Shop shop2 = new Shop("Sayyara Shop2", address2, "416-412-3125", "sayyara2@gmail.com");
+        ShopOwner shopOwner1 = new ShopOwner("abc", "Bob", "bob3@gmail.com", "416-123-1235", "bob12346", "Password1!", shop2);
         try {
-            shopOwner = saveHelper.saveAndFlush(shopOwner, shop, address);
-            shopOwner1 = saveHelper.saveAndFlush(shopOwner1, shop, address);
+            shopOwner1 = saveHelper.save(shopOwner1);
             fail("Shops are the same and app doesn't crash: \n\t" + shopOwner + "\n\t" + shopOwner1);
-        } catch (DataIntegrityViolationException ignored) {
+        } catch (ViolatedConstraintException ignored) {
             assertThat(shopOwner1).isNotNull();
             assertThat(shopOwner).isNotNull();
         }
@@ -88,7 +77,7 @@ class ShopOwnerTest {
 
     @Test
     void checkRoleExists() {
-        assertThat(shopOwner.getRoles().stream().findFirst().orElseThrow().getName()).isEqualTo(RoleEnum.SHOP_OWNER);
+        assertThat(shopOwner.getRoles().size()).isEqualTo(1);
     }
 
     @Test

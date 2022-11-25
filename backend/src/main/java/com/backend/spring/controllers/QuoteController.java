@@ -1,22 +1,20 @@
 package com.backend.spring.controllers;
 
 import com.backend.spring.entities.Quote;
+import com.backend.spring.exceptions.InvalidDataException;
 import com.backend.spring.services.QuoteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -24,38 +22,36 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RestController
 @CrossOrigin
 @RequestMapping(path = "quotes")
+@RequiredArgsConstructor
 public class QuoteController {
-    private final QuoteService service;
-
-    @Autowired
-    public QuoteController(QuoteService service) {
-        this.service = service;
-    }
+    private final QuoteService quoteService;
 
     @GetMapping
     public ResponseEntity<List<Quote>> getAllQuotes(@RequestHeader(AUTHORIZATION) String authorizationHeader) {
-        return ResponseEntity.ok(service.getAllQuotes(authorizationHeader));
+        return ResponseEntity.ok(quoteService.getAllQuotes(authorizationHeader));
     }
 
     @GetMapping(path = "{quoteId}")
     public ResponseEntity<Quote> getQuote(@PathVariable long quoteId) {
-        return ResponseEntity.ok(service.getQuote(quoteId));
+        return ResponseEntity.ok(quoteService.getQuote(quoteId));
     }
 
-    @PostMapping
-    public Quote createQuote(@RequestBody Quote quote) {
-        return service.createQuote(quote);
+    @DeleteMapping(path = "{quoteId}")
+    public void deleteQuote(@PathVariable long quoteId) {
+        quoteService.deleteQuote(quoteId);
     }
 
-    @DeleteMapping(path = "{quote_id}")
-    public void deleteQuote(@PathVariable("quote_id") long id) {
-        service.deleteQuote(id);
+    @PatchMapping(path = "{quoteId}")
+    public ResponseEntity<Quote> updateQuote(@PathVariable long quoteId,
+                                             @RequestBody QuoteInfo quoteInfo) {
+        if (quoteInfo.price == null && quoteInfo.status == null)
+            return ResponseEntity.noContent().build();
+        if (quoteInfo.price == null)
+            return ResponseEntity.ok(quoteService.updateQuoteStatus(quoteId, quoteInfo.status));
+        if (quoteInfo.status == null)
+            return ResponseEntity.ok(quoteService.updateQuotePrice(quoteId, quoteInfo.price));
+        throw new InvalidDataException("Invalid data. Must provide either price or status.");
     }
 
-    @PutMapping(path = "{quote_id}")
-    public void updateQuote(@PathVariable("quote_id") Long id,
-                            @RequestParam(required = false) Double price,
-                            @RequestParam(required = false) LocalDateTime expiryDate) {
-        service.updateQuote(id, price, expiryDate);
-    }
+    private record QuoteInfo(String status, Double price){}
 }
