@@ -2,6 +2,7 @@ import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid"
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ROOT } from "../utilities/constants";
+import useAuthFetch from "../utilities/hooks/useAuthFetch";
 import { APIError, Quote, VehicleOwner } from "../utilities/interfaces";
 import { mQuote } from "../utilities/mockData";
 
@@ -44,6 +45,7 @@ const columns: GridColDef[] = [
 
 const VehicleOwnerQuotes = () => {
     let navigate = useNavigate();
+    const { authFetch } = useAuthFetch()
     const [quotes, setQuotes] = useState<Quote[]>([])
 
     useEffect(() => {
@@ -52,7 +54,7 @@ const VehicleOwnerQuotes = () => {
             let newQuotes: Quote[] = []
             for (var id of ids) {
                 console.log(API_ROOT + "/quotes/" + id)
-                const res = await fetch(API_ROOT + "/quotes/" + id, {
+                const res = await authFetch(API_ROOT + "/quotes/" + id, {
                     method: "GET",
                 })
     
