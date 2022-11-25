@@ -5,7 +5,7 @@ import com.backend.spring.entities.ShopOwner;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.RoleRepository;
 import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.validators.AppUserValidator;
+import com.backend.spring.validators.ShopOwnerValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +47,7 @@ public class ShopOwnerSaveHelper {
 
     private void setShopOwner(ShopOwner shopOwner) {
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        new AppUserValidator(shopOwner).validate(); // validate before encrypting password
+        new ShopOwnerValidator(shopOwner).validate(); // validate before encrypting password
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
     }
 }

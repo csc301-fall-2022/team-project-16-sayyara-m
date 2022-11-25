@@ -8,14 +8,8 @@ import java.time.LocalDateTime;
 public class QuoteValidator implements Validator {
     private final Quote quote;
 
-    private final VehicleOwnerValidator vehicleOwnerValidator;
-
-    private final ServiceValidator serviceValidator;
-
     public QuoteValidator(Quote quote) {
         this.quote = quote;
-        this.vehicleOwnerValidator = new VehicleOwnerValidator(quote.getVehicleOwner());
-        this.serviceValidator = new ServiceValidator(quote.getService());
     }
 
     @Override
@@ -27,11 +21,11 @@ public class QuoteValidator implements Validator {
     }
 
     private void validateService() {
-        serviceValidator.validate();
+        new ServiceValidator(quote.getService()).validate();
     }
 
     private void validateVehicleOwner() {
-        vehicleOwnerValidator.validate();
+        new VehicleOwnerValidator(quote.getVehicleOwner()).validate();
     }
 
     private void validateExpiryTime() {

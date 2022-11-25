@@ -3,14 +3,11 @@ package com.backend.spring.validators;
 import com.backend.spring.entities.AppUser;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 
-public class AppUserValidator implements Validator {
+class AppUserValidator implements Validator {
     private final AppUser appUser;
 
-    private final UserInfoValidator userInfoValidator;
-
-    public AppUserValidator(AppUser appUser) {
+    AppUserValidator(AppUser appUser) {
         this.appUser = appUser;
-        this.userInfoValidator = new UserInfoValidator(appUser);
     }
 
     /**
@@ -20,7 +17,11 @@ public class AppUserValidator implements Validator {
     public void validate() {
         validateUsername();
         validatePassword();
-        userInfoValidator.validate();
+        validateUserInfo();
+    }
+
+    private void validateUserInfo() {
+        new UserInfoValidator(appUser).validate();
     }
 
     private void validateUsername() {
