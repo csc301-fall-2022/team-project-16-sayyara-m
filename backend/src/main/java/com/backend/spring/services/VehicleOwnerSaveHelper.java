@@ -37,6 +37,7 @@ public class VehicleOwnerSaveHelper {
     }
 
     private void setVehicleOwner(VehicleOwner vehicleOwner) {
+        new VehicleOwnerValidator(vehicleOwner).validate();
         vehicleOwner.getVehicle().setOwner(vehicleOwner);
     }
 }
