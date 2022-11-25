@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -37,14 +38,15 @@ public class Quote {
 
     @ToString.Exclude
     @JsonProperty(access = WRITE_ONLY)
-    @ManyToOne(optional = false, cascade = MERGE)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
+
     @ManyToOne(cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
 
-    @ManyToOne
+    @ManyToOne(cascade = ALL)
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
 

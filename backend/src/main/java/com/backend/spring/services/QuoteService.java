@@ -3,6 +3,8 @@ package com.backend.spring.services;
 import com.backend.spring.entities.Quote;
 import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.QuoteRepository;
+import com.backend.spring.repositories.ShopRepository;
+import com.backend.spring.repositories.VehicleOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +25,6 @@ public class QuoteService {
 
     public Quote getQuote(long id) {
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
-    }
-
-    public Quote createQuote(Quote quote) {
-        return repository.save(quote);
     }
 
     public void deleteQuote(long id) {
