@@ -16,6 +16,7 @@ public class AppUserValidator implements Validator {
     /**
      * Validates the first name, last name, username, email, and password of the shop owner.
      */
+    @Override
     public void validate() {
         validateUsername();
         validatePassword();
