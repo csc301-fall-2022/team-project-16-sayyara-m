@@ -1,8 +1,6 @@
 package com.backend.spring.services;
 
-import com.backend.spring.entities.Address;
 import com.backend.spring.entities.RoleEnum;
-import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.ShopOwner;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.RoleRepository;
@@ -42,13 +40,11 @@ public class ShopOwnerSaveHelper {
      * Also assigns the vehicle owner to the vehicle and the vehicle to the vehicle owner.
      *
      * @param shopOwner Shop Owner to save
-     * @param shop      Shop to assign to the shop owner
-     * @param address   address to assign to the shop of this shop owner
      * @return Shop Owner after successfully saving
      */
-    public ShopOwner save(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) throws ViolatedConstraintException {
+    public ShopOwner save(@NonNull ShopOwner shopOwner) throws ViolatedConstraintException {
         try {
-            setShopOwner(shopOwner, shop, address);
+            setShopOwner(shopOwner);
             return shopOwnerRepository.save(shopOwner);
         } catch (DataIntegrityViolationException ex) {
             String msg = ex.getMessage();
@@ -88,22 +84,8 @@ public class ShopOwnerSaveHelper {
         return stringBuilder.toString();
     }
 
-    /**
-     * Mainly used for testing
-     * <p>
-     * Flushing allows for insertions to take place right away in the middle of a transaction, which allows
-     * for easier testing of database constraint violations.
-     */
-    ShopOwner saveAndFlush(@NonNull ShopOwner shopOwner, @NonNull Shop shop, @NonNull Address address) {
-        setShopOwner(shopOwner, shop, address);
-        return shopOwnerRepository.saveAndFlush(shopOwner);
-    }
-
-    private void setShopOwner(ShopOwner shopOwner, Shop shop, Address address) {
+    private void setShopOwner(ShopOwner shopOwner) {
         shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
-        shopOwner.setShop(shop);
-        shop.setAddress(address);
-        shop.setShopOwner(shopOwner);
         new AppUserValidator(shopOwner).validate(); // validate before encrypting password
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
     }

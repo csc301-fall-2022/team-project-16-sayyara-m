@@ -487,10 +487,10 @@ components:
           format: int64
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
-        startDate:
+        startTime:
           type: string
           format: date-time
-        endDate:
+        endTime:
           type: string
           format: date-time
         duration:

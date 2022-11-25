@@ -28,13 +28,13 @@ public class ShopOwnerService {
     }
 
     public void saveShopOwner(ShopOwner shopOwner) throws ViolatedConstraintException {
-        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+        shopOwnerSaveHelper.save(shopOwner);
     }
 
     public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) throws ViolatedConstraintException, InvalidDataException {
         ShopOwner shopOwner = shopOwnerRetriever.getShopOwner(authorization);
         appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO);
-        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+        shopOwnerSaveHelper.save(shopOwner);
         return appUserDTOTransfer.appUsertoDTO(shopOwner);
     }
 
