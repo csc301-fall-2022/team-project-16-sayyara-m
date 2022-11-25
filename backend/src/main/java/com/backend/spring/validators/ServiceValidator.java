@@ -3,10 +3,10 @@ package com.backend.spring.validators;
 import com.backend.spring.entities.Service;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 
-public class ServiceValidator implements Validator {
+class ServiceValidator implements Validator {
     private final Service service;
 
-    public ServiceValidator(Service service) {
+    ServiceValidator(Service service) {
         this.service = service;
     }
 
