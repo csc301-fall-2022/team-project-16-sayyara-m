@@ -3,7 +3,11 @@ package com.backend.spring.entities;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum QuoteStatus {
-    ACCEPTED("Accepted"), REJECTED("Rejected"), EXPIRED("Expired"), PENDING("Pending");
+    PENDING_REVIEW("Pending Review"),
+    PENDING_APPROVAL("Pending Approval"),
+    ACCEPTED("Accepted"),
+    REJECTED("Rejected"),
+    EXPIRED("Expired");
 
     private final String status;
 
@@ -13,7 +17,7 @@ public enum QuoteStatus {
 
     public static QuoteStatus getStatus(String status) {
         for (QuoteStatus s : QuoteStatus.values()) {
-            if (s.name().equalsIgnoreCase(status)) {
+            if (s.name().replace('_', ' ').equalsIgnoreCase(status)) {
                 return s;
             }
         }

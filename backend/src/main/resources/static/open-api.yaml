@@ -306,22 +306,22 @@ paths:
       operationId: updateQuoteStatus
       summary: Update Status of a Quote
       description: "Update the status of a Quote determined by its `quoteId`.
-      Quote must be associated to the current shop.
-      Viable statuses currently are {`PENDING`, `ACCEPTED`, `REJECTED`, `EXPIRED`} case insensitive."
-      security:
-        - bearerAuth: [ ]
-      parameters:
-        - name: quoteId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      Viable statuses currently are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/Quote"
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - Pending Approval
+                    - Pending Review
+                    - Accepted
+                    - Rejected
+                    - Expired
+              required: true
         required: true
       responses:
         '200':
@@ -333,7 +333,7 @@ paths:
         '400':
           $ref: "#/components/responses/InvalidData"
         '404':
-          description: Quote associated with the id not found, or Quote does not exist within this shop.
+          description: Quote associated with the id not found
           content:
             "application/json":
               schema:
@@ -622,6 +622,16 @@ components:
             - ACCEPTED
             - DECLINED
             - EXPIRED
+    Service:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        defaultPrice:
+          type: number
+          format: double
     Shop:
       type: object
       properties:
