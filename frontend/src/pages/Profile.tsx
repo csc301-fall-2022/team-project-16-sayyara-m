@@ -8,17 +8,18 @@ import ChangePasswordPage from '../components/Profile/ChangePasswordPage';
 import ShopInfoPage from '../components/Profile/ShopInfoPage';
 import EditShopPage from "../components/Profile/EditShopPage";
 import { mShop, mShopOwner } from "../utilities/mockData";
+import useAuthFetch from "../utilities/hooks/useAuthFetch";
 
 const Profile = () => {
 
     const { auth } = useAuth();
+    const { authFetch } = useAuthFetch()
     const [isOldPasswordIncorrect, setIsOldPasswordIncorrect] = useState<boolean>(false)
     const [isEditingProfile, setEditingProfile] = useState<boolean>(false)
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
     const [isViewingShop, setIsViewingShop] = useState<boolean>(false)
     const [isEditingShop, setIsEditingShop] = useState<boolean>(false)
-    // For now, we're giving the user and shop info some mock data as the server calls
-    // implementation hasn't been completed as of yet
+    
     const [userInfo, setUserInfo] = useState< {
         firstName: string;
         lastName: string;
@@ -43,7 +44,7 @@ const Profile = () => {
     // Fetch shop owner and shop data from server
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch(API_ROOT + "/shopOwner", {
+            const res = await authFetch(API_ROOT + "/shopOwner", {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${auth}`,
@@ -81,7 +82,7 @@ const Profile = () => {
     const saveUserInfo = (newUserInfo: {firstName: string; lastName: string; username: string; email: string; phoneNumber: string}) => {
         setEditingProfile(false)
         const saveInfo = async () => {
-            const res = await fetch(API_ROOT + "/shopOwner", {
+            const res = await authFetch(API_ROOT + "/shopOwner", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ const Profile = () => {
     // Save user's new password to server
     const saveUserPassword = (oldPassword: string, newPassword: string) => {
         const savePassword = async () => {
-            const res = await fetch(API_ROOT + "/shopOwner/password", {
+            const res = await authFetch(API_ROOT + "/shopOwner/password", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -151,7 +152,7 @@ const Profile = () => {
     const saveShopInfo = (newShopInfo: {id: number, name: string, address: {streetNumber: string, street: string, city: string, province: string, postalCode: string}, email: string; phoneNumber: string;}) => {
         setIsEditingShop(false)
         const saveShop = async () => {
-            const res = await fetch(API_ROOT + "/shop", {
+            const res = await authFetch(API_ROOT + "/shop", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
