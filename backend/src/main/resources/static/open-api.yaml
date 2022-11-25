@@ -5,9 +5,9 @@ info:
   version: v0
   description: "# How to Authenticate
   \n\nThis API uses Bearer/Token authentication to authenticate a user that is logged in. Once successfully logged in using the `/api/user/login` endpoint, you will receive a JWT `access_token` and `refresh_token`. Both tokens are encrypted and contain information about the user like their username, and can be decrypted by the backend to retrieve that information.
-  
+
   \n\nWhen accessing an endpoint that requires a user's info, you can just pass in the JWT access token using the header `Authorization: \"Bearer <token>\"`. The API will decrypt the `access_token` and retrieve the username and use that to get data for the specific user. This way, you don't need to pass in any information about the user through a parameter or request body.
-  
+
   \n\n For security reasons, the `access_token` will expire every few minutes, and will need to be refreshed. To refresh the token, pass in the `refresh_token` to the endpoint `/api/token/refresh` (see below), which will give you a new `access_token`.\n\n
   **Note:** The lock icon on the right side of each endpoint indicates that this endpoint can only be accessed by an authorized Shop Owner, meaning that an access token must be passed from the `Authorization` header. Likewise, an endpoint without the lock can be accessed by a user that isn't logged in."
 paths:
@@ -303,94 +303,16 @@ paths:
     patch:
       tags:
         - Quotes
-      operationId: updateQuote
-      summary: Update either the status or the price of a Quote
-      description: "Update the quote determined by its `quoteId` with either a new status, or a price.\n\n
-      **Note:** Only the status or the price can be updated at a time. If both are provided, there will be an error.\n\n 
-      Once the price is updated, the status of this quote will automatically be set to `Pending Approval`.\n\n
-      Viable statuses are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                price:
-                  required: false
-                  type: number
-                  format: double
-                  example: 49.99
-                status:
-                  type: string
-                  enum:
-                    - Pending Approval
-                    - Pending Review
-                    - Accepted
-                    - Rejected
-                    - Expired
-              required: false
-        required: true
-      responses:
-        '200':
-          description: Successfully updated Quote status
-          content:
-            "application/json":
-              schema:
-                "$ref": "#/components/schemas/Quote"
-        204:
-          description: No content was provided. Nothing was updated
-        '400':
-          description: Invalid data passed. Remember to either pass in a price or a status, but not both at the same time.
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/InvalidDataError"
-        '404':
-          description: Quote associated with the id not found
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/DataNotFoundError"
-
-  /api/vehicleOwner/{vehicleOwnerId}/quotes:
-    get:
-      tags:
-        - Vehicle Owner
-      operationId: getAllQuotesForVehicleOwner
-      summary: Get all Quotes for a Vehicle Owner
-      description: Get the list of all quotes associated to a Vehicle Owner determined by it's id
+      operationId: updateQuoteStatus
+      summary: Update Status of a Quote
+      description: "Update the status of a Quote determined by its `quoteId`.
+      Quote must be associated to the current shop.
+      Viable statuses currently are {`PENDING`, `ACCEPTED`, `REJECTED`, `EXPIRED`} case insensitive."
+      security:
+        - bearerAuth: [ ]
       parameters:
-        - name: vehicleOwnerId
+        - name: quoteId
           in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Successfully retrieved all Quotes
-          content:
-            "application/json":
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Quote"
-        '404':
-          description: Vehicle Owner associated with the id not found
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/DataNotFoundError"
-  /api/vehicleOwner/quotes:
-    post:
-      tags:
-        - Vehicle Owner
-      operationId: createQuote
-      summary: Create Quote
-      description: Create a new Quote for a Vehicle Owner or add it to an existing Vehicle Owner, determined by it's email.
-      parameters:
-        - name: shopId
-          in: query
           required: true
           schema:
             type: integer
@@ -402,8 +324,8 @@ paths:
               "$ref": "#/components/schemas/Quote"
         required: true
       responses:
-        '201':
-          description: Successfully created new Quote
+        '200':
+          description: Successfully updated Quote status
           content:
             "application/json":
               schema:
@@ -411,11 +333,13 @@ paths:
         '400':
           $ref: "#/components/responses/InvalidData"
         '404':
-          description: Shop owner associated with the id not found
+          description: Quote associated with the id not found, or Quote does not exist within this shop.
           content:
             "application/json":
               schema:
                 $ref: "#/components/schemas/DataNotFoundError"
+
+
 
 
   /api/vehicleOwner/{vehicleOwnerId}/quotes:
@@ -698,16 +622,6 @@ components:
             - ACCEPTED
             - DECLINED
             - EXPIRED
-    Service:
-      type: object
-      properties:
-        id:
-          type: number
-        name:
-          type: string
-        defaultPrice:
-          type: number
-          format: double
     Shop:
       type: object
       properties:

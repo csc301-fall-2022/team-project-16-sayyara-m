@@ -105,7 +105,7 @@ public class SetupConfig {
                 shops.add(shop);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
-                shopOwnerSaveHelper.save(shopOwner);
+                shopOwner = shopOwnerSaveHelper.save(shopOwner);
 
                 i++;
             }
