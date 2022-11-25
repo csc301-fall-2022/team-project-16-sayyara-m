@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { carModels } from "src/utilities/constants";
 import { serviceTypes } from "src/utilities/mockData";
+import { Calendar } from "@mantine/dates";
+
 interface FormData {
     firstName: string,
     lastName: string,
@@ -36,7 +38,7 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
         notes: "",
     }
     const [formData, setFormData] = useState<FormData>(initialForm);
-
+    const [availableDays, setAvailableDays] = useState<Date[]>([]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
         const newFormData: FormData = { ...formData, [changing]: e.target.value };
@@ -44,6 +46,7 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
     }
     console.log(formData.vehicleMake);
     console.log(formData.vehicleModel);
+    console.log(availableDays);
     const CarMakeDropdown = () => {
         // create drop down with all car makes
         return (
@@ -184,15 +187,32 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
                 <div className="">
                     <ServiceTypeDropDown />
                 </div>
+
+                {/* Calendar from Mantine */}
+                <label>Choose Availability</label>
+                <div>
+                    <Calendar
+                        multiple={true}
+                        value={availableDays}
+                        onChange={setAvailableDays}
+                        excludeDate={date => date < new Date()}
+
+                    />
+                </div>
+
+                {/* Additional Notes Section */}
                 <label className="align-top">Additional Notes: </label>
                 <div>
                     <textarea
-                        className="border-2 border-black w-full h-48 text-start"
+                        placeholder="Please provide a detailed descritpion of the work you need done. Especiialy if you are requesting a custom service."
+                        className="border-2 border-black w-full h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"
                     />
                 </div>
+
+                {/* Buttons to submit or cancel quote */}
                 <div className="flex justify-between">
                     <button
                         onClick={() => setVisibility(false)}

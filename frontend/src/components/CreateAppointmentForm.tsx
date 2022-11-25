@@ -1,3 +1,4 @@
+import { DatePicker, TimeRangeInput } from "@mantine/dates";
 import React, { useState } from "react";
 import { carModels } from "src/utilities/constants";
 import { serviceTypes } from "src/utilities/mockData";
@@ -36,6 +37,8 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
         notes: "",
     }
     const [formData, setFormData] = useState<FormData>(initialForm);
+    const [timeRange, setTimeRange] = useState<[Date, Date]>([new Date(), new Date()]);
+    const [day, setDay] = useState<Date | null>(new Date());
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
@@ -74,10 +77,16 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
         )
     }
     const ServiceTypeDropDown = () => {
+        // change to display services with fixed costs
         const options = serviceTypes.map(service => {
-            return (
-                <option value={service}>{service}</option>
-            )
+            if(service !== "Other") {
+                return (
+                    <option value={service}>{service}</option>
+                )
+            }
+
+            // return no option when the service is other, this form is for directly booking an appointment
+            return <></>;
         })
         return (
             <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
@@ -185,10 +194,16 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
                 <div className="">
                     <ServiceTypeDropDown />
                 </div>
+
+                {/* Choose date and time of appointment */}
+                <div>
+                    <DatePicker label="Appointment Date" excludeDate={date => date < new Date()} value={day} onChange={date => setDay(date)} />
+                    <TimeRangeInput format="12" label="Appointment Time" value={timeRange} onChange={setTimeRange}  />
+                </div>
                 <label className="align-top">Additional Notes: </label>
                 <div>
                     <textarea
-                        className="border-2 border-black w-full h-48 text-start"
+                        className="border-2 border-black w-full h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"

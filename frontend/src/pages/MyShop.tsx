@@ -13,7 +13,6 @@ interface QuoteCardProps {
 const MyShop = () => {
     // const { auth } = useAuth();
     const [shopOwner, setShopOwner] = useState<ShopOwner | null>(null);
-    const [error, setError] = useState<string>("");
     const [service, setService] = useState<string>("")
     const { authFetch } = useAuthFetch();
 
@@ -32,7 +31,6 @@ const MyShop = () => {
 
             const data: APIError = await res.json();
             console.log(data.message);
-            setError(data.message);
         }
         getShopOwner();
 
@@ -65,7 +63,7 @@ const MyShop = () => {
                     className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl">
                     <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">Price: ${quote.price}</p>
+                    <p className="whitespace-nowrap">Price: ${quote.price.toFixed(2)}</p>
                     <p className="whitespace-nowrap">Expires: {quote.expiryTime}</p>
                     <p className="whitespace-nowrap">{quote.serviceType}</p>
                 </div>
@@ -74,16 +72,14 @@ const MyShop = () => {
     }
     const generateAppointmentCards = () => {
         let appointments: Appointment[] | undefined = shopOwner?.shop.appointments;
-        if(appointments){
-            return appointments.map((ap, i) => {
-                return (
-                    <AppointmentCard key={ap.id + i}  ap={ap}/>
-                );
-            });
+        if (appointments){
+             return appointments?.map((ap, i) => {
+                    return (
+                        <AppointmentCard key={ap.id + i}  ap={ap}/>
+                    );
+                });
         }
-        else{
-            return <p className="text-red-400">{error}</p>;
-        }
+       return;
     }
     const generateQuoteCards = () => {
         let quotes: Quote[] = shopOwner?.shop.quotes || [];
