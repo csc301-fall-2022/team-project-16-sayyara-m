@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 @NoArgsConstructor
 @Entity
 @Table(name = "services")
-public class Service {
+public class Service { // TODO Jamie: Consider renaming class to avoid conflicts with SpringBoot "Service"
     @Id
     @SequenceGenerator(
             name = "service_sequence",
@@ -48,8 +48,9 @@ public class Service {
 
     private Double defaultPrice = null;
 
-    public Service(String name) {
+    public Service(String name, double defaultPrice) {
         this.name = name;
+        this.defaultPrice = defaultPrice;
     }
 
     @Override
