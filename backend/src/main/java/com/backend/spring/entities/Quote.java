@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -44,19 +44,28 @@ public class Quote {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
-    @ManyToOne(cascade = MERGE)
+    @Transient
+    @Getter(value = NONE)
+    private long shopId = -1L;
+
+    @ManyToOne(optional = false, cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
 
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
+
+    @Transient
+    @Getter(value = NONE)
+    private String serviceName;
 
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryTime = LocalDateTime.now().plusMonths(6);
 
     @Getter(value = NONE)
-    @NotNull
     private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
 
     private Double price = null;
@@ -77,5 +86,17 @@ public class Quote {
             this.quoteStatus = QuoteStatus.EXPIRED;
         }
         return quoteStatus;
+    }
+
+    public String getServiceName() {
+        if (service != null)
+            return service.getName();
+        return serviceName;
+    }
+
+    public long getShopId() {
+        if (shop != null)
+            return shop.getId();
+        return shopId;
     }
 }

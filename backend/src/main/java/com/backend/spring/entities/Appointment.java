@@ -15,10 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
@@ -40,19 +43,31 @@ public class Appointment {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
+    @Transient
+    @Getter(value = NONE)
+    private long shopId = -1L;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
+
     @Column(name = "start_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime startTime;
+
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime endTime;
 
-    @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = false)
     private Service service;
 
-    private Boolean wasQuote = false;
+    @Transient
+    @Getter(value = NONE)
+    private String serviceName;
+
+    private Boolean wasQuote;
 
     public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
         this.shop = shop;
@@ -60,5 +75,17 @@ public class Appointment {
         this.startTime = startTime;
         this.endTime = endTime;
         this.service = service;
+    }
+
+    public Long getShopId() {
+        if (shop != null)
+            return shop.getId();
+        return shopId;
+    }
+
+    public String getServiceName() {
+        if (service != null)
+            return service.getName();
+        return serviceName;
     }
 }
