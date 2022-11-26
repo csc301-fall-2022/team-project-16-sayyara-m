@@ -17,7 +17,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                 <CloseBtnSvg className='close-btn-svg'/>
                 </button>
                 <div className='text-xl sm:text-2xl font-semibold text-black mt-2 mr-8'>
-                    Quote Dialog Title
+                    Quote From <span className='font-semibold text-xl sm:text-2xl text-blue-800'>{props.quote.shopInfo.name}</span>
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 border-t mt-4 pt-4'>
                     <label className='font-semibold'>
@@ -26,10 +26,9 @@ function VehicleOwnerQuoteDialog(props: Props) {
                     <label className='hidden sm:block font-semibold'>
                         Price
                     </label>
-                    <div className='text-lg mr-2 transition duration-500 hover:text-blue-800 cursor-pointer'>
+                    <div className='text-lg'>
                         {props.quote.serviceName}
                     </div>
-                    {/* We have the phone number label twice due to grid reformats on mobile */}
                     <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
                         Price
                     </label>
@@ -44,10 +43,9 @@ function VehicleOwnerQuoteDialog(props: Props) {
                     <label className='hidden sm:block font-semibold'>
                         Expiry Time
                     </label>
-                    <div className='text-lg mr-2 transition duration-500 hover:text-blue-800 cursor-pointer'>
-                        {"Status"}
+                    <div className='text-lg'>
+                        {props.quote.status}
                     </div>
-                    {/* We have the phone number label twice due to grid reformats on mobile */}
                     <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
                         Expiry Time
                     </label>
@@ -57,6 +55,57 @@ function VehicleOwnerQuoteDialog(props: Props) {
                 </div>
                 <div className='mt-3 mb-3 font-semibold text-xl'>
                     Shop Info
+                </div>
+                <div className='grid grid-cols-1 sm:grid-cols-2'>
+                    <label className='font-semibold'>
+                        Phone Number
+                    </label>
+                    <label className='hidden sm:block font-semibold'>
+                        Email
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.phoneNumber}
+                    </div>
+                    <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
+                        Email
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.email}
+                    </div>
+                </div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 mt-2 pt-2'>
+                    <label className='font-semibold'>
+                        Address
+                    </label>
+                    <label className='hidden sm:block font-semibold'>
+                        City
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.address.streetNumber + ' ' + props.quote.shopInfo.address.street}
+                    </div>
+                    <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
+                        City
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.address.city}
+                    </div>
+                </div>
+                <div className='grid grid-cols-1 sm:grid-cols-2 mb-2 pt-2 mt-2'>
+                    <label className='font-semibold'>
+                        Province
+                    </label>
+                    <label className='hidden sm:block font-semibold'>
+                        Postal Code
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.address.province}
+                    </div>
+                    <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
+                        Postal Code
+                    </label>
+                    <div className='text-lg'>
+                        {props.quote.shopInfo.address.postalCode}
+                    </div>
                 </div>
             </div>
         </React.Fragment>

@@ -6,11 +6,13 @@ import { APIError, Quote, VehicleOwner } from "../utilities/interfaces";
 import { mQuote } from "../utilities/mockData";
 
 const columns: GridColDef[] = [
-    { field: 'firstName', headerName: 'First name', width: 200},
-    { field: 'lastName', headerName: 'Last name', width: 200 },
-    { field: 'price', headerName: 'Price', width: 100 },
-    { field: 'expiryTime', headerName: 'Expiry Time', width: 200 },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
+    { field: 'price', headerName: 'Price', width: 100 },
+    { field: 'status', headerName: 'Status', width: 200 },
+    { field: 'expiryTime', headerName: 'Expiry Time', width: 200 },
+    { field: 'shopName', headerName: 'Shop Name', width: 200, valueGetter(params) {
+        return (params.row.shopInfo.name)
+    } },
   ];
 
   const generateQuoteRows = (quotes: Quote[]) => {
@@ -35,7 +37,9 @@ const columns: GridColDef[] = [
             lastName: quoteVehicleOwner.lastName,
             price: quote.price ? `$${quote.price}` : 'N/A',
             expiryTime: new Date(quote.expiryDate).toLocaleString(),
-            serviceType: quote.serviceName
+            serviceType: quote.serviceName,
+            shopInfo: quote.shopInfo,
+            status: quote.status
         })
     }
     // Return rows to test with mock data
