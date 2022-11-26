@@ -68,7 +68,8 @@ export interface Quote {
     expiryDate: string,
     serviceName: string,
     status: "Pending Review" | "Pending Approval" | "Accepted" | "Declined" | "Expired",
-    shopInfo: ShopInfo
+    shopInfo: ShopInfo,
+    description: string
 }
 
 export interface APIError {
