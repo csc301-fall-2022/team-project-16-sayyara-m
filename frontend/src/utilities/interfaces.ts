@@ -67,7 +67,7 @@ export interface Quote {
     price: number,
     expiryDate: string,
     serviceName: string,
-    status: "Pending Review" | "Pending Approval" | "Accepted" | "Declined" | "Expired",
+    status: "Pending Review" | "Pending Approval" | "Accepted" | "Rejected" | "Expired",
     shopInfo: ShopInfo,
     description: string
 }
