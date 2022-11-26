@@ -741,6 +741,10 @@ components:
           type: string
         email:
           type: string
+        services:
+            type: array
+            items:
+                "$ref": "#/components/schemas/Service"
     AppUserDTO:
       type: object
       properties:
