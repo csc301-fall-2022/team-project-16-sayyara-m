@@ -45,10 +45,7 @@ const Profile = () => {
     useEffect(() => {
         const getData = async () => {
             const res = await authFetch(API_ROOT + "/shopOwner", {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${auth}`,
-                }
+                method: "GET"
             })
 
             if(res.ok){
@@ -85,8 +82,7 @@ const Profile = () => {
             const res = await authFetch(API_ROOT + "/shopOwner", {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${auth}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
                     newUserInfo
@@ -112,8 +108,7 @@ const Profile = () => {
             const res = await authFetch(API_ROOT + "/shopOwner/password", {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${auth}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     oldPassword: oldPassword,
@@ -155,8 +150,7 @@ const Profile = () => {
             const res = await authFetch(API_ROOT + "/shop", {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${auth}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
                     newShopInfo

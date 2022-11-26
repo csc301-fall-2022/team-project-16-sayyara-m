@@ -2,7 +2,6 @@ import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid"
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ROOT } from "../utilities/constants";
-import useAuthFetch from "../utilities/hooks/useAuthFetch";
 import { APIError, Appointment, VehicleOwner } from "../utilities/interfaces";
 import { mAppointment } from "../utilities/mockData";
 
@@ -55,7 +54,6 @@ const generateApptRows = (appointments: Appointment[]) => {
 
 const VehicleOwnerAppointments = () => {
     let navigate = useNavigate();
-    const { authFetch } = useAuthFetch()
     const [appointments, setAppointments] = useState<Appointment[]>([])
 
     useEffect(() => {
@@ -63,7 +61,7 @@ const VehicleOwnerAppointments = () => {
             let ids = [1, 2, 3]
             let newAppointments: Appointment[] = []
             for (var id of ids) {
-                const res = await authFetch(API_ROOT + "/appointments/" + id, {
+                const res = await fetch(API_ROOT + "/appointments/" + id, {
                     method: "GET",
                 })
     
