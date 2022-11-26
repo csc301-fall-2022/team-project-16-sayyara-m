@@ -16,14 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
-import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
@@ -52,10 +49,6 @@ public class Appointment {
     private LocalDateTime startTime;
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime endTime;
-    // endDate - startDate
-    @Transient
-    @Getter(NONE) // to override getter
-    private Duration duration;
 
     @OneToOne(cascade = MERGE)
     @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
@@ -71,14 +64,5 @@ public class Appointment {
         this.startTime = startTime;
         this.endTime = endTime;
         this.service = service;
-    }
-
-    /**
-     * duration = endDate - startDate
-     *
-     * @return difference between endDate and startDate for this appointment
-     */
-    public Duration getDuration() {
-        return Duration.between(startTime, endTime);
     }
 }

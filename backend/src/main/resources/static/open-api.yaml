@@ -573,9 +573,6 @@ components:
           type: string
         phoneNumber:
           type: string
-        username:
-          type: string
-          writeOnly: true
         vehicle:
           "$ref": "#/components/schemas/Vehicle"
     Address:
@@ -608,8 +605,6 @@ components:
         endTime:
           type: string
           format: date-time
-        duration:
-          type: string
         quote:
           "$ref": "#/components/schemas/Quote"
     Quote:
