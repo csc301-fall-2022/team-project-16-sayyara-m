@@ -21,7 +21,8 @@ public class AppointmentValidator implements Validator {
     }
 
     private void validateService() {
-        new ServiceValidator(appointment.getService()).validate();
+        if (appointment.getServiceName() == null || appointment.getServiceName().length() == 0)
+            throw new ViolatedConstraintException("Service name must be provided.");
     }
 
     private void validateVehicleOwner() {

@@ -21,7 +21,8 @@ public class QuoteValidator implements Validator {
     }
 
     private void validateService() {
-        new ServiceValidator(quote.getService()).validate();
+        if (quote.getServiceName() == null || quote.getServiceName().length() == 0)
+            throw new ViolatedConstraintException("Service name must be provided.");
     }
 
     private void validateVehicleOwner() {

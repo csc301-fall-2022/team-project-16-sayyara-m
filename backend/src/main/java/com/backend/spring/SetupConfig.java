@@ -86,7 +86,7 @@ public class SetupConfig {
             List<Service> services = new ArrayList<>();
             int i = 0;
             while (i < NUM_SERVICES) {
-                Service service = new Service(serviceNames[i], null);
+                Service service = new Service(serviceNames[i]);
                 services.add(service);
                 i++;
             }

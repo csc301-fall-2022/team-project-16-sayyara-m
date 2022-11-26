@@ -13,13 +13,13 @@ public class SaveErrorTrapper {
         try {
             return saveMethod.get();
         } catch (DataIntegrityViolationException ex) {
-            String msg = ex.getMessage();
             if (ex.getCause().getCause() instanceof SQLException e) {
                 if (e.getMessage().contains("Key")) {
-                    msg = formatErrorMessage(e.getMessage());
+                    String msg = formatErrorMessage(e.getMessage());
+                    throw new ViolatedConstraintException(msg);
                 }
             }
-            throw new ViolatedConstraintException(msg);
+            throw new RuntimeException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -33,12 +33,14 @@ public class SaveErrorTrapper {
     private String formatErrorMessage(String message) {
         StringBuilder stringBuilder = new StringBuilder(message.substring(message.indexOf("Key") + 4));
 
+        // replace '_' with ' ' before the '('
+        int index = stringBuilder.indexOf("(");
+        stringBuilder.replace(0, index, stringBuilder.substring(0, index).replace("_", " "));
         replaceCharacter(stringBuilder, '(', "");
         replaceCharacter(stringBuilder, ')', " ");
         replaceCharacter(stringBuilder, '(', "'");
         replaceCharacter(stringBuilder, ')', "'");
         replaceCharacter(stringBuilder, '=', "");
-        replaceCharacter(stringBuilder, '_', " ");
 
         stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
         return stringBuilder.toString();
