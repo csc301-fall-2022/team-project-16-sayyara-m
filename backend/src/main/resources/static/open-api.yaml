@@ -766,16 +766,13 @@ components:
         description:
           type: string
     QuoteStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - Pending Approval
-            - Pending Review
-            - Accepted
-            - Declined
-            - Expired
+      type: string
+      enum:
+        - Pending Approval
+        - Pending Review
+        - Accepted
+        - Declined
+        - Expired
     Service:
       type: object
       properties:
