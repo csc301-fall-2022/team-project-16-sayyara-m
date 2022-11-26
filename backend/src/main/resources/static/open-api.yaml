@@ -626,6 +626,8 @@ components:
           type: string
         plate:
           type: string
+        registeredOwner:
+          type: string
     VehicleOwner:
       type: object
       properties:
@@ -742,9 +744,9 @@ components:
         email:
           type: string
         services:
-            type: array
-            items:
-                "$ref": "#/components/schemas/Service"
+          type: array
+          items:
+            "$ref": "#/components/schemas/Service"
     AppUserDTO:
       type: object
       properties:

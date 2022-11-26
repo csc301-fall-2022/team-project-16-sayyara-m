@@ -118,7 +118,7 @@ public class SetupConfig {
             List<VehicleOwner> vehicleOwners = new ArrayList<>();
             i = 0;
             while (i < NUM_VEHICLES) {
-                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i]);
+                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i], firstNames[i] + " " + lastNames[i]);
 
                 VehicleOwner vehicleOwner = new VehicleOwner(firstNames[i], lastNames[i], "vo_" + emails[i], canadianPhoneNumbers[i], vehicle);
 
