@@ -24,7 +24,7 @@ class VehicleOwnerTest {
 
     @BeforeEach
     void setUp() {
-        Vehicle vehicle = new Vehicle(2022, "Honda", "Civic", "1G1ZB5ST1GF285824", "ABC1234");
+        Vehicle vehicle = new Vehicle(2022, "Honda", "Civic", "1G1ZB5ST1GF285824", "ABC1234", "Bob Joe");
 
         vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", vehicle);
 

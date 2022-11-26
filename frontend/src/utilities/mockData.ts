@@ -14,20 +14,34 @@ export const mVehicleOwner: VehicleOwner = {
         plate: "bxmt 293"
     }
 }
+export const mAddress: Address = {
+    id: 1,
+    street: "Daemon Blvd",
+    streetNumber: "123",
+    postalCode: "M4B192",
+    province: "ON",
+    city: "Toronto"
+}
 export const mAppointment: Appointment = {
     id: 1,
+    shopId: 1,
     vehicleOwner: mVehicleOwner,
     startTime: "2022-11-15T15:45:00",
     endTime: "2022-11-15T15:45:00",
-    duration: 100
+    duration: 100,
+    wasQuote: false,
+    shopInfo: {shopId: 1, name: "Uths Garage", address: mAddress, email: "", phoneNumber: "+1 416 445 9898"},
+    serviceName: "Oil Change"
 }
 export const mQuote: Quote = {
     id: 1,
+    shopId: 1,
     vehicleOwner: mVehicleOwner,
     price: 120.00,
-    expiryTime: "2020-12-12",
-    status: "Pending",
-    service: {id: 1, name: "Oil Change", defaultPrice: 120.00,}
+    expiryDate: "2020-12-12",
+    status: "Pending Review",
+    serviceName: "Oil Change",
+    shopInfo: {shopId: 1, name: "Uths Garage", address: mAddress, email: "", phoneNumber: "+1 416 445 9898"}
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
@@ -43,14 +57,7 @@ const genereateQuotes = () => {
     }
     return quotes;
 }
-export const mAddress: Address = {
-    id: 1,
-    street: "Daemon Blvd",
-    streetNumber: "123",
-    postalCode: "M4B192",
-    province: "ON",
-    city: "Toronto"
-}
+
 export const mShop: Shop = {
     id: 1,
     name: "Uths Garage",
@@ -58,7 +65,8 @@ export const mShop: Shop = {
     phoneNumber: "+1 416 445 9898",
     email: "123uth@gmail.com",
     appointments: generateAppointments(),
-    quotes: genereateQuotes()
+    quotes: genereateQuotes(),
+    services: [{id: 1, name: "Oil Change", defaultPrice: 120.00,}]
 }
 export const mShopOwner: ShopOwner = {
     id: 1,

@@ -23,7 +23,8 @@ export interface Shop {
     email: string,
     phoneNumber: string,
     appointments: Appointment[]
-    quotes: Quote[]
+    quotes: Quote[],
+    services: Service[]
 }
 
 export interface ShopOwner extends User {
@@ -35,7 +36,7 @@ export interface Vehicle {
     model: string,
     vin: string,
     plate: string,
-    owner?: string
+    registerdOwner?: string
 }
 
 export interface VehicleOwner extends User {
@@ -44,11 +45,15 @@ export interface VehicleOwner extends User {
 
 export interface Appointment {
     id: number,
+    shopId: number,
     vehicleOwner: VehicleOwner,
     quote?: Quote,
     startTime: string,
     endTime: string,
-    duration?: number
+    duration?: number,
+    wasQuote: boolean,
+    shopInfo: ShopInfo,
+    serviceName: string
 }
 export interface Service {
     id: number,
@@ -57,13 +62,23 @@ export interface Service {
 }
 export interface Quote {
     id: number,
+    shopId: number,
     vehicleOwner: VehicleOwner,
     price: number,
-    expiryTime: string,
-    service: Service,
-    status: "Accepted" | "Declined" | "Pending" | "Expired",
+    expiryDate: string,
+    serviceName: string,
+    status: "Pending Review" | "Pending Approval" | "Accepted" | "Declined" | "Expired",
+    shopInfo: ShopInfo
 }
 
 export interface APIError {
     message: string
 }
+
+export interface ShopInfo {
+    shopId: number,
+    name: string,
+    address: Address,
+    email: string,
+    phoneNumber: string
+  }

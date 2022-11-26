@@ -23,7 +23,7 @@ const columns: GridColDef[] = [
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
             price: `$${mQuote.price}`,
-            expiryTime: new Date(mQuote.expiryTime).toLocaleString(),
+            expiryTime: new Date(mQuote.expiryDate).toLocaleString(),
             service: {id: 1, name: "Oil Change", defaultPrice: 120.00}
         });
     }
@@ -34,8 +34,8 @@ const columns: GridColDef[] = [
             firstName: quoteVehicleOwner.firstName,
             lastName: quoteVehicleOwner.lastName,
             price: quote.price ? `$${quote.price}` : 'N/A',
-            expiryTime: new Date(quote.expiryTime).toLocaleString(),
-            serviceType: quote.service.name
+            expiryTime: new Date(quote.expiryDate).toLocaleString(),
+            serviceType: "Oil Change"
         })
     }
     // Return rows to test with mock data

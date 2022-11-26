@@ -28,13 +28,13 @@ public class VehicleOwnerService {
                 .getQuotes();
     }
 
-    public Quote createQuote(Quote quote, long shopId) {
+    public Quote createQuote(Quote quote) {
         new QuoteValidator(quote).validate();
 
-        Shop shop = shopRepository.findById(shopId)
-                .orElseThrow(() -> new DataNotFoundException("Shop with id " + shopId + " not found."));
-
+        Shop shop = shopRepository.findById(quote.getShopId())
+                .orElseThrow(() -> new DataNotFoundException("Shop with id " + quote.getShopId() + " not found."));
         quote.setShop(shop);
+        quote.setService(new com.backend.spring.entities.Service(quote.getServiceName()));
 
         VehicleOwner vehicleOwner = vehicleOwnerRepository
                 .findByEmail(quote.getVehicleOwner().getEmail())

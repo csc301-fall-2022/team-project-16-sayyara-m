@@ -16,24 +16,25 @@ public class QuoteValidator implements Validator {
     public void validate() {
         validateVehicleOwner();
         validateService();
-        validateExpiryTime();
+        validateExpiryDate();
         validatePrice();
     }
 
     private void validateService() {
-        new ServiceValidator(quote.getService()).validate();
+        if (quote.getServiceName() == null || quote.getServiceName().length() == 0)
+            throw new ViolatedConstraintException("Service name must be provided.");
     }
 
     private void validateVehicleOwner() {
         new VehicleOwnerValidator(quote.getVehicleOwner()).validate();
     }
 
-    private void validateExpiryTime() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime expiryTime = quote.getExpiryTime();
+    private void validateExpiryDate() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime expiryDate = quote.getExpiryDate();
 
-        if (expiryTime.isBefore(currentTime))
-            throw new ViolatedConstraintException("Quote expiry time must be after the current time.");
+        if (expiryDate.isBefore(currentDate))
+            throw new ViolatedConstraintException("Quote expiry date must be after the current date.");
     }
 
     private void validatePrice() {

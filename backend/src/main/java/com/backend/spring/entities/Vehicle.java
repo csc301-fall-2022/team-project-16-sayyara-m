@@ -56,11 +56,14 @@ public class Vehicle {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner owner;
 
-    public Vehicle(int year, String make, String model, String vin, String plate) {
+    private String registeredOwner;
+
+    public Vehicle(int year, String make, String model, String vin, String plate, String registeredOwner) {
         this.year = year;
         this.make = make;
         this.model = model;
         this.vin = vin;
         this.plate = plate;
+        this.registeredOwner = registeredOwner;
     }
 }
