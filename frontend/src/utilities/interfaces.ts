@@ -34,7 +34,8 @@ export interface Vehicle {
     make: string,
     model: string,
     vin: string,
-    plate: string
+    plate: string,
+    owner?: string
 }
 
 export interface VehicleOwner extends User {
