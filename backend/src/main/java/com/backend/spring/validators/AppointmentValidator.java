@@ -14,15 +14,10 @@ public class AppointmentValidator implements Validator {
 
     @Override
     public void validate() {
-        validateQuote();
         validateVehicleOwner();
         validateService();
         validateStartTime();
         validateEndTime();
-    }
-
-    private void validateQuote() {
-        new QuoteValidator(appointment.getQuote()).validate();
     }
 
     private void validateService() {

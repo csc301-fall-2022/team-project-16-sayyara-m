@@ -557,8 +557,6 @@ components:
           type: string
         plate:
           type: string
-        owner:
-          "$ref": "#/components/schemas/VehicleOwner"
     VehicleOwner:
       type: object
       properties:
@@ -605,6 +603,9 @@ components:
         endTime:
           type: string
           format: date-time
+        wasQuote:
+          type: boolean
+          default: false
         quote:
           "$ref": "#/components/schemas/Quote"
     Quote:
@@ -626,10 +627,13 @@ components:
         status:
           type: string
           enum:
-            - PENDING
-            - ACCEPTED
-            - DECLINED
-            - EXPIRED
+            - Pending Approval
+            - Pending Review
+            - Accepted
+            - Declined
+            - Expired
+        description:
+          type: string
     Service:
       type: object
       properties:

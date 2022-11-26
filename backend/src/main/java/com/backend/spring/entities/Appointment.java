@@ -13,13 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
@@ -50,13 +48,11 @@ public class Appointment {
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime endTime;
 
-    @OneToOne(cascade = MERGE)
-    @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
-    private Quote quote;
-
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
+
+    private Boolean wasQuote = false;
 
     public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
         this.shop = shop;
