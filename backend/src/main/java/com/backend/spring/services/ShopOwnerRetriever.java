@@ -2,6 +2,7 @@ package com.backend.spring.services;
 
 import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.ShopOwner;
+import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.exceptions.InvalidDataException;
 import com.backend.spring.repositories.ShopOwnerRepository;
 import com.backend.spring.security.AuthHeaderParser;
@@ -20,7 +21,7 @@ class ShopOwnerRetriever {
     ShopOwner getShopOwner(String authorization) throws InvalidDataException {
         String username = new AuthHeaderParser(authorization).getUsername();
 
-        return shopOwnerRepository.findByUsername(username);
+        return shopOwnerRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("Shop Owner with username " + username + " not found"));
     }
 
     Shop getShop(String authorization) throws InvalidDataException {

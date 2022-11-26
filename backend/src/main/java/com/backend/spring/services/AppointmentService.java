@@ -3,8 +3,6 @@ package com.backend.spring.services;
 import com.backend.spring.entities.Appointment;
 import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.AppointmentRepository;
-import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +15,10 @@ import java.util.List;
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
-    private final ShopOwnerRepository shopOwnerRepository;
+    private final ShopOwnerRetriever shopOwnerRetriever;
 
     public List<Appointment> getAllAppointments(String authorization) {
-        String username = new AuthHeaderParser(authorization).getUsername();
-
-        return shopOwnerRepository.findByUsername(username).getShop().getAppointments();
+        return shopOwnerRetriever.getShop(authorization).getAppointments();
     }
 
     public Appointment getAppointment(long id) throws DataNotFoundException {
@@ -42,11 +38,11 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(IllegalStateException::new);
 
         if (startDate != null) {
-            appointment.setStartDate(startDate);
+            appointment.setStartTime(startDate);
         }
 
         if (endDate != null) {
-            appointment.setStartDate(endDate);
+            appointment.setStartTime(endDate);
         }
     }
 }

@@ -6,8 +6,6 @@ import com.backend.spring.entities.ShopOwner;
 import com.backend.spring.exceptions.InvalidDataException;
 import com.backend.spring.exceptions.InvalidPasswordException;
 import com.backend.spring.exceptions.ViolatedConstraintException;
-import com.backend.spring.repositories.ShopOwnerRepository;
-import com.backend.spring.security.AuthHeaderParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,15 @@ public class ShopOwnerService {
     public ShopOwner getShopOwner(String authorization) throws InvalidDataException {
         return shopOwnerRetriever.getShopOwner(authorization);
     }
+
     public void saveShopOwner(ShopOwner shopOwner) throws ViolatedConstraintException {
-        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+        shopOwnerSaveHelper.save(shopOwner);
     }
 
     public AppUserDTO updateShopOwner(AppUserDTO appUserDTO, String authorization) throws ViolatedConstraintException, InvalidDataException {
         ShopOwner shopOwner = shopOwnerRetriever.getShopOwner(authorization);
         appUserDTOTransfer.DTOtoAppUser(shopOwner, appUserDTO);
-        shopOwnerSaveHelper.save(shopOwner, shopOwner.getShop(), shopOwner.getShop().getAddress());
+        shopOwnerSaveHelper.save(shopOwner);
         return appUserDTOTransfer.appUsertoDTO(shopOwner);
     }
 

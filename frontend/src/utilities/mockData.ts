@@ -17,8 +17,8 @@ export const mVehicleOwner: VehicleOwner = {
 export const mAppointment: Appointment = {
     id: 1,
     vehicleOwner: mVehicleOwner,
-    startDate: "2022-11-15T15:45:00",
-    endDate: "2022-11-15T15:45:00",
+    startTime: "2022-11-15T15:45:00",
+    endTime: "2022-11-15T15:45:00",
     duration: 100
 }
 export const mQuote: Quote = {
@@ -26,7 +26,7 @@ export const mQuote: Quote = {
     vehicleOwner: mVehicleOwner,
     price: 120.00,
     expiryTime: "2020-12-12",
-    serviceType: "Oil Change"
+    service: {id: 1, name: "Oil Change", defaultPrice: 120.00}
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
@@ -69,3 +69,6 @@ export const mShopOwner: ShopOwner = {
     shop: mShop
 }
 
+export const serviceTypes = ["Oil Change", "Tire Rotation", "Wiper Replacement", "Exterior Repair",
+    "Interior Repair", "Engine Repair", "Transmission Repair", "Brake Repair", "Suspension Repair",
+    "Electrical Repair", "Other"];

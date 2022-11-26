@@ -20,7 +20,7 @@ import static javax.persistence.FetchType.EAGER;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
