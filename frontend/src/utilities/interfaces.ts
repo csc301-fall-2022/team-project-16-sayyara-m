@@ -51,7 +51,9 @@ export interface Appointment {
     startTime: string,
     endTime: string,
     duration?: number,
-    wasQuote: boolean
+    wasQuote: boolean,
+    shopInfo: ShopInfo,
+    serviceName: string
 }
 export interface Service {
     id: number,
@@ -63,9 +65,10 @@ export interface Quote {
     shopId: number,
     vehicleOwner: VehicleOwner,
     price: number,
-    expiryTime: string,
-    service: Service,
-    status: "Accepted" | "Declined" | "Pending" | "Expired",
+    expiryDate: string,
+    serviceName: string,
+    status: "Pending Review" | "Pending Approval" | "Accepted" | "Declined" | "Expired",
+    shopInfo: ShopInfo
 }
 
 export interface APIError {

@@ -25,7 +25,7 @@ const MyShop = () => {
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">{ap.startTime.substring(0, 10)}</p>
                     <p className="whitespace-nowrap">{new Date(ap.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
-                    <p>{ap.quote?.service.name}</p>
+                    <p>{ap.quote?.serviceName}</p>
                 </div>
             </Link>
         )
@@ -40,8 +40,8 @@ const MyShop = () => {
                     <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
-                    <p className="whitespace-nowrap">Expires: {quote.expiryTime.substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{quote.service.name}</p>
+                    <p className="whitespace-nowrap">Expires: {quote.expiryDate.substring(0, 10)}</p>
+                    <p className="whitespace-nowrap">{quote.serviceName}</p>
                 </div>
             </Link>
         )
