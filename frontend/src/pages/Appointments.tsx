@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React  from "react";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import { Appointment, VehicleOwner } from "src/utilities/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useGetAllAppointments } from "src/utilities/hooks/api/useGetAllAppointments";
-import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
-// import { useNavigate } from "react-router-dom";
-// import useAuthFetch from "src/utilities/hooks/useAuthFetch";
-//plan is to use MUI to create a detailed data table of all the appointments for this user
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -53,22 +49,10 @@ const Appointments = () => {
     let navigate = useNavigate();
     const { appointments } = useGetAllAppointments();
 
-    // This is the state for managing the expanded details dialog. Empty string means no dialog is rendered.
-    // Otherwise, the string is set to the ID of the expanded appointment
-    const [selectedAptId, setSelectedAptId] = useState<string>("");
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
         console.log("row clicked");
         navigate(`/appointments/${params.id}`);
-    }
-
-    const renderDetailsDialog = () => {
-        // Render nothing if no appointment is currently selected
-        if (selectedAptId === "")
-            return(<></>);
-
-        // Render the details dialog component with the selected appointment ID
-        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId}/>);
     }
 
     return (
@@ -82,7 +66,6 @@ const Appointments = () => {
                 onRowClick={handleRowClick}
 
             />
-            {renderDetailsDialog()}
         </div>
     )
 }
