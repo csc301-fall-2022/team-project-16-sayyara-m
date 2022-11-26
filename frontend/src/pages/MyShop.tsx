@@ -41,7 +41,7 @@ const MyShop = () => {
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
                     <p className="whitespace-nowrap">Expires: {quote.expiryTime.substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{quote.serviceType}</p>
+                    <p className="whitespace-nowrap">{quote.service.name}</p>
                 </div>
             </Link>
         )
