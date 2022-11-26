@@ -41,7 +41,8 @@ export const mQuote: Quote = {
     expiryDate: "2020-12-12",
     status: "Pending Review",
     serviceName: "Oil Change",
-    shopInfo: {shopId: 1, name: "Uths Garage", address: mAddress, email: "", phoneNumber: "+1 416 445 9898"}
+    shopInfo: {shopId: 1, name: "Uths Garage", address: mAddress, email: "", phoneNumber: "+1 416 445 9898"},
+    description: "this is a description"
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
