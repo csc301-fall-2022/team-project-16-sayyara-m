@@ -15,11 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.GenerationType.SEQUENCE;
+import static lombok.AccessLevel.NONE;
 
 @Getter
 @Setter
@@ -37,22 +40,38 @@ public class Quote {
 
     @ToString.Exclude
     @JsonProperty(access = WRITE_ONLY)
-    @ManyToOne(optional = false, cascade = MERGE)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
+
     @ManyToOne(cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
-    private String service;
-    private Double price;
+
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    private Service service;
+
+    private Double price = null;
+
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryTime;
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, String service, Double price, LocalDateTime expiryTime) {
+    @Getter(value = NONE)
+    @NotNull
+    private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
+
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryTime) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
-        this.price = price;
         this.expiryTime = expiryTime;
+    }
+
+    public QuoteStatus getQuoteStatus() {
+        if (expiryTime.isBefore(LocalDateTime.now())) {
+            this.quoteStatus = QuoteStatus.EXPIRED;
+        }
+        return quoteStatus;
     }
 }

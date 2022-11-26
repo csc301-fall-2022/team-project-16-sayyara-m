@@ -1,12 +1,8 @@
 package com.backend.spring.services;
 
+import com.backend.spring.entities.Vehicle;
 import com.backend.spring.entities.VehicleOwner;
 import com.backend.spring.repositories.VehicleOwnerRepository;
-import com.backend.spring.entities.Role;
-import com.backend.spring.entities.RoleEnum;
-import com.backend.spring.repositories.RoleRepository;
-import com.backend.spring.entities.Vehicle;
-import com.backend.spring.services.VehicleOwnerSaveHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +24,11 @@ class VehicleOwnerTest {
 
     @BeforeEach
     void setUp() {
+        Vehicle vehicle = new Vehicle(2022, "Honda", "Civic", "1G1ZB5ST1GF285824", "ABC1234");
 
-        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423");
+        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", vehicle);
 
-        Vehicle vehicle = new Vehicle(2022, "Honda", "Civic", "123456VIN", "ABC1234");
-
-        vehicleOwner = saveHelper.save(vehicleOwner, vehicle);
-
+        vehicleOwner = saveHelper.save(vehicleOwner);
     }
 
     @AfterEach

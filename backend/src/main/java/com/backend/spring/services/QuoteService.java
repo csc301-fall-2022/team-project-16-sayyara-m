@@ -1,19 +1,19 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.Quote;
+import com.backend.spring.entities.QuoteStatus;
 import com.backend.spring.exceptions.DataNotFoundException;
+import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.QuoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class QuoteService {
-    private final QuoteRepository repository;
+    private final QuoteRepository quoteRepository;
 
     private final ShopOwnerRetriever shopOwnerRetriever;
 
@@ -22,27 +22,25 @@ public class QuoteService {
     }
 
     public Quote getQuote(long id) {
-        return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
-    }
-
-    public Quote createQuote(Quote quote) {
-        return repository.save(quote);
+        return quoteRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Quote with id " + id + " not found."));
     }
 
     public void deleteQuote(long id) {
-        repository.deleteById(id);
+        quoteRepository.deleteById(id);
     }
 
-    @Transactional
-    public void updateQuote(long id, Double price, LocalDateTime expiryDate) {
-        Quote quote = repository.findById(id).orElseThrow(IllegalStateException::new);
+    public Quote updateQuoteStatus(long id, String status) {
+        Quote quote = getQuote(id);
+        if (!QuoteStatus.isValid(status))
+            throw new ViolatedConstraintException("Quote status " + status + " is not valid.");
+        quote.setQuoteStatus(QuoteStatus.getStatus(status));
+        return quoteRepository.save(quote);
+    }
 
-        if (price != null) {
-            quote.setPrice(price);
-        }
-
-        if (expiryDate != null) {
-            quote.setExpiryTime(expiryDate);
-        }
+    public Quote updateQuotePrice(long quoteId, Double price) {
+        Quote quote = getQuote(quoteId);
+        quote.setPrice(price);
+        quote.setQuoteStatus(QuoteStatus.PENDING_APPROVAL);
+        return quoteRepository.save(quote);
     }
 }
