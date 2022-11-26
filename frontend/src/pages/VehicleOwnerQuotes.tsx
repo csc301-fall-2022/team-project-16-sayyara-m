@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import VehicleOwnerQuoteDialog from "../components/VehicleOwnerQuoteDialog/VehicleOwnerQuoteDialog";
 import { API_ROOT } from "../utilities/constants";
 import { APIError, Quote, VehicleOwner } from "../utilities/interfaces";
 import { mQuote } from "../utilities/mockData";
@@ -43,8 +43,8 @@ const columns: GridColDef[] = [
 }
 
 const VehicleOwnerQuotes = () => {
-    let navigate = useNavigate();
     const [quotes, setQuotes] = useState<Quote[]>([])
+    const [selectedQuoteId, setSelectedQuoteId] = useState<number>(-1);
 
     useEffect(() => {
         const getData = async () => {
@@ -74,7 +74,20 @@ const VehicleOwnerQuotes = () => {
     }, [])
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
-        navigate(`/quotes/${params.id}`);
+        setSelectedQuoteId(parseInt(`${params.id}`));
+    }
+
+    const renderDetailsDialog = () => {
+        // Render nothing if no quote is currently selected
+        if (selectedQuoteId === -1)
+            return(<></>);
+
+        // Render the details dialog component with the selected quote
+        let selectedQuote = quotes.find(quote => quote.id === selectedQuoteId)
+        if (selectedQuote !== undefined) {
+            return(<VehicleOwnerQuoteDialog quote={selectedQuote} setSelectedQuoteId={setSelectedQuoteId}/>);
+        }
+        return(<></>);
     }
 
     return(
@@ -88,6 +101,7 @@ const VehicleOwnerQuotes = () => {
                 onRowClick={handleRowClick}
                 disableSelectionOnClick={true}
             />
+            {renderDetailsDialog()}
         </div>
     )
 }
