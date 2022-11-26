@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
             lastName: vehicleOwner.lastName,
             price: `$${mQuote.price}`,
             expiryTime: new Date(mQuote.expiryTime).toLocaleString(),
-            serviceType: mQuote.serviceType
+            service: {id: 1, name: "Oil Change", defaultPrice: 120.00}
         });
     }
     for (var quote of quotes) {
@@ -35,7 +35,7 @@ const columns: GridColDef[] = [
             lastName: quoteVehicleOwner.lastName,
             price: quote.price ? `$${quote.price}` : 'N/A',
             expiryTime: new Date(quote.expiryTime).toLocaleString(),
-            serviceType: quote.service.name
+            serviceType: "Oil Change"
         })
     }
     // Return rows to test with mock data
@@ -55,14 +55,14 @@ const VehicleOwnerQuotes = () => {
                 const res = await fetch(API_ROOT + "/quotes/" + id, {
                     method: "GET",
                 })
-    
+
                 if (res.ok) {
                     const data: Quote = await res.json();
                     console.log(data)
-                    newQuotes.push(data) 
-    
+                    newQuotes.push(data)
+
                 }
-    
+
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);

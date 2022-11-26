@@ -49,7 +49,7 @@ const MyShop = () => {
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">{ap.startTime.substring(0, 10)}</p>
                     <p className="whitespace-nowrap">{new Date(ap.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
-                    <p>{ap.quote?.serviceType}</p>
+                    <p>{ap.quote?.service.name}</p>
                 </div>
             </Link>
         )
@@ -63,9 +63,9 @@ const MyShop = () => {
                     className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl">
                     <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">Price: ${quote.price.toFixed(2)}</p>
+                    <p className="whitespace-nowrap">Price: ${quote.price?.toFixed(2)}</p>
                     <p className="whitespace-nowrap">Expires: {quote.expiryTime}</p>
-                    <p className="whitespace-nowrap">{quote.serviceType}</p>
+                    <p className="whitespace-nowrap">{quote.service.name}</p>
                 </div>
             </Link>
         )

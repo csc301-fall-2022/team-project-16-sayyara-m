@@ -9,8 +9,8 @@ const columns: GridColDef[] = [
     { field: 'firstName', headerName: 'First name', width: 200},
     { field: 'lastName', headerName: 'Last name', width: 200 },
     { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'startDate', headerName: 'Start Time', width: 100 },
-    { field: 'endDate', headerName: 'End Time', width: 100 },
+    { field: 'startTime', headerName: 'Start Time', width: 100 },
+    { field: 'endTime', headerName: 'End Time', width: 100 },
     {
       field: 'Duration',
       headerName: 'Duration',
@@ -28,9 +28,9 @@ const generateApptRows = (appointments: Appointment[]) => {
             id: (mAppointment.id + i),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
-            date: new Date(mAppointment.startDate).toISOString().substring(0, 10),
-            startDate: new Date(mAppointment.startDate).toLocaleTimeString(),
-            endDate: new Date(mAppointment.endDate).toLocaleTimeString(),
+            date: new Date(mAppointment.startTime).toISOString().substring(0, 10),
+            startTime: new Date(mAppointment.startTime).toLocaleTimeString(),
+            endTime: new Date(mAppointment.endTime).toLocaleTimeString(),
             Duration: mAppointment.duration,
             serviceType: "Oil Change"
         });
@@ -42,10 +42,10 @@ const generateApptRows = (appointments: Appointment[]) => {
             firstName: apptVehicleOwner.firstName,
             lastName: apptVehicleOwner.lastName,
             date: new Date(appointment.startTime).toISOString().substring(0, 10),
-            startDate: new Date(appointment.startTime).toLocaleTimeString(),
-            endDate: new Date(appointment.endTime).toLocaleTimeString(),
+            startTime: new Date(appointment.startTime).toLocaleTimeString(),
+            endTime: new Date(appointment.endTime).toLocaleTimeString(),
             Duration: appointment.duration,
-            serviceType: appointment.service.name
+            serviceType: "Oil Change"
         })
     }
     // Return rows to test with mock data
@@ -64,12 +64,12 @@ const VehicleOwnerAppointments = () => {
                 const res = await fetch(API_ROOT + "/appointments/" + id, {
                     method: "GET",
                 })
-    
+
                 if (res.ok) {
                     const data: Appointment = await res.json();
-                    newAppointments.push(data)   
+                    newAppointments.push(data)
                 }
-    
+
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);
