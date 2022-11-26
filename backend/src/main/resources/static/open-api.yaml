@@ -251,6 +251,82 @@ paths:
                 $ref: "#/components/schemas/DataNotFoundError"
 
 
+  /api/vehicleOwner/{vehicleOwnerId}/appointments:
+    get:
+      tags:
+        - Appointment
+      operationId: getVehicleOwnerAppointments
+      summary: Get Vehicle Owner Appointments
+      description: Get the list of all appointments associated to the Vehicle Owner determined by its `vehicleOwnerId`
+      parameters:
+        - name: vehicleOwnerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved all Appointments
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Appointment"
+        '404':
+          description: Vehicle Owner associated with the id not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
+    post:
+      tags:
+        - Appointment
+      operationId: createAppointment
+      summary: Create Appointment
+      description: "Create a new Appointment for the Vehicle Owner either by passing in the Appointment object or 
+      passing in a quoteId to create an appointment from a quote.\n\n
+      If a quoteId is passed in, the Appointment's wasQuote field will be set to true."
+      parameters:
+        - name: vehicleOwnerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: quoteId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Appointment"
+        required: true
+      responses:
+        '201':
+          description: Successfully created new Appointment
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Appointment"
+        '400':
+          $ref: "#/components/responses/InvalidData"
+        '404':
+          description: "Vehicle Owner or Quote were not found by their id, or Shop was not found within the Quote, or 
+          Quote was not associated with the Vehicle Owner"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
+
+
+
+
   ############## QUOTES ##############
   "/api/quotes":
     get:
@@ -358,7 +434,7 @@ paths:
   /api/vehicleOwner/{vehicleOwnerId}/quotes:
     get:
       tags:
-        - Vehicle Owner
+        - Quotes
       operationId: getAllQuotesForVehicleOwner
       summary: Get all Quotes for a Vehicle Owner
       description: Get the list of all quotes associated to a Vehicle Owner determined by it's id
@@ -387,17 +463,10 @@ paths:
   /api/vehicleOwner/quotes:
     post:
       tags:
-        - Vehicle Owner
+        - Quotes
       operationId: createQuote
       summary: Create Quote
-      description: Create a new Quote for a Vehicle Owner or add it to an existing Vehicle Owner, determined by it's email.
-      parameters:
-        - name: shopId
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
+      description: "Create a new Quote for a Vehicle Owner or add it to an existing Vehicle Owner, determined by it's email."
       requestBody:
         content:
           application/json:
@@ -595,6 +664,9 @@ components:
         id:
           type: integer
           format: int64
+        shopId:
+          type: integer
+          format: int64
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
         startTime:
@@ -606,17 +678,20 @@ components:
         wasQuote:
           type: boolean
           default: false
-        quote:
-          "$ref": "#/components/schemas/Quote"
+        serviceName:
+          type: string
     Quote:
       type: object
       properties:
         id:
           type: integer
+        shopId:
+          type: integer
+          format: int64
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
-        service:
-          $ref: "#/components/schemas/Service"
+        serviceName:
+          type: string
         price:
           type: number
           format: double
