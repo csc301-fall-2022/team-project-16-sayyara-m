@@ -63,8 +63,8 @@ const MyShop = () => {
                     className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl">
                     <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">Price: ${quote.price.toFixed(2)}</p>
-                    <p className="whitespace-nowrap">Expires: {quote.expiryTime}</p>
+                    <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
+                    <p className="whitespace-nowrap">Expires: {quote.expiryTime.substring(0, 10)}</p>
                     <p className="whitespace-nowrap">{quote.serviceType}</p>
                 </div>
             </Link>
