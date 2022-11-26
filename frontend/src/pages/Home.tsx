@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { API_ROOT } from "../App";
 import { APIError, Shop } from "../utilities/interfaces";
 import { useNavigate } from "react-router-dom";
+import useAuthFetch from "../utilities/hooks/useAuthFetch";
 
 
 const columns: GridColDef[] = [
@@ -124,12 +125,13 @@ const generateRows = (text: string, shops: Shop[]) => {
 const Home = () => {
 
     let navigate = useNavigate();
+    const { authFetch } = useAuthFetch()
     const [shops, setShops] = useState<Shop[]>([])
     const [searchText, setsearchText] = useState<string>('')
 
     useEffect(() => {
         const getData = async () => {
-            const res = await fetch(API_ROOT + "/shops", {
+            const res = await authFetch(API_ROOT + "/shops", {
                 method: "GET",
             })
 

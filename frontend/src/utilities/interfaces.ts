@@ -49,13 +49,17 @@ export interface Appointment {
     endTime: string,
     duration?: number
 }
-
+export interface Service {
+    id: number,
+    name: string,
+    defaultPrice: number,
+}
 export interface Quote {
     id: number,
     vehicleOwner: VehicleOwner,
     price: number,
     expiryTime: string,
-    serviceType: string
+    service: Service,
 }
 
 export interface APIError {

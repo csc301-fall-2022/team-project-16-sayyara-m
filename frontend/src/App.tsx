@@ -15,6 +15,9 @@ import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 import ShopDetails from './pages/ShopDetails';
 import Home from './pages/Home';
+import VehicleOwnerAppointments from './pages/VehicleOwnerAppointments';
+import VehicleOwnerQuotes from './pages/VehicleOwnerQuotes';
+
 export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
 function App() {
@@ -37,9 +40,9 @@ function App() {
           <Route path='/login' element={!cookies.refresh_token ? <Login /> : <Navigate to ="/" />} />
           <Route path='/signup' element={!cookies.refresh_token ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={cookies.refresh_token ? <Profile /> : <Navigate to="/login"/>} />
-          <Route path='/appointments' element={cookies.refresh_token ? <Appointments /> : <Navigate to="/login" />} />
+          <Route path='/appointments' element={cookies.refresh_token ? <Appointments /> : <VehicleOwnerAppointments />} />
           <Route path='/appointments/:id' element={cookies.refresh_token ? <AppointmentDetails /> : <Navigate to="/login" />} />
-          <Route path='/quotes' element={cookies.refresh_token ? <Quotes /> : <Navigate to="/login" />} />
+          <Route path='/quotes' element={cookies.refresh_token ? <Quotes /> : <VehicleOwnerQuotes />} />
           <Route path='/quotes/:id' element={cookies.refresh_token ? <QuoteDetails /> : <Navigate to="/login" />} />
           <Route path='/shop/:id' element={<ShopDetails />} />
         </Routes>

@@ -22,7 +22,7 @@ const columns: GridColDef[] = [
             lastName: vehicleOwner.lastName,
             price: `$${quote.price}`,
             expiryTime: new Date(quote.expiryTime).toLocaleString(),
-            serviceType: quote.serviceType
+            serviceType: quote.service.name
         });
     }
     return apptRows;
