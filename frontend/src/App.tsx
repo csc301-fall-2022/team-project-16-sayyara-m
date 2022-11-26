@@ -11,7 +11,6 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import MyShop from './pages/MyShop';
 import useAuth from './utilities/hooks/useAuth';
-import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 
@@ -40,7 +39,6 @@ function App() {
           <Route path='/signup' element={!auth ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={auth ? <Profile /> : <Navigate to="/login"/>} />
           <Route path='/appointments' element={auth ? <Appointments /> : <Navigate to="/login" />} />
-          <Route path='/appointments/:id' element={auth ? <AppointmentDetails /> : <Navigate to="/login" />} />
           <Route path='/quotes' element={auth ? <Quotes /> : <Navigate to="/login" />} />
           <Route path='/quotes/:id' element={auth ? <QuoteDetails /> : <Navigate to="/login" />} />
         </Routes>

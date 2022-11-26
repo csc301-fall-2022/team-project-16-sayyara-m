@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import { mAppointment as appt } from "src/utilities/mockData";
 import { VehicleOwner } from "src/utilities/interfaces";
-import { useNavigate } from "react-router-dom";
+import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
+// import { useNavigate } from "react-router-dom";
+// import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 //plan is to use MUI to create a detailed data table of all the appointments for this user
 
 const columns: GridColDef[] = [
@@ -47,22 +49,35 @@ const generateApptRows = () => {
     return apptRows;
 }
 const Appointments = () => {
-    let navigate = useNavigate();
+    
+    // This is the state for managing the expanded details dialog. Empty string means no dialog is rendered.
+    // Otherwise, the string is set to the ID of the expanded appointment
+    const [selectedAptId, setSelectedAptId] = useState<string>("");
+    
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
-        console.log("row clicked");
-        navigate(`/appointments/${params.id}`);
+        setSelectedAptId(`${params.id}`);
     }
+
+    const renderDetailsDialog = () => {
+        // Render nothing if no appointment is currently selected
+        if (selectedAptId === "")
+            return(<></>);
+        
+        // Render the details dialog component with the selected appointment ID
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId}/>);
+    }
+
     return (
         <div className="h-[650px] w-full">
-            <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Upcoming Appointments</h1>
+            <h1 className="flex justify-center font-semibold text-blue-900 sm:text-3xl py-4">Upcoming Appointments</h1>
             <DataGrid
                 rows={generateApptRows()}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10]}
                 onRowClick={handleRowClick}
-
             />
+            {renderDetailsDialog()}
         </div>
     )
 }
