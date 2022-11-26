@@ -37,7 +37,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         {props.quote.price ? props.quote.price : 'N/A'}
                     </div>
                 </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 border-t mt-4 pt-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 border-b mb-4 pt-4 pb-4'>
                     <label className='font-semibold'>
                         Status
                     </label>
@@ -52,8 +52,11 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         Expiry Time
                     </label>
                     <div className='text-lg'>
-                        {props.quote.expiryTime}
+                        {new Date(props.quote.expiryTime).toLocaleString()}
                     </div>
+                </div>
+                <div className='mt-3 mb-3 font-semibold text-xl'>
+                    Shop Info
                 </div>
             </div>
         </React.Fragment>
