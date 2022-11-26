@@ -61,6 +61,7 @@ export interface Quote {
     price: number,
     expiryTime: string,
     service: Service,
+    status: "Accepted" | "Declined" | "Pending" | "Expired",
 }
 
 export interface APIError {

@@ -5,9 +5,9 @@ info:
   version: v0
   description: "# How to Authenticate
   \n\nThis API uses Bearer/Token authentication to authenticate a user that is logged in. Once successfully logged in using the `/api/user/login` endpoint, you will receive a JWT `access_token` and `refresh_token`. Both tokens are encrypted and contain information about the user like their username, and can be decrypted by the backend to retrieve that information.
-  
+
   \n\nWhen accessing an endpoint that requires a user's info, you can just pass in the JWT access token using the header `Authorization: \"Bearer <token>\"`. The API will decrypt the `access_token` and retrieve the username and use that to get data for the specific user. This way, you don't need to pass in any information about the user through a parameter or request body.
-  
+
   \n\n For security reasons, the `access_token` will expire every few minutes, and will need to be refreshed. To refresh the token, pass in the `refresh_token` to the endpoint `/api/token/refresh` (see below), which will give you a new `access_token`.\n\n
   **Note:** The lock icon on the right side of each endpoint indicates that this endpoint can only be accessed by an authorized Shop Owner, meaning that an access token must be passed from the `Authorization` header. Likewise, an endpoint without the lock can be accessed by a user that isn't logged in."
 paths:
@@ -306,7 +306,7 @@ paths:
       operationId: updateQuote
       summary: Update either the status or the price of a Quote
       description: "Update the quote determined by its `quoteId` with either a new status, or a price.\n\n
-      **Note:** Only the status or the price can be updated at a time. If both are provided, there will be an error.\n\n 
+      **Note:** Only the status or the price can be updated at a time. If both are provided, there will be an error.\n\n
       Once the price is updated, the status of this quote will automatically be set to `Pending Approval`.\n\n
       Viable statuses are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
       requestBody:

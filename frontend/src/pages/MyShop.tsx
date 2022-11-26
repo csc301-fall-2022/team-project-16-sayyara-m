@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { API_ROOT } from "../utilities/constants";
-// import useAuth from "../utilities/hooks/useAuth";
-import { APIError, Appointment, Quote, ShopOwner, Vehicle, VehicleOwner } from "../utilities/interfaces";
+import React, { useState } from "react";
+import { Appointment, Quote, Vehicle, VehicleOwner } from "../utilities/interfaces";
 import { Link } from "react-router-dom";
-import useAuthFetch from "src/utilities/hooks/useAuthFetch";
+import { useGetShopOwner } from "src/utilities/hooks/api/useGetShopOwner";
 interface AppointmentCardProps {
     ap: Appointment;
 }
@@ -12,30 +10,8 @@ interface QuoteCardProps {
 }
 const MyShop = () => {
     // const { auth } = useAuth();
-    const [shopOwner, setShopOwner] = useState<ShopOwner | null>(null);
     const [service, setService] = useState<string>("")
-    const { authFetch } = useAuthFetch();
-
-    useEffect(() => {
-        const getShopOwner = async () => {
-            const res = await authFetch(API_ROOT + "/shopOwner", {
-                method: "GET",
-            })
-
-            if(res.ok){
-                const data: ShopOwner = await res.json();
-                console.log(data);
-                setShopOwner(data);
-                return;
-            }
-
-            const data: APIError = await res.json();
-            console.log(data.message);
-        }
-        getShopOwner();
-
-    },[]);
-
+    const { shopOwner } = useGetShopOwner();
     const AppointmentCard = ({ ap }: AppointmentCardProps) => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
@@ -65,7 +41,7 @@ const MyShop = () => {
                     <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                     <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
                     <p className="whitespace-nowrap">Expires: {quote.expiryTime.substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{quote.serviceType}</p>
+                    <p className="whitespace-nowrap">{quote.service.name}</p>
                 </div>
             </Link>
         )
