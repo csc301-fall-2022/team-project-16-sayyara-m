@@ -155,6 +155,22 @@ paths:
 
 
   ############## SHOP ##############
+  /api/shops:
+    get:
+      tags:
+        - Shop
+      summary: Get all Shops
+      description: Get the list of all shops
+      operationId: getAllShops
+      responses:
+        '200':
+          description: Successfully retrieved all Shops
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shop"
   /api/shop:
     put:
       tags:
@@ -181,23 +197,30 @@ paths:
           $ref: "#/components/responses/InvalidData"
         '401':
           $ref: "#/components/responses/Unauthorized"
-  /api/shops:
+  /api/shop/{shopId}:
     get:
       tags:
         - Shop
-      summary: Get all Shops
-      description: Get the list of all shops
-      operationId: getAllShops
+      summary: Get Shop by ID
+      description: Get a shop by its ID
+      operationId: getShopById
+      parameters:
+        - name: shopId
+          in: path
+          description: ID of the shop to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
-          description: Successfully retrieved all Shops
+          description: Successfully retrieved Shop
           content:
             "*/*":
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Shop"
-
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
 
   ############## Appointments ##############
