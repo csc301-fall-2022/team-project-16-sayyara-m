@@ -74,7 +74,7 @@ public class Quote {
     private LocalDateTime expiryDate = LocalDateTime.now().plusMonths(6);
 
     @Getter(value = NONE)
-    private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
+    private QuoteStatus status = QuoteStatus.PENDING_REVIEW;
 
     private Double price = null;
 
@@ -89,11 +89,11 @@ public class Quote {
         this.description = description;
     }
 
-    public QuoteStatus getQuoteStatus() {
+    public QuoteStatus getStatus() {
         if (expiryDate.isBefore(LocalDateTime.now())) {
-            this.quoteStatus = QuoteStatus.EXPIRED;
+            this.status = QuoteStatus.EXPIRED;
         }
-        return quoteStatus;
+        return status;
     }
 
     public String getServiceName() {
