@@ -696,7 +696,7 @@ components:
           type: number
           format: double
           nullable: true
-        expiryTime:
+        expiryDate:
           type: string
           format: date-time
         status:

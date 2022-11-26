@@ -63,7 +63,7 @@ public class Quote {
     private String serviceName;
 
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime expiryTime = LocalDateTime.now().plusMonths(6);
+    private LocalDateTime expiryDate = LocalDateTime.now().plusMonths(6);
 
     @Getter(value = NONE)
     private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
@@ -72,17 +72,17 @@ public class Quote {
 
     private String description = "";
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryTime, Double price, String description) {
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryDate, Double price, String description) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
-        this.expiryTime = expiryTime;
+        this.expiryDate = expiryDate;
         this.price = price;
         this.description = description;
     }
 
     public QuoteStatus getQuoteStatus() {
-        if (expiryTime.isBefore(LocalDateTime.now())) {
+        if (expiryDate.isBefore(LocalDateTime.now())) {
             this.quoteStatus = QuoteStatus.EXPIRED;
         }
         return quoteStatus;

@@ -16,7 +16,7 @@ public class QuoteValidator implements Validator {
     public void validate() {
         validateVehicleOwner();
         validateService();
-        validateExpiryTime();
+        validateExpiryDate();
         validatePrice();
     }
 
@@ -29,12 +29,12 @@ public class QuoteValidator implements Validator {
         new VehicleOwnerValidator(quote.getVehicleOwner()).validate();
     }
 
-    private void validateExpiryTime() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime expiryTime = quote.getExpiryTime();
+    private void validateExpiryDate() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime expiryDate = quote.getExpiryDate();
 
-        if (expiryTime.isBefore(currentTime))
-            throw new ViolatedConstraintException("Quote expiry time must be after the current time.");
+        if (expiryDate.isBefore(currentDate))
+            throw new ViolatedConstraintException("Quote expiry date must be after the current date.");
     }
 
     private void validatePrice() {
