@@ -71,3 +71,11 @@ export interface Quote {
 export interface APIError {
     message: string
 }
+
+export interface ShopInfo {
+    shopId: number,
+    name: string,
+    address: Address,
+    email: string,
+    phoneNumber: string
+  }
