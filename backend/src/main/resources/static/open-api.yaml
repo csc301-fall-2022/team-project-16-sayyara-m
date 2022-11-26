@@ -420,8 +420,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/DataNotFoundError"
 
-
-
 ############## SCHEMAS ##############
 components:
   securitySchemes:
