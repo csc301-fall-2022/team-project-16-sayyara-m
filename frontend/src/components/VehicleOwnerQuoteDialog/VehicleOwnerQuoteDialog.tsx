@@ -27,7 +27,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         Price
                     </label>
                     <div className='text-lg mr-2 transition duration-500 hover:text-blue-800 cursor-pointer'>
-                        {props.quote.service.name}
+                        {props.quote.serviceName}
                     </div>
                     {/* We have the phone number label twice due to grid reformats on mobile */}
                     <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
@@ -52,7 +52,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         Expiry Time
                     </label>
                     <div className='text-lg'>
-                        {new Date(props.quote.expiryTime).toLocaleString()}
+                        {new Date(props.quote.expiryDate).toLocaleString()}
                     </div>
                 </div>
                 <div className='mt-3 mb-3 font-semibold text-xl'>

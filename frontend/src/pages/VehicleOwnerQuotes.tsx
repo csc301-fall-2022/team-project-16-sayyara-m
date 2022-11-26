@@ -35,7 +35,7 @@ const columns: GridColDef[] = [
             lastName: quoteVehicleOwner.lastName,
             price: quote.price ? `$${quote.price}` : 'N/A',
             expiryTime: new Date(quote.expiryDate).toLocaleString(),
-            serviceType: "Oil Change"
+            serviceType: quote.serviceName
         })
     }
     // Return rows to test with mock data
@@ -58,6 +58,7 @@ const VehicleOwnerQuotes = () => {
 
                 if (res.ok) {
                     const data: Quote = await res.json();
+                    console.log(data)
                     newQuotes.push(data)
 
                 }
