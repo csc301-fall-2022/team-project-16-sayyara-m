@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.backend.spring.dto.ShopInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
@@ -45,8 +47,14 @@ public class Quote {
     private Shop shop;
 
     @Transient
-    @Getter(value = NONE)
-    private long shopId = -1L;
+    @JsonProperty(access = READ_ONLY)
+    @Getter(NONE)
+    private ShopInfo shopInfo;
+
+    @Transient
+    @JsonProperty(access = WRITE_ONLY)
+    @Getter(NONE)
+    private Long shopId = -1L;
 
     @ManyToOne(optional = false, cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
@@ -94,7 +102,13 @@ public class Quote {
         return serviceName;
     }
 
-    public long getShopId() {
+    public ShopInfo getShopInfo() {
+        if (shop != null && shopInfo == null)
+            this.shopInfo = new ShopInfo(shop);
+        return shopInfo;
+    }
+
+    public Long getShopId() {
         if (shop != null)
             return shop.getId();
         return shopId;

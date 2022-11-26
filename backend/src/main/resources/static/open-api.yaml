@@ -218,7 +218,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Appointment"
+                  "$ref": "#/components/schemas/ResponseAppointment"
         '401':
           $ref: "#/components/responses/Unauthorized"
 
@@ -242,7 +242,7 @@ paths:
           content:
             "application/json":
               schema:
-                "$ref": "#/components/schemas/Appointment"
+                "$ref": "#/components/schemas/ResponseAppointment"
         '404':
           description: Appointment associated with the id not found
           content:
@@ -273,7 +273,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Appointment"
+                  "$ref": "#/components/schemas/ResponseAppointment"
         '404':
           description: Vehicle Owner associated with the id not found
           content:
@@ -305,7 +305,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/Appointment"
+              "$ref": "#/components/schemas/RequestAppointment"
         required: true
       responses:
         '201':
@@ -313,7 +313,7 @@ paths:
           content:
             "application/json":
               schema:
-                "$ref": "#/components/schemas/Appointment"
+                "$ref": "#/components/schemas/ResponseAppointment"
         '400':
           $ref: "#/components/responses/InvalidData"
         '404':
@@ -345,7 +345,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Quote"
+                  "$ref": "#/components/schemas/ResponseQuote"
         '401':
           $ref: "#/components/responses/Unauthorized"
 
@@ -369,7 +369,7 @@ paths:
           content:
             "application/json":
               schema:
-                "$ref": "#/components/schemas/Quote"
+                "$ref": "#/components/schemas/ResponseQuote"
         '404':
           description: Quote associated with the id not found
           content:
@@ -412,7 +412,7 @@ paths:
           content:
             "application/json":
               schema:
-                "$ref": "#/components/schemas/Quote"
+                "$ref": "#/components/schemas/ResponseQuote"
         204:
           description: No content was provided. Nothing was updated
         '400':
@@ -453,7 +453,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Quote"
+                  "$ref": "#/components/schemas/ResponseQuote"
         '404':
           description: Vehicle Owner associated with the id not found
           content:
@@ -471,7 +471,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/Quote"
+              "$ref": "#/components/schemas/RequestQuote"
         required: true
       responses:
         '201':
@@ -479,7 +479,7 @@ paths:
           content:
             "application/json":
               schema:
-                "$ref": "#/components/schemas/Quote"
+                "$ref": "#/components/schemas/ResponseQuote"
         '400':
           $ref: "#/components/responses/InvalidData"
         '404':
@@ -660,7 +660,7 @@ components:
           type: string
         postalCode:
           type: string
-    Appointment:
+    RequestAppointment:
       type: object
       properties:
         id:
@@ -682,7 +682,28 @@ components:
           default: false
         serviceName:
           type: string
-    Quote:
+    ResponseAppointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        shopInfo:
+          "$ref": "#/components/schemas/ShopInfo"
+        vehicleOwner:
+          "$ref": "#/components/schemas/VehicleOwner"
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        wasQuote:
+          type: boolean
+          default: false
+        serviceName:
+          type: string
+    RequestQuote:
       type: object
       properties:
         id:
@@ -690,6 +711,34 @@ components:
         shopId:
           type: integer
           format: int64
+        vehicleOwner:
+          "$ref": "#/components/schemas/VehicleOwner"
+        serviceName:
+          type: string
+        price:
+          type: number
+          format: double
+          nullable: true
+        expiryDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - Pending Approval
+            - Pending Review
+            - Accepted
+            - Declined
+            - Expired
+        description:
+          type: string
+    ResponseQuote:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopInfo:
+          "$ref": "#/components/schemas/ShopInfo"
         vehicleOwner:
           "$ref": "#/components/schemas/VehicleOwner"
         serviceName:
@@ -734,7 +783,7 @@ components:
         appointments:
           type: array
           items:
-            "$ref": "#/components/schemas/Appointment"
+            "$ref": "#/components/schemas/ResponseAppointment"
         quotes:
           type: array
           items:
@@ -747,6 +796,19 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Service"
+    ShopInfo:
+      type: object
+      properties:
+        shopId:
+          type: number
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        address:
+          "$ref": "#/components/schemas/Address"
     AppUserDTO:
       type: object
       properties:

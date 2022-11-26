@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.backend.spring.dto.ShopInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -44,8 +46,14 @@ public class Appointment {
     private Shop shop;
 
     @Transient
-    @Getter(value = NONE)
-    private long shopId = -1L;
+    @JsonProperty(access = READ_ONLY)
+    @Getter(NONE)
+    private ShopInfo shopInfo;
+
+    @Transient
+    @JsonProperty(access = WRITE_ONLY)
+    @Getter(NONE)
+    private Long shopId = -1L;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
@@ -64,10 +72,10 @@ public class Appointment {
     private Service service;
 
     @Transient
-    @Getter(value = NONE)
+    @Getter(NONE)
     private String serviceName;
 
-    private Boolean wasQuote;
+    private boolean wasQuote = false;
 
     public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
         this.shop = shop;
@@ -87,5 +95,11 @@ public class Appointment {
         if (service != null)
             return service.getName();
         return serviceName;
+    }
+
+    public ShopInfo getShopInfo() {
+        if (shop != null && shopInfo == null)
+            this.shopInfo = new ShopInfo(shop);
+        return shopInfo;
     }
 }
