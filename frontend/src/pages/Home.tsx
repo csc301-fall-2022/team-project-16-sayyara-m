@@ -24,98 +24,98 @@ const columns: GridColDef[] = [
         return params.row.address.postalCode
     } }
   ];
-  
+
 const generateRows = (text: string, shops: Shop[]) => {
-    let rows: Shop[] = []
-    rows.push({
-        id: 0,
-        name: "Uth's Shop",
-        address: {
-            id: 0,
-            streetNumber: "123",
-            street: "Street Rd",
-            city: "Toronto",
-            province: "ON",
-            postalCode: "M4T2T1",
-        },
-        phoneNumber: "+1 647 501 1536",
-        email: "uthshop@gmail.com",
-        appointments: [],
-        quotes: []
-    })
+//     let rows: Shop[] = []
+//     rows.push({
+//         id: 0,
+//         name: "Uth's Shop",
+//         address: {
+//             id: 0,
+//             streetNumber: "123",
+//             street: "Street Rd",
+//             city: "Toronto",
+//             province: "ON",
+//             postalCode: "M4T2T1",
+//         },
+//         phoneNumber: "+1 647 501 1536",
+//         email: "uthshop@gmail.com",
+//         appointments: [],
+//         quotes: []
+//     })
 
-    rows.push({
-        id: 1,
-        name: "My Shop",
-        address: {
-            id: 1,
-            streetNumber: "123",
-            street: "Avenue Rd",
-            city: "Toronto",
-            province: "ON",
-            postalCode: "M4T2T1",
-        },
-        phoneNumber: "+1 416 423 7104",
-        email: "myshop@gmail.com",
-        appointments: [],
-        quotes: []
-    })
+//     rows.push({
+//         id: 1,
+//         name: "My Shop",
+//         address: {
+//             id: 1,
+//             streetNumber: "123",
+//             street: "Avenue Rd",
+//             city: "Toronto",
+//             province: "ON",
+//             postalCode: "M4T2T1",
+//         },
+//         phoneNumber: "+1 416 423 7104",
+//         email: "myshop@gmail.com",
+//         appointments: [],
+//         quotes: []
+//     })
 
-    rows.push({
-        id: 2,
-        name: "Ahsan's Shop",
-        address: {
-            id: 2,
-            streetNumber: "45",
-            street: "Grenoble Dr",
-            city: "Toronto",
-            province: "ON",
-            postalCode: "M3C1C5",
-        },
-        phoneNumber: "+1 647 501 1536",
-        email: "ahsanshop@gmail.com",
-        appointments: [],
-        quotes: []
-    })
+//     rows.push({
+//         id: 2,
+//         name: "Ahsan's Shop",
+//         address: {
+//             id: 2,
+//             streetNumber: "45",
+//             street: "Grenoble Dr",
+//             city: "Toronto",
+//             province: "ON",
+//             postalCode: "M3C1C5",
+//         },
+//         phoneNumber: "+1 647 501 1536",
+//         email: "ahsanshop@gmail.com",
+//         appointments: [],
+//         quotes: []
+//     })
 
-    rows.push({
-        id: 3,
-        name: "Some Shop",
-        address: {
-            id: 3,
-            streetNumber: "123",
-            street: "Some Rd",
-            city: "Toronto",
-            province: "ON",
-            postalCode: "M4T2T1",
-        },
-        phoneNumber: "+1 647 766 4732",
-        email: "someshop@gmail.com",
-        appointments: [],
-        quotes: []
-    })
+//     rows.push({
+//         id: 3,
+//         name: "Some Shop",
+//         address: {
+//             id: 3,
+//             streetNumber: "123",
+//             street: "Some Rd",
+//             city: "Toronto",
+//             province: "ON",
+//             postalCode: "M4T2T1",
+//         },
+//         phoneNumber: "+1 647 766 4732",
+//         email: "someshop@gmail.com",
+//         appointments: [],
+//         quotes: []
+//     })
 
-    rows.push({
-        id: 4,
-        name: "Random Shop",
-        address: {
-            id: 4,
-            streetNumber: "123",
-            street: "Street Rd",
-            city: "Toronto",
-            province: "ON",
-            postalCode: "M4T2T1",
-        },
-        phoneNumber: "+1 647 501 1536",
-        email: "randomshop@gmail.com",
-        appointments: [],
-        quotes: []
-    })
+//     rows.push({
+//         id: 4,
+//         name: "Random Shop",
+//         address: {
+//             id: 4,
+//             streetNumber: "123",
+//             street: "Street Rd",
+//             city: "Toronto",
+//             province: "ON",
+//             postalCode: "M4T2T1",
+//         },
+//         phoneNumber: "+1 647 501 1536",
+//         email: "randomshop@gmail.com",
+//         appointments: [],
+//         quotes: []
+//     })
 
     // return rows.filter()... in order to test with the mock data above
 
     return shops.filter((row) => {
-        return row.name.toLowerCase().includes(text.toLowerCase()) || row.phoneNumber.includes(text) || 
+        return row.name.toLowerCase().includes(text.toLowerCase()) || row.phoneNumber.includes(text) ||
         row.email.toLowerCase().includes(text.toLowerCase()) || (row.address.streetNumber + ' ' + row.address.street).toLowerCase().includes(text.toLowerCase()) ||
         row.address.city.toLowerCase().includes(text.toLowerCase()) || row.address.province.toLowerCase().includes(text.toLowerCase()) ||
         row.address.postalCode.toLowerCase().includes(text.toLowerCase())

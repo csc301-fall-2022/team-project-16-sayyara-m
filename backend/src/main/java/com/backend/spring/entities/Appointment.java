@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.backend.spring.dto.ShopInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,15 +14,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
 import static lombok.AccessLevel.NONE;
 
@@ -45,25 +45,37 @@ public class Appointment {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
+    @Transient
+    @JsonProperty(access = READ_ONLY)
+    @Getter(NONE)
+    private ShopInfo shopInfo;
+
+    @Transient
+    @JsonProperty(access = WRITE_ONLY)
+    @Getter(NONE)
+    private Long shopId = -1L;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
+
     @Column(name = "start_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime startTime;
+
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime endTime;
-    // endDate - startDate
-    @Transient
-    @Getter(NONE) // to override getter
-    private Duration duration;
 
-    @OneToOne(cascade = MERGE)
-    @JoinColumn(name = "quote_id", referencedColumnName = "quote_id")
-    private Quote quote;
-
-    @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = false)
     private Service service;
+
+    @Transient
+    @Getter(NONE)
+    private String serviceName;
+
+    private boolean wasQuote = false;
 
     public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
         this.shop = shop;
@@ -73,12 +85,21 @@ public class Appointment {
         this.service = service;
     }
 
-    /**
-     * duration = endDate - startDate
-     *
-     * @return difference between endDate and startDate for this appointment
-     */
-    public Duration getDuration() {
-        return Duration.between(startTime, endTime);
+    public Long getShopId() {
+        if (shop != null)
+            return shop.getId();
+        return shopId;
+    }
+
+    public String getServiceName() {
+        if (service != null)
+            return service.getName();
+        return serviceName;
+    }
+
+    public ShopInfo getShopInfo() {
+        if (shop != null && shopInfo == null)
+            this.shopInfo = new ShopInfo(shop);
+        return shopInfo;
     }
 }

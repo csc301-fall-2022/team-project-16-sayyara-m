@@ -15,6 +15,8 @@ class UserInfoValidator implements Validator {
      */
     @Override
     public void validate() {
+        if (userInfo == null)
+            throw new ViolatedConstraintException("User info cannot be null.");
         validateFirstName();
         validateLastName();
         validateEmail();

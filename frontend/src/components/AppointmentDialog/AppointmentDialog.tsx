@@ -16,11 +16,14 @@ import { ReactComponent as ChevronDownSvg } from "src/resources/svgs/chevron-dow
 // A placeholder appointment for while the fetch call is loading
 const unloadedAppt: Appointment = {
     id: -1,
+    shopId: 1,
+    serviceName: "",
     vehicleOwner: {
         id: -1, firstName: "", lastName: "", username: "", phoneNumber: "", email: "",
         vehicle: { year: 0, make: "", model: "", vin: "", plate: "" }
     },
-    startTime: "", endTime: "", duration: 0
+    shopInfo: { shopId: 1, email: "", name: "", address: Object(), phoneNumber: "" },
+    startTime: "", endTime: "", duration: 0, wasQuote: false,
 }
 
 // TODO: DELETE LATER
@@ -65,7 +68,7 @@ const formatDateStrings = (startDate: Date, endDate: Date): FormatededDates => {
     // Takes the start and end dates and formats them into strings for display
 
     // Format the dayAndYear string
-    const months: string[] = ['January', 'February', 'March', 'April', 'May', 
+    const months: string[] = ['January', 'February', 'March', 'April', 'May',
     'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const getOrdinal = (day: number): string => {
         if (day > 3 && day < 21) return 'th';
@@ -80,7 +83,7 @@ const formatDateStrings = (startDate: Date, endDate: Date): FormatededDates => {
     const dayNo: number = startDate.getDate();
     const yearNo: number = startDate.getFullYear();
     const dayAndYear: string = `${months[monthNo]} ${dayNo}${getOrdinal(dayNo)}, ${yearNo}`;
-    
+
     // Format Time and Meridiem variables
     const meridiems: string[] = [
         startDate.getHours() < 12 ? 'AM' : 'PM',
@@ -108,7 +111,7 @@ function AppointmentDialog(props: Props) {
 
     const { authFetch } = useAuthFetch();
     const [appointment, setAppointment] = useState<Appointment>(unloadedAppt);
-    
+
     // States for animation control
     const [expanded, setExpanded] = useState<boolean>(false);
     const [expandedOnce, setExpandedOnce] = useState<boolean>(false);
@@ -152,7 +155,7 @@ function AppointmentDialog(props: Props) {
         <div className='fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10'
         onClick={() => {props.setSelectedAptId("")}}/>
         {/* The actual dialog box */}
-        <div className='absolute right-1/2 top-[10%] sm:top-20 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100 
+        <div className='absolute right-1/2 top-[10%] sm:top-20 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
         rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6'>
             <button className='absolute right-6 top-5'
             onClick={() => {props.setSelectedAptId("")}}>
@@ -187,7 +190,7 @@ function AppointmentDialog(props: Props) {
                     Quoted Price
                 </label>
                 <div className='col-span-2 sm:col-span-1'>
-                    <div className='service-type bg-gray-50 text-blue-900 w-min mt-1 py-1 px-2 
+                    <div className='service-type bg-gray-50 text-blue-900 w-min mt-1 py-1 px-2
                     whitespace-nowrap rounded-md shadow-md'>
                         Tire Rotation
                     </div>
@@ -222,7 +225,7 @@ function AppointmentDialog(props: Props) {
             <div className='flex w-full justify-center'>
                 <button className='show-details-btn flex mt-2 mb-1 text-gray-500 transition duration-200 ease-in-out hover:text-gray-900'
                 onClick={() => {
-                    setExpanded(!expanded); 
+                    setExpanded(!expanded);
                     setHeight(height === 0 ? 'auto' : 0);
                     if (!expandedOnce) setExpandedOnce(true);
                 }}>
@@ -239,7 +242,7 @@ function AppointmentDialog(props: Props) {
                             Registered Owner:
                         </label>
                         <div className='text-lg pl-2'>
-                            {vehicle.owner || "Not provided"}
+                            {vehicle.registerdOwner || "Not provided"}
                         </div>
                     </div>
                     <div className='grid grid-cols-4 border-y border-gray-300'>

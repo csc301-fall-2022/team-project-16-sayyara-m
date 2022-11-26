@@ -14,19 +14,15 @@ public class AppointmentValidator implements Validator {
 
     @Override
     public void validate() {
-        validateQuote();
         validateVehicleOwner();
         validateService();
         validateStartTime();
         validateEndTime();
     }
 
-    private void validateQuote() {
-        new QuoteValidator(appointment.getQuote()).validate();
-    }
-
     private void validateService() {
-        new ServiceValidator(appointment.getService()).validate();
+        if (appointment.getServiceName() == null || appointment.getServiceName().length() == 0)
+            throw new ViolatedConstraintException("Service name must be provided.");
     }
 
     private void validateVehicleOwner() {

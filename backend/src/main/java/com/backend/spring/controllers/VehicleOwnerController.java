@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -30,7 +29,7 @@ public class VehicleOwnerController {
     }
 
     @PostMapping("quotes")
-    public ResponseEntity<Quote> createQuote(@RequestBody Quote quote, @PathParam("shopId") long shopId) throws URISyntaxException {
-        return ResponseEntity.created(new URI("/api/quotes/" + quote.getId())).body(vehicleOwnerService.createQuote(quote, shopId));
+    public ResponseEntity<Quote> createQuote(@RequestBody Quote quote) throws URISyntaxException {
+        return ResponseEntity.created(new URI("/api/quotes/" + quote.getId())).body(vehicleOwnerService.createQuote(quote));
     }
 }

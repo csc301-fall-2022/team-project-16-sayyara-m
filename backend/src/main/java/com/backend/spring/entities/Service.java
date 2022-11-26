@@ -46,11 +46,10 @@ public class Service {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
-    private Double defaultPrice;
+    private Double defaultPrice = null;
 
-    public Service(String name, Double defaultPrice) {
+    public Service(String name) {
         this.name = name;
-        this.defaultPrice = defaultPrice;
     }
 
     @Override

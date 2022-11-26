@@ -44,18 +44,22 @@ public class SetupConfig {
     private final String[] canadianStreetNames = {"Bloor St", "Yonge St", "Queen St", "King St", "Dundas St", "Spadina Ave", "College St", "Ossington Ave", "Dufferin St", "Dupont St"};
     private final String[] canadianPostalCodes = {"M5V 2T6", "M5V 2T7", "M5V 2T8", "M5V 2T9", "M5V 2T0", "M5V 2T1", "M5V 2T2", "M5V 2T3", "M5V 2T4", "M5V 2T5"};
     private final String[] canadianCityNames = {"Toronto", "Ottawa", "Montreal", "Vancouver", "Calgary", "Edmonton", "Winnipeg", "Quebec City", "Hamilton", "Halifax"};
-    private final String[] canadianProvinceNames = {"Ontario", "Quebec", "British Columbia", "Alberta", "Manitoba", "Quebec", "Nova Scotia"};
+    private final String[] canadianProvinceNames = {"Ontario", "Quebec", "British Columbia", "Alberta", "Manitoba", "Quebec", "Nova Scotia", "New Brunswick", "Newfoundland and Labrador", "Prince Edward Island"};
 
     // vehicles
     private final String[] vehicleMakes = {"Honda", "Toyota", "Ford", "Chevrolet", "Nissan", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Kia"};
     private final String[] vehicleModels = {"Civic", "Corolla", "Fiesta", "Cruze", "Sentra", "3 Series", "C-Class", "A4", "Jetta", "Soul"};
-    private final int[] vehicleYears = {2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019};
+    private final int[] vehicleYears = {2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020};
     private final String[] vehicleLicencePlates = {"ABC123", "DEF456", "GHI789", "JKL012", "MNO345", "PQR678", "STU901", "VWX234", "YZA567", "BCD890"};
     private final String[] vehicleVinNumbers = {"1G1ZB5ST1GF285867", "1G1ZB5ST1GF285868", "1G1ZB5ST1GF285869", "1G1ZB5ST1GF285870", "1G1ZB5ST1GF285871", "1G1ZB5ST1GF285872", "1G1ZB5ST1GF285873", "1G1ZB5ST1GF285874", "1G1ZB5ST1GF285875", "1G1ZB5ST1GF285876"};
 
-    private final String[] serviceNames = {"Oil Change", "Tire Rotation", "Brake Inspection", "Tire Replacement", "Battery Replacement"};
+    private final String[] serviceNames = {"Oil Change", "Tire Rotation", "Brake Inspection", "Tire Replacement", "Battery Replacement", "Wheel Alignment", "Wheel Balancing", "Engine Tune-Up", "Engine Repair", "Transmission Repair"};
 
-    private final String[] shopNames = {"Auto Repair Shop", "Auto Body Shop", "Auto Detailing Shop", "Auto Parts Shop", "Auto Accessories Shop"};
+    // request quote descriptions
+    private final String[] requestQuoteDescriptions = {"My bumper is broken and needs to be fixed!", "I need an oil change", "I need a tire rotation", "I need a brake inspection", "I need a tire replacement", "I need a battery replacement", "I need a wheel alignment", "I need a wheel balancing", "I need an engine tune-up", "I need an engine repair", "I need a transmission repair"};
+    private final Double[] prices = {99.99, 45.99, 25.99, 75.99, 35.99, 15.99, 65.99, 55.99, 85.99, 95.99, 105.99};
+
+    private final String[] shopNames = {"Bob's Auto Shop", "John's Auto Shop", "Jane's Auto Shop", "Alice's Auto Shop", "Joe's Auto Shop", "Mary's Auto Shop", "Tom's Auto Shop", "Sally's Auto Shop", "Bill's Auto Shop", "Sarah's Auto Shop"};
 
     private final int NUM_SERVICES = serviceNames.length;
     private final int NUM_SHOPS = shopNames.length;
@@ -82,7 +86,7 @@ public class SetupConfig {
             List<Service> services = new ArrayList<>();
             int i = 0;
             while (i < NUM_SERVICES) {
-                Service service = new Service(serviceNames[i], null);
+                Service service = new Service(serviceNames[i]);
                 services.add(service);
                 i++;
             }
@@ -114,7 +118,7 @@ public class SetupConfig {
             List<VehicleOwner> vehicleOwners = new ArrayList<>();
             i = 0;
             while (i < NUM_VEHICLES) {
-                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i]);
+                Vehicle vehicle = new Vehicle(vehicleYears[i], vehicleMakes[i], vehicleModels[i], vehicleVinNumbers[i], vehicleLicencePlates[i], firstNames[i] + " " + lastNames[i]);
 
                 VehicleOwner vehicleOwner = new VehicleOwner(firstNames[i], lastNames[i], "vo_" + emails[i], canadianPhoneNumbers[i], vehicle);
 
@@ -153,7 +157,9 @@ public class SetupConfig {
                 Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService);
 
                 // Quote
-                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate);
+                String randomDescription = requestQuoteDescriptions[randomInt];
+                Double randomPrice = prices[randomInt];
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate, randomPrice, randomDescription);
 
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);

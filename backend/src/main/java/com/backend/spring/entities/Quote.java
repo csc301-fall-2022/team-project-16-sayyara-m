@@ -1,5 +1,6 @@
 package com.backend.spring.entities;
 
+import com.backend.spring.dto.ShopInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.MERGE;
@@ -44,34 +46,71 @@ public class Quote {
     @JoinColumn(name = "shop_id", referencedColumnName = "shop_id")
     private Shop shop;
 
-    @ManyToOne(cascade = MERGE)
+    @Transient
+    @JsonProperty(access = READ_ONLY)
+    @Getter(NONE)
+    private ShopInfo shopInfo;
+
+    @Transient
+    @JsonProperty(access = WRITE_ONLY)
+    @Getter(NONE)
+    private Long shopId = -1L;
+
+    @ManyToOne(optional = false, cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
 
+    @ToString.Exclude
+    @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
 
-    private Double price = null;
+    @Transient
+    @Getter(value = NONE)
+    private String serviceName;
 
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
-    private LocalDateTime expiryTime;
+    private LocalDateTime expiryDate = LocalDateTime.now().plusMonths(6);
 
     @Getter(value = NONE)
-    @NotNull
-    private QuoteStatus quoteStatus = QuoteStatus.PENDING_REVIEW;
+    private QuoteStatus status = QuoteStatus.PENDING_REVIEW;
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryTime) {
+    private Double price = null;
+
+    private String description = "";
+
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryDate, Double price, String description) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
-        this.expiryTime = expiryTime;
+        this.expiryDate = expiryDate;
+        this.price = price;
+        this.description = description;
     }
 
-    public QuoteStatus getQuoteStatus() {
-        if (expiryTime.isBefore(LocalDateTime.now())) {
-            this.quoteStatus = QuoteStatus.EXPIRED;
+    public QuoteStatus getStatus() {
+        if (expiryDate.isBefore(LocalDateTime.now())) {
+            this.status = QuoteStatus.EXPIRED;
         }
-        return quoteStatus;
+        return status;
+    }
+
+    public String getServiceName() {
+        if (service != null)
+            return service.getName();
+        return serviceName;
+    }
+
+    public ShopInfo getShopInfo() {
+        if (shop != null && shopInfo == null)
+            this.shopInfo = new ShopInfo(shop);
+        return shopInfo;
+    }
+
+    public Long getShopId() {
+        if (shop != null)
+            return shop.getId();
+        return shopId;
     }
 }
