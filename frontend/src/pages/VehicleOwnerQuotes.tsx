@@ -81,6 +81,17 @@ const VehicleOwnerQuotes = () => {
         setSelectedQuoteId(parseInt(`${params.id}`));
     }
 
+    const updateQuote = (newQuote: Quote) => {
+        let newQuotes: Quote[] = quotes
+        for (let i = 0; i < newQuotes.length; i++) {
+            if (newQuotes[i].id === newQuote.id) {
+                newQuotes[i] = newQuote
+                setQuotes(newQuotes)
+                break
+            }
+        }
+    }
+
     const renderDetailsDialog = () => {
         // Render nothing if no quote is currently selected
         if (selectedQuoteId === -1)
@@ -89,7 +100,7 @@ const VehicleOwnerQuotes = () => {
         // Render the details dialog component with the selected quote
         let selectedQuote = quotes.find(quote => quote.id === selectedQuoteId)
         if (selectedQuote !== undefined) {
-            return(<VehicleOwnerQuoteDialog quote={selectedQuote} setSelectedQuoteId={setSelectedQuoteId}/>);
+            return(<VehicleOwnerQuoteDialog quote={selectedQuote} setSelectedQuoteId={setSelectedQuoteId} updateQuote={updateQuote}/>);
         }
         return(<></>);
     }
