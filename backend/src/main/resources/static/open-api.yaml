@@ -397,13 +397,7 @@ paths:
                   format: double
                   example: 49.99
                 status:
-                  type: string
-                  enum:
-                    - Pending Approval
-                    - Pending Review
-                    - Accepted
-                    - Rejected
-                    - Expired
+                  $ref: "#/components/schemas/QuoteStatus"
               required: false
         required: true
       responses:
@@ -723,13 +717,7 @@ components:
           type: string
           format: date-time
         status:
-          type: string
-          enum:
-            - Pending Approval
-            - Pending Review
-            - Accepted
-            - Declined
-            - Expired
+          $ref: "#/components/schemas/QuoteStatus"
         description:
           type: string
     ResponseQuote:
@@ -751,6 +739,13 @@ components:
           type: string
           format: date-time
         status:
+          $ref: "#/components/schemas/QuoteStatus"
+        description:
+          type: string
+    QuoteStatus:
+      type: object
+      properties:
+        status:
           type: string
           enum:
             - Pending Approval
@@ -758,8 +753,6 @@ components:
             - Accepted
             - Declined
             - Expired
-        description:
-          type: string
     Service:
       type: object
       properties:
