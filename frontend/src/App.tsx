@@ -10,7 +10,6 @@ import Appointments from './pages/Appointments';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import MyShop from './pages/MyShop';
-import AppointmentDetails from "./pages/AppointmentDetails";
 import Quotes from './pages/Quotes';
 import QuoteDetails from './pages/QuoteDetails';
 import ShopDetails from './pages/ShopDetails';
@@ -41,7 +40,6 @@ function App() {
           <Route path='/signup' element={!cookies.refresh_token ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/profile' element={cookies.refresh_token ? <Profile /> : <Navigate to="/login"/>} />
           <Route path='/appointments' element={cookies.refresh_token ? <Appointments /> : <VehicleOwnerAppointments />} />
-          <Route path='/appointments/:id' element={cookies.refresh_token ? <AppointmentDetails /> : <Navigate to="/login" />} />
           <Route path='/quotes' element={cookies.refresh_token ? <Quotes /> : <VehicleOwnerQuotes />} />
           <Route path='/quotes/:id' element={cookies.refresh_token ? <QuoteDetails /> : <Navigate to="/login" />} />
           <Route path='/shop/:id' element={<ShopDetails />} />
