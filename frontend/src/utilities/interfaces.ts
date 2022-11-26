@@ -34,7 +34,8 @@ export interface Vehicle {
     make: string,
     model: string,
     vin: string,
-    plate: string
+    plate: string,
+    owner?: string
 }
 
 export interface VehicleOwner extends User {
@@ -49,13 +50,18 @@ export interface Appointment {
     endTime: string,
     duration?: number
 }
-
+export interface Service {
+    id: number,
+    name: string,
+    defaultPrice: number,
+}
 export interface Quote {
     id: number,
     vehicleOwner: VehicleOwner,
     price: number,
     expiryTime: string,
-    serviceType: string
+    service: Service,
+    status: "Accepted" | "Declined" | "Pending" | "Expired",
 }
 
 export interface APIError {

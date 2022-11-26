@@ -26,7 +26,8 @@ export const mQuote: Quote = {
     vehicleOwner: mVehicleOwner,
     price: 120.00,
     expiryTime: "2020-12-12",
-    serviceType: "Oil Change"
+    status: "Pending",
+    service: {id: 1, name: "Oil Change", defaultPrice: 120.00,}
 }
 const generateAppointments = () => {
     let appointments: Appointment[] = [];
