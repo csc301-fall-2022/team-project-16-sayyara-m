@@ -27,13 +27,13 @@ function VehicleOwnerQuoteDialog(props: Props) {
                 }
             )
         })
-    
+
         if (res.ok) {
             const data: Quote = await res.json();
             props.updateQuote(data)
             props.setSelectedQuoteId(-1)
         }
-    
+
         else {
             const data: APIError = await res.json();
             console.log(data.message);
@@ -42,31 +42,24 @@ function VehicleOwnerQuoteDialog(props: Props) {
 
     const createAppointment = async (apptDate: Date) => {
         changeQuoteStatus('Accepted')
-        const res = await fetch(API_ROOT + "/vehicleOwner/" + props.quote.vehicleOwner.id + "/appointments", {
+        const res = await fetch(API_ROOT + "/vehicleOwner/" + props.quote.vehicleOwner.id + "/appointments" + `?quoteId=${props.quote.id}`, {
             method: "POST",
             headers: {
                     'Content-Type': 'application/json'
                 },
             body: JSON.stringify(
                 {
-                    shopId: props.quote.shopInfo.shopId,
-                    vehicleOwner: props.quote.vehicleOwner,
-                    quote: props.quote,
                     startTime: apptDate,
                     endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)), // TODO: Change 30 to duration in minutes
-                    duration: '30', //props.quote.duration,
-                    wasQuote: true,
-                    shopInfo: props.quote.shopInfo,
-                    serviceName: props.quote.serviceName
                 }
             )
         })
-    
+
         if (res.ok) {
             const data: Appointment = await res.json()
             console.log(data)
         }
-    
+
         else {
             const data: APIError = await res.json();
             console.log(data.message);
@@ -77,13 +70,13 @@ function VehicleOwnerQuoteDialog(props: Props) {
         <React.Fragment>
             <div className="fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10"
             onClick={() => {props.setSelectedQuoteId(-1)}}/>
-            <div className="absolute right-1/2 top-[10%] sm:top-5 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100 
+            <div className="absolute right-1/2 top-[10%] sm:top-5 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
             rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6">
                 <button className='absolute right-6 top-5' onClick={() => {props.setSelectedQuoteId(-1)}}>
                 <CloseBtnSvg className='close-btn-svg'/>
                 </button>
                 <div className='text-xl sm:text-2xl font-semibold text-black mt-2 mr-8'>
-                    Quote From <span className='font-semibold text-xl sm:text-2xl text-blue-800 transition duration-500 cursor-pointer' 
+                    Quote From <span className='font-semibold text-xl sm:text-2xl text-blue-800 transition duration-500 cursor-pointer'
                     onClick={() => navigate(`/shop/${props.quote.shopInfo.shopId}`)}>{props.quote.shopInfo.name}</span>
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 border-t mt-4 pt-4'>
