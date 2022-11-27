@@ -44,7 +44,7 @@ const ShopDetails = () => {
                 </div>
                 {/* Form buttons Section (Appointment or Quotes) */}
                 <section className="text-sm pt-4 flex flex-wrap">
-                    <button
+                   <button
                         className="whitespace-nowrap mr-2 w-[170px] transition duration-100 ease-in-out bg-white hover:bg-gray-100
                         text-black font-semibold py-2 px-4 rounded border border-black"
                         onClick={() => setApptPopup(!apptPopup)}>

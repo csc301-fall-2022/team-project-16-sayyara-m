@@ -31,7 +31,8 @@ export const mAppointment: Appointment = {
     duration: 100,
     wasQuote: false,
     shopInfo: {shopId: 1, name: "Uths Garage", address: mAddress, email: "", phoneNumber: "+1 416 445 9898"},
-    serviceName: "Oil Change"
+    serviceName: "Oil Change",
+    price: 50.99
 }
 export const mQuote: Quote = {
     id: 1,
