@@ -53,7 +53,8 @@ export interface Appointment {
     duration?: number,
     wasQuote: boolean,
     shopInfo: ShopInfo,
-    serviceName: string
+    serviceName: string,
+    price: number
 }
 export interface Service {
     id: number,

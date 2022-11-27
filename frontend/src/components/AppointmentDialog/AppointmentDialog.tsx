@@ -23,7 +23,7 @@ const unloadedAppt: Appointment = {
         vehicle: { year: 0, make: "", model: "", vin: "", plate: "" }
     },
     shopInfo: { shopId: 1, email: "", name: "", address: Object(), phoneNumber: "" },
-    startTime: "", endTime: "", duration: 0, wasQuote: false,
+    startTime: "", endTime: "", duration: 0, wasQuote: false, price: 0
 }
 
 // TODO: DELETE LATER
