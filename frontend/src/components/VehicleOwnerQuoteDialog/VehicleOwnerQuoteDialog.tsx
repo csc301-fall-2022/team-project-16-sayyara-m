@@ -54,7 +54,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                     quote: props.quote,
                     startTime: apptDate,
                     endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)), // TODO: Change 30 to duration in minutes
-                    //duration: props.quote.duration,
+                    duration: '30', //props.quote.duration,
                     wasQuote: true,
                     shopInfo: props.quote.shopInfo,
                     serviceName: props.quote.serviceName
