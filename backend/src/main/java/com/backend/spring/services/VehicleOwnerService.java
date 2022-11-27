@@ -33,6 +33,10 @@ public class VehicleOwnerService {
 
         Shop shop = shopRepository.findById(quote.getShopId())
                 .orElseThrow(() -> new DataNotFoundException("Shop with id " + quote.getShopId() + " not found."));
+
+        if (serviceInShopIsNotNull(quote.getServiceName(), shop))
+            throw new DataNotFoundException("Shop already has a default price for the service " + quote.getServiceName() + ". Consider booking an appointment instead.");
+
         quote.setShop(shop);
         quote.setService(new com.backend.spring.entities.Service(quote.getServiceName()));
 
@@ -46,5 +50,11 @@ public class VehicleOwnerService {
         return vehicleOwner
                 .getQuotes()
                 .get(vehicleOwner.getQuotes().size() - 1);
+    }
+
+    private boolean serviceInShopIsNotNull(String serviceName, Shop shop) {
+        return shop.getServices()
+                .stream()
+                .anyMatch(shopService -> shopService.getName().equals(serviceName) && shopService.getDefaultPrice() != null);
     }
 }
