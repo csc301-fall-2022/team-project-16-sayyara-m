@@ -310,7 +310,8 @@ paths:
       summary: Create Appointment
       description: "Create a new Appointment for the Vehicle Owner either by passing in the Appointment object or 
       passing in a quoteId to create an appointment from a quote.\n\n
-      If a quoteId is passed in, the Appointment's wasQuote field will be set to true."
+      If a quoteId is passed in, the Appointment's wasQuote field will be set to true and 
+      the Quote will be set to Accepted."
       parameters:
         - name: vehicleOwnerId
           in: path
@@ -339,6 +340,12 @@ paths:
                 "$ref": "#/components/schemas/ResponseAppointment"
         '400':
           $ref: "#/components/responses/InvalidData"
+        403:
+          description: The user is not authorized to create an appointment for this vehicle owner
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/AuthorizationError"
         '404':
           description: "Vehicle Owner or Quote were not found by their id, or Shop was not found within the Quote, or 
           Quote was not associated with the Vehicle Owner"
@@ -694,6 +701,9 @@ components:
         endTime:
           type: string
           format: date-time
+        price:
+          type: number
+          format: double
         wasQuote:
           type: boolean
           default: false
@@ -715,6 +725,9 @@ components:
         endTime:
           type: string
           format: date-time
+        price:
+          type: number
+          format: double
         wasQuote:
           type: boolean
           default: false
@@ -771,7 +784,7 @@ components:
         - Pending Approval
         - Pending Review
         - Accepted
-        - Declined
+        - Rejected
         - Expired
     Service:
       type: object

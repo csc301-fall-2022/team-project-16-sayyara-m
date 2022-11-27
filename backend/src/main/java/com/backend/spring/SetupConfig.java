@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
@@ -57,7 +58,7 @@ public class SetupConfig {
 
     // request quote descriptions
     private final String[] requestQuoteDescriptions = {"My bumper is broken and needs to be fixed!", "I need an oil change", "I need a tire rotation", "I need a brake inspection", "I need a tire replacement", "I need a battery replacement", "I need a wheel alignment", "I need a wheel balancing", "I need an engine tune-up", "I need an engine repair", "I need a transmission repair"};
-    private final Double[] prices = {99.99, 45.99, 25.99, 75.99, 35.99, 15.99, 65.99, 55.99, 85.99, 95.99, 105.99};
+    private final Double[] prices = {99.99, 45.99, 25.99, null, 35.99, 15.99, null, 55.99, 85.99, 95.99, 105.99};
 
     private final String[] shopNames = {"Bob's Auto Shop", "John's Auto Shop", "Jane's Auto Shop", "Alice's Auto Shop", "Joe's Auto Shop", "Mary's Auto Shop", "Tom's Auto Shop", "Sally's Auto Shop", "Bill's Auto Shop", "Sarah's Auto Shop"};
 
@@ -82,31 +83,16 @@ public class SetupConfig {
 
             roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
 
-            // Services
-            List<Service> services = new ArrayList<>();
-            int i = 0;
-            while (i < NUM_SERVICES) {
-                Service service = new Service(serviceNames[i]);
-                services.add(service);
-                i++;
-            }
-            serviceRepository.saveAll(services);
-
             // Shops and shop owners
-            List<Shop> shops = new ArrayList<>();
-            i = 0;
+            int i = 0;
             while (i < NUM_SHOPS) {
                 Address address = new Address(streetNumbers[i], canadianStreetNames[i], canadianCityNames[i], canadianProvinceNames[i], canadianPostalCodes[i]);
 
-                Shop shop = new Shop(shopNames[i], address, canadianPhoneNumbers[i], "shop_" + emails[i]);
-                List<Service> shopServices = new ArrayList<>();
-                int j = 0;
-                while (j < 3) {
-                    shopServices.add(services.get(ThreadLocalRandom.current().nextInt(0, NUM_SERVICES)));
-                    j++;
-                }
-                shop.setServices(shopServices);
-                shops.add(shop);
+                List<Service> serviceList = new ArrayList<>();
+                for (String serviceName : serviceNames)
+                    serviceList.add(new Service(serviceName, prices[new Random().nextInt(prices.length)]));
+
+                Shop shop = new Shop(shopNames[i], address, canadianPhoneNumbers[i], "shop_" + emails[i], serviceList);
 
                 ShopOwner shopOwner = new ShopOwner(firstNames[i], lastNames[i], "so_" + emails[i], canadianPhoneNumbers[i], usernames[i], PASSWORD, shop);
                 shopOwner = shopOwnerSaveHelper.save(shopOwner);
@@ -129,11 +115,12 @@ public class SetupConfig {
                 i++;
             }
 
+            List<Shop> shops = shopRepository.findAll();
             i = 0;
             while (i < NUM_APPOINTMENTS) {
                 // Shop
-                int randomInt = ThreadLocalRandom.current().nextInt(0, NUM_SHOPS);
-                Shop randomShop = shops.get(randomInt);
+                int randomInt;
+                Shop randomShop = shops.get(i % shops.size());
 
                 // Vehicle owner
                 randomInt = ThreadLocalRandom.current().nextInt(0, NUM_VEHICLES);
@@ -154,11 +141,11 @@ public class SetupConfig {
                 randomInt = ThreadLocalRandom.current().nextInt(0, randomShop.getServices().size());
                 Service randomService = randomShop.getServices().get(randomInt);
 
-                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService);
+                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService, prices[i % prices.length]);
 
                 // Quote
-                String randomDescription = requestQuoteDescriptions[randomInt];
-                Double randomPrice = prices[randomInt];
+                String randomDescription = requestQuoteDescriptions[i % requestQuoteDescriptions.length];
+                Double randomPrice = prices[i % prices.length];
                 Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate, randomPrice, randomDescription);
 
                 randomVehicleOwner.getAppointments().add(appointment);

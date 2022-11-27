@@ -1,6 +1,7 @@
 package com.backend.spring.services;
 
 import com.backend.spring.entities.RoleEnum;
+import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.ShopOwner;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.RoleRepository;
@@ -50,5 +51,8 @@ public class ShopOwnerSaveHelper {
         shopOwner.getShop().setShopOwner(shopOwner);
         new ShopOwnerValidator(shopOwner).validate(); // validate before encrypting password
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
+
+        Shop shop = shopOwner.getShop();
+        shop.getServices().forEach(service -> service.setShop(shop));
     }
 }

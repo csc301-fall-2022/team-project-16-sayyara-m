@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
@@ -45,7 +47,7 @@ class ShopOwnerTest {
 
         Address address = new Address("StreetNum", "Street", "PostalCode", "City", "M2M 2M2");
 
-        shop = new Shop("Sayyara Shop2", address, "+14164123123", "sayyara@gmail.com");
+        shop = new Shop("Sayyara Shop2", address, "+14164123123", "sayyara@gmail.com", List.of());
 
         shopOwner = saveHelper.save(newShopOwner());
 
@@ -59,7 +61,7 @@ class ShopOwnerTest {
     @Test
     void checkShopsUnique() {
         Address address2 = new Address("StreetNum", "Street", "PostalCode", "City", "Prov");
-        Shop shop2 = new Shop("Sayyara Shop2", address2, "416-412-3125", "sayyara2@gmail.com");
+        Shop shop2 = new Shop("Sayyara Shop2", address2, "416-412-3125", "sayyara2@gmail.com", List.of());
         ShopOwner shopOwner1 = new ShopOwner("abc", "Bob", "bob3@gmail.com", "416-123-1235", "bob12346", "Password1!", shop2);
         try {
             shopOwner1 = saveHelper.save(shopOwner1);

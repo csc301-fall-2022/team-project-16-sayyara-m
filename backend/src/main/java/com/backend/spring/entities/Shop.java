@@ -57,7 +57,7 @@ public class Shop {
     @ToString.Exclude
     private List<Quote> quotes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER, cascade = ALL)
     private List<Service> services = new ArrayList<>();
 
     @Column(name = "phone_number", unique = true)
@@ -65,11 +65,12 @@ public class Shop {
     @Column(name = "email", unique = true)
     private String email;
 
-    public Shop(String name, Address address, String phoneNumber, String email) {
+    public Shop(String name, Address address, String phoneNumber, String email, List<Service> services) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.services = services;
     }
 
     public void update(Shop newShop) {
