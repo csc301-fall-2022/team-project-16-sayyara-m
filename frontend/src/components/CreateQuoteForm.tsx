@@ -38,20 +38,18 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         vehicleYear: "2022",
         vehicleVIN: "",
         liscensePlate: "",
-        serviceType: "",
+        serviceType: "Other",
         notes: "",
     }
     const [serverError, setServerError] = useState("");
     const [formData, setFormData] = useState<FormData>(initialForm);
     const [availableDays, setAvailableDays] = useState<Date[]>([]);
+    console.log(formData);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
         const newFormData: FormData = { ...formData, [changing]: e.target.value };
         setFormData(newFormData);
     }
-    console.log(formData.vehicleMake);
-    console.log(formData.vehicleModel);
-    console.log(availableDays);
     const CarMakeDropdown = () => {
         // create drop down with all car makes
         return (
