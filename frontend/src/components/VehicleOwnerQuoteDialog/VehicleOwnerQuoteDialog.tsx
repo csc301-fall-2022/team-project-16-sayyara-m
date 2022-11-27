@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { APIError, Quote } from "../../utilities/interfaces";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { APIError, Appointment, Quote } from "../../utilities/interfaces";
 import { ReactComponent as CloseBtnSvg } from "src/resources/svgs/close.svg";
 import { useNavigate } from "react-router-dom";
 import { API_ROOT } from "../../utilities/constants";
+import { DatePicker, TimeInput } from "@mantine/dates";
 
 interface Props {
     quote: Quote
@@ -11,6 +12,8 @@ interface Props {
 }
 function VehicleOwnerQuoteDialog(props: Props) {
     let navigate = useNavigate();
+    const [creatingAppointment, setCreatingAppointment] = useState<boolean>(false)
+    const [date, setDate] = useState<Date>(new Date())
 
     const changeQuoteStatus = async (newStatus: string) => {
         const res = await fetch(API_ROOT + "/quotes/" + props.quote.id, {
@@ -37,11 +40,44 @@ function VehicleOwnerQuoteDialog(props: Props) {
         }
     }
 
+    const createAppointment = async (apptDate: Date) => {
+        changeQuoteStatus('Accepted')
+        const res = await fetch(API_ROOT + "/vehicleOwner/" + props.quote.vehicleOwner.id + "/appointments", {
+            method: "POST",
+            headers: {
+                    'Content-Type': 'application/json'
+                },
+            body: JSON.stringify(
+                {
+                    shopId: props.quote.shopInfo.shopId,
+                    vehicleOwner: props.quote.vehicleOwner,
+                    quote: props.quote,
+                    startTime: apptDate,
+                    endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)), // TODO: Change 30 to duration in minutes
+                    //duration: props.quote.duration,
+                    wasQuote: true,
+                    shopInfo: props.quote.shopInfo,
+                    serviceName: props.quote.serviceName
+                }
+            )
+        })
+    
+        if (res.ok) {
+            const data: Appointment = await res.json()
+            console.log(data)
+        }
+    
+        else {
+            const data: APIError = await res.json();
+            console.log(data.message);
+        }
+    }
+
     return (
         <React.Fragment>
             <div className="fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10"
             onClick={() => {props.setSelectedQuoteId(-1)}}/>
-            <div className="absolute right-1/2 top-[10%] sm:top-10 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100 
+            <div className="absolute right-1/2 top-[10%] sm:top-5 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100 
             rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6">
                 <button className='absolute right-6 top-5' onClick={() => {props.setSelectedQuoteId(-1)}}>
                 <CloseBtnSvg className='close-btn-svg'/>
@@ -146,15 +182,42 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         {props.quote.shopInfo.address.postalCode}
                     </div>
                 </div>
-                {props.quote.status === "Pending Approval" ?
+                {creatingAppointment ?
+                    <React.Fragment>
+                        <div>
+                            <DatePicker label="Appointment Date" excludeDate={date => date < new Date()} value={date} onChange={date => {
+                                if (date) {
+                                    setDate(date)
+                                }
+                            }} />
+                            <TimeInput format="12" label="Appointment Time" value={date} onChange={newDate => {
+                                newDate.setFullYear(date.getFullYear())
+                                newDate.setMonth(date.getMonth())
+                                newDate.setDate(date.getDate())
+                                setDate(newDate)
+                            }}  />
+                        </div>
+                        <div className='flex justify-evenly my-8'>
+                            <button className="transition duration-100 ease-in-out w-40 bg-blue-500 hover:bg-blue-700 text-white
+                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => setCreatingAppointment(false)}>
+                                Cancel
+                            </button>
+                            <button className="transition duration-100 ease-in-out w-40 bg-blue-500 hover:bg-blue-700 text-white
+                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => createAppointment(date)}>
+                                Create Appointment
+                            </button>
+                        </div>
+                    </React.Fragment>
+                    :
+                    props.quote.status === "Pending Review" ?
                     <div className='flex justify-evenly my-8'>
                         <button className="transition duration-100 ease-in-out w-40 bg-blue-500 hover:bg-blue-700 text-white
                         font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => changeQuoteStatus("Rejected")}>
                             Reject
                         </button>
                         <button className="transition duration-100 ease-in-out w-40 bg-blue-500 hover:bg-blue-700 text-white
-                        font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => changeQuoteStatus("Accepted")}>
-                            Accept
+                        font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => setCreatingAppointment(true)}>
+                            Convert to Appointment
                         </button>
                     </div>
                     :
