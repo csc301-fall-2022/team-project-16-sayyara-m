@@ -155,6 +155,22 @@ paths:
 
 
   ############## SHOP ##############
+  /api/shops:
+    get:
+      tags:
+        - Shop
+      summary: Get all Shops
+      description: Get the list of all shops
+      operationId: getAllShops
+      responses:
+        '200':
+          description: Successfully retrieved all Shops
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shop"
   /api/shop:
     put:
       tags:
@@ -181,23 +197,30 @@ paths:
           $ref: "#/components/responses/InvalidData"
         '401':
           $ref: "#/components/responses/Unauthorized"
-  /api/shops:
+  /api/shop/{shopId}:
     get:
       tags:
         - Shop
-      summary: Get all Shops
-      description: Get the list of all shops
-      operationId: getAllShops
+      summary: Get Shop by ID
+      description: Get a shop by its ID
+      operationId: getShopById
+      parameters:
+        - name: shopId
+          in: path
+          description: ID of the shop to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
-          description: Successfully retrieved all Shops
+          description: Successfully retrieved Shop
           content:
             "*/*":
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Shop"
-
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
 
   ############## Appointments ##############
@@ -287,7 +310,8 @@ paths:
       summary: Create Appointment
       description: "Create a new Appointment for the Vehicle Owner either by passing in the Appointment object or 
       passing in a quoteId to create an appointment from a quote.\n\n
-      If a quoteId is passed in, the Appointment's wasQuote field will be set to true."
+      If a quoteId is passed in, the Appointment's wasQuote field will be set to true and 
+      the Quote will be set to Accepted."
       parameters:
         - name: vehicleOwnerId
           in: path
@@ -316,6 +340,12 @@ paths:
                 "$ref": "#/components/schemas/ResponseAppointment"
         '400':
           $ref: "#/components/responses/InvalidData"
+        403:
+          description: The user is not authorized to create an appointment for this vehicle owner
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/AuthorizationError"
         '404':
           description: "Vehicle Owner or Quote were not found by their id, or Shop was not found within the Quote, or 
           Quote was not associated with the Vehicle Owner"
@@ -671,6 +701,9 @@ components:
         endTime:
           type: string
           format: date-time
+        price:
+          type: number
+          format: double
         wasQuote:
           type: boolean
           default: false
@@ -692,6 +725,9 @@ components:
         endTime:
           type: string
           format: date-time
+        price:
+          type: number
+          format: double
         wasQuote:
           type: boolean
           default: false
@@ -743,16 +779,13 @@ components:
         description:
           type: string
     QuoteStatus:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - Pending Approval
-            - Pending Review
-            - Accepted
-            - Declined
-            - Expired
+      type: string
+      enum:
+        - Pending Approval
+        - Pending Review
+        - Accepted
+        - Rejected
+        - Expired
     Service:
       type: object
       properties:

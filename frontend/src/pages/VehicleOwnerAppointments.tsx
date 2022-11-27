@@ -2,6 +2,7 @@ import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid"
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ROOT } from "../utilities/constants";
+import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
 import { APIError, Appointment, VehicleOwner } from "../utilities/interfaces";
 import { mAppointment } from "../utilities/mockData";
 
@@ -55,29 +56,50 @@ const generateApptRows = (appointments: Appointment[]) => {
 const VehicleOwnerAppointments = () => {
     let navigate = useNavigate();
     const [appointments, setAppointments] = useState<Appointment[]>([])
+    const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
         const getData = async () => {
-            let ids = [1, 2, 3]
-            let newAppointments: Appointment[] = []
-            for (var id of ids) {
-                const res = await fetch(API_ROOT + "/appointments/" + id, {
+            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch appointments 
+            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage 
+
+            // let ids = [1, 2, 3]
+            // let newAppointments: Appointment[] = []
+
+            if (vehicleOwner) {
+                const res = await fetch(API_ROOT + "/vehicleOwner/" + vehicleOwner + "/appointments", {
                     method: "GET",
                 })
-
+    
                 if (res.ok) {
-                    const data: Appointment = await res.json();
-                    newAppointments.push(data)
+                    const data: Appointment[] = await res.json();
+                    setAppointments(data)
                 }
-
+    
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);
                 }
             }
-            setAppointments(newAppointments)
+
+            // for (var id of ids) {
+            //     const res = await fetch(API_ROOT + "/appointments/" + id, {
+            //         method: "GET",
+            //     })
+
+            //     if (res.ok) {
+            //         const data: Appointment = await res.json();
+            //         newAppointments.push(data)
+            //     }
+
+            //     else {
+            //         const data: APIError = await res.json();
+            //         console.log(data.message);
+            //     }
+            // }
+            // setAppointments(newAppointments)
         }
-        getData();
+        getData(); // Don't comment this out
     }, [])
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {

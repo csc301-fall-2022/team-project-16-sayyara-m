@@ -77,12 +77,15 @@ public class Appointment {
 
     private boolean wasQuote = false;
 
-    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service) {
+    private Double price;
+
+    public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service, Double price) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.startTime = startTime;
         this.endTime = endTime;
         this.service = service;
+        this.price = price;
     }
 
     public Long getShopId() {

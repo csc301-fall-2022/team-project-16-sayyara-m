@@ -2,6 +2,7 @@ package com.backend.spring.services;
 
 import com.backend.spring.entities.Service;
 import com.backend.spring.entities.Shop;
+import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.exceptions.InvalidDataException;
 import com.backend.spring.repositories.ShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,10 @@ public class ShopService {
 
     public List<Shop> getAllShops() {
         return shopRepository.findAll();
+    }
+
+    public Shop getShopById(Long shopId) {
+        return shopRepository.findById(shopId).orElseThrow(() -> new DataNotFoundException("Shop with id " + shopId + " not found"));
     }
 
     public void addService(String authHeader, Service service) { // TODO Jamie: does Shop automatically get updated in the DB?

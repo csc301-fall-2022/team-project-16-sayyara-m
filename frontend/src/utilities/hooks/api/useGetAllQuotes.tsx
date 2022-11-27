@@ -21,5 +21,5 @@ export const useGetAllQuotes = () => {
     useEffect(() => {
         getAllQuotes();
     }, []);
-    return { quotes };
+    return { quotes, setQuotes };
 }

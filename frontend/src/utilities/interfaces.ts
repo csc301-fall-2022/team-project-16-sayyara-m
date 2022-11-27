@@ -53,7 +53,8 @@ export interface Appointment {
     duration?: number,
     wasQuote: boolean,
     shopInfo: ShopInfo,
-    serviceName: string
+    serviceName: string,
+    price: number
 }
 export interface Service {
     id: number,
@@ -67,7 +68,7 @@ export interface Quote {
     price: number,
     expiryDate: string,
     serviceName: string,
-    status: "Pending Review" | "Pending Approval" | "Accepted" | "Declined" | "Expired",
+    status: "Pending Review" | "Pending Approval" | "Accepted" | "Rejected" | "Expired",
     shopInfo: ShopInfo,
     description: string
 }

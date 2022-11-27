@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import CreateAppointmentForm from "src/components/CreateAppointmentForm";
 import CreateQuoteForm from "src/components/CreateQuoteForm";
 import { mShop as shop } from "../utilities/mockData";
@@ -14,6 +15,7 @@ const generateServiceCards = () => {
 const ShopDetails = () => {
     const [apptPopup, setApptPopup] = useState(false);
     const [quotePopup, setQuotePopup] = useState(false);
+    const { id } = useParams();
     return (
         <div className="">
             {/* Section to show the details of the shop */}
@@ -22,9 +24,9 @@ const ShopDetails = () => {
                     <CreateAppointmentForm setVisibility={setApptPopup}/>
                 </div>
             }
-            {quotePopup &&
+            {quotePopup && id &&
                 <div className="w-full flex justify-center">
-                    <CreateQuoteForm setVisibility={setQuotePopup}/>
+                    <CreateQuoteForm shopId={id} setVisibility={setQuotePopup}/>
                 </div>
             }
             {/* Div to set rest of page as hidden when form is selected */}
@@ -42,7 +44,7 @@ const ShopDetails = () => {
                 </div>
                 {/* Form buttons Section (Appointment or Quotes) */}
                 <section className="text-sm pt-4 flex flex-wrap">
-                    <button
+                   <button
                         className="whitespace-nowrap mr-2 w-[170px] transition duration-100 ease-in-out bg-white hover:bg-gray-100
                         text-black font-semibold py-2 px-4 rounded border border-black"
                         onClick={() => setApptPopup(!apptPopup)}>

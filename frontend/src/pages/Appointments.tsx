@@ -9,13 +9,8 @@ const columns: GridColDef[] = [
     { field: 'firstName', headerName: 'First name', width: 200},
     { field: 'lastName', headerName: 'Last name', width: 200 },
     { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'startTime', headerName: 'Start Time', width: 100 },
-    { field: 'endTime', headerName: 'End Time', width: 100 },
-    {
-      field: 'Duration',
-      headerName: 'Duration',
-      width: 90,
-    },
+    { field: 'startTime', headerName: 'Start Time', width: 150 },
+    { field: 'endTime', headerName: 'End Time', width: 150 },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
     // {
     //   field: 'fullName',
@@ -39,8 +34,7 @@ const generateApptRows = (appointments: Appointment[]) => {
             date: new Date(appt.startTime).toISOString().substring(0, 10),
             startTime: new Date(appt.startTime).toLocaleTimeString(),
             endTime: new Date(appt.endTime).toLocaleTimeString(),
-            Duration: appt.duration,
-            serviceType: "Oil Change"
+            serviceType: appt.serviceName
         });
     }
     return apptRows;
