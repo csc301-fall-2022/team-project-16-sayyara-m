@@ -12,11 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServiceService {
     private final ServiceRepository repository;
-    private final ShopOwnerRetriever shopOwnerRetriever;
-
-    public List<Service> getAllServicesFromShop(String authHeader) {
-        return shopOwnerRetriever.getShop(authHeader).getServices();
-    }
 
     public Service getService(long id) throws DataNotFoundException {
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Service with id " + id + " doesn't exist"));

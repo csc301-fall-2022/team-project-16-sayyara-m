@@ -34,9 +34,11 @@ public class ShopService {
 
     public void addService(String authHeader, Service service) { // TODO Jamie: does Shop automatically get updated in the DB?
         Shop shop = shopOwnerRetriever.getShop(authHeader);
+        service.setShop(shop);
         List<Service> services = shop.getServices();
         services.add(service);
         shop.setServices(services);
+        shopRepository.save(shop);
     }
 
     public void removeService(String authHeader, long id) { // TODO Jamie: does Shop automatically get updated in the DB?
@@ -44,5 +46,6 @@ public class ShopService {
         List<Service> services = shop.getServices();
         services.removeIf(service -> service.getId() == id);
         shop.setServices(services);
+        shopRepository.save(shop);
     }
 }
