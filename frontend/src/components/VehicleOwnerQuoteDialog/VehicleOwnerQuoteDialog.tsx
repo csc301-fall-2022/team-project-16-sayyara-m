@@ -41,7 +41,6 @@ function VehicleOwnerQuoteDialog(props: Props) {
     }
 
     const createAppointment = async (apptDate: Date) => {
-        changeQuoteStatus('Accepted')
         const res = await fetch(API_ROOT + "/vehicleOwner/" + props.quote.vehicleOwner.id + "/appointments" + `?quoteId=${props.quote.id}`, {
             method: "POST",
             headers: {
@@ -57,6 +56,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
 
         if (res.ok) {
             const data: Appointment = await res.json()
+            changeQuoteStatus('Accepted')
             console.log(data)
         }
 
