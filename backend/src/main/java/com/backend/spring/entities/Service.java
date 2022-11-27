@@ -58,6 +58,10 @@ public class Service { // TODO Jamie: Consider renaming class to avoid conflicts
         this.defaultPrice = defaultPrice;
     }
 
+    public Service(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
