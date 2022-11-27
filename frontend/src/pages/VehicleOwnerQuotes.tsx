@@ -2,6 +2,7 @@ import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid"
 import React, { useEffect, useState } from "react";
 import VehicleOwnerQuoteDialog from "../components/VehicleOwnerQuoteDialog/VehicleOwnerQuoteDialog";
 import { API_ROOT } from "../utilities/constants";
+import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
 import { APIError, Quote, VehicleOwner } from "../utilities/interfaces";
 import { mQuote } from "../utilities/mockData";
 
@@ -49,32 +50,53 @@ const columns: GridColDef[] = [
 const VehicleOwnerQuotes = () => {
     const [quotes, setQuotes] = useState<Quote[]>([])
     const [selectedQuoteId, setSelectedQuoteId] = useState<number>(-1);
+    const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
         const getData = async () => {
-            let ids = [1, 2, 3]
-            let newQuotes: Quote[] = []
-            for (var id of ids) {
-                console.log(API_ROOT + "/quotes/" + id)
-                const res = await fetch(API_ROOT + "/quotes/" + id, {
+            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch quotes 
+            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage 
+
+            // let ids = [1, 2, 3]
+            // let newQuotes: Quote[] = []
+
+            if (vehicleOwner) {
+                const res = await fetch(API_ROOT + "/vehicleOwner/" + vehicleOwner + "/quotes", {
                     method: "GET",
                 })
-
+    
                 if (res.ok) {
-                    const data: Quote = await res.json();
-                    console.log(data)
-                    newQuotes.push(data)
-
+                    const data: Quote[] = await res.json();
+                    setQuotes(data)
                 }
-
+    
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);
                 }
             }
-            setQuotes(newQuotes)
+
+            // for (var id of ids) {
+            //     console.log(API_ROOT + "/quotes/" + id)
+            //     const res = await fetch(API_ROOT + "/quotes/" + id, {
+            //         method: "GET",
+            //     })
+
+            //     if (res.ok) {
+            //         const data: Quote = await res.json();
+            //         console.log(data)
+            //         newQuotes.push(data)
+
+            //     }
+
+            //     else {
+            //         const data: APIError = await res.json();
+            //         console.log(data.message);
+            //     }
+            // }
+            // setQuotes(newQuotes)
         }
-        getData();
+        getData(); // Don't comment this out
     }, [])
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
