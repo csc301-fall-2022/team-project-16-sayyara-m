@@ -65,15 +65,18 @@ const MyShop = () => {
     }
     const generateServiceCards = () => {
         if(shopOwner === null) return [];
-        let result: JSX.Element[] = [];
-        let services = shopOwner.shop.services;
-        for(let service of services){
-            let content: string = service.defaultPrice ? `${service.defaultPrice}` : "N/A";
-            result.push(
-                <div className="border-2 bg-green-200 rounded-lg text-center p-3 mr-2 my-1">{service.name} {content}</div>
+        let services: JSX.Element[] = [];
+        let shopServices = shopOwner.shop.services;
+        for(let service of shopServices){
+            const price = service.defaultPrice ? `$${service.defaultPrice}` : "N/A (Contact Shop)";
+            services.push(
+                <div
+                    className="grid grid-cols-1 justify-items-start border-2 bg-green-200 rounded-lg text-center p-2">
+                    <p className="font-semibold">{service.name}</p><p className="text-xs">{price}</p >
+                </div>
             )
         }
-        return result;
+        return services;
     }
     return (
         <div className="pt-2 ml-2">
@@ -94,12 +97,13 @@ const MyShop = () => {
             </div>
             <br></br>
             <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
-            <div className="flex flex-wrap">
+            <div className="inline-grid grid-cols-2 gap-2">
                 {generateServiceCards()}
             </div>
             <form className="block">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Add a New Service</h3>
-                <label className="pr-2">Service:</label>
+                <label className="">Service:</label>
+                <br />
                 <input
                     className="p-2 mt-3 mb-5 border-2 rounded box-border"
                     type="text"
