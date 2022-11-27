@@ -209,7 +209,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         </div>
                     </React.Fragment>
                     :
-                    props.quote.status === "Pending Review" ?
+                    props.quote.status === "Pending Approval" ?
                     <div className='flex justify-evenly my-8'>
                         <button className="transition duration-100 ease-in-out w-40 bg-blue-500 hover:bg-blue-700 text-white
                         font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => changeQuoteStatus("Rejected")}>
