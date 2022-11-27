@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,4 +36,10 @@ public class ShopController {
     public ResponseEntity<List<Shop>> getAllShops() {
         return ResponseEntity.ok().body(service.getAllShops());
     }
+
+    @GetMapping("shop/{shopId}")
+    public ResponseEntity<Shop> getShopById(@PathVariable("shopId") Long shopId) {
+        return ResponseEntity.ok().body(service.getShopById(shopId));
+    }
+
 }

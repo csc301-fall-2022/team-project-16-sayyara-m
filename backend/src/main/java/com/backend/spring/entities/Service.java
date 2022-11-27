@@ -52,6 +52,11 @@ public class Service {
         this.name = name;
     }
 
+    public Service(String name, Double defaultPrice) {
+        this.name = name;
+        this.defaultPrice = defaultPrice;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
