@@ -79,7 +79,7 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
     }
     const ServiceTypeDropDown = () => {
         // change to display services with fixed costs
-        const options = services.map(service => {
+        const options: JSX.Element[] = services.map(service => {
             if(service.name !== "Other" && service.defaultPrice !== null) {
                 return (
                     <option value={service.name}>{service.name}</option>
@@ -89,6 +89,7 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
             // return no option when the service is other, this form is for directly booking an appointment
             return <></>;
         })
+        options.push(<option value={""}></option>)
         return (
             <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
                 {options}
