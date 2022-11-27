@@ -12,6 +12,7 @@ const MyShop = () => {
     // const { auth } = useAuth();
     const [service, setService] = useState<string>("")
     const { shopOwner } = useGetShopOwner();
+    console.log(shopOwner);
     const AppointmentCard = ({ ap }: AppointmentCardProps) => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
@@ -47,30 +48,32 @@ const MyShop = () => {
         )
     }
     const generateAppointmentCards = () => {
-        let appointments: Appointment[] | undefined = shopOwner?.shop.appointments;
-        if (appointments){
-             return appointments?.map((ap, i) => {
+        if(shopOwner === null) return [];
+        let appointments = shopOwner.shop.appointments;
+             return appointments.map((ap, i) => {
                     return (
                         <AppointmentCard key={ap.id + i}  ap={ap}/>
                     );
                 });
-        }
-       return;
     }
     const generateQuoteCards = () => {
-        let quotes: Quote[] = shopOwner?.shop.quotes || [];
+        if(shopOwner === null) return [];
+        let quotes: Quote[] = shopOwner.shop.quotes;
         return quotes.map((q, i) => {
             return <QuoteCard key={q.id} quote={q}/>
         })
     }
     const generateServiceCards = () => {
-        let services: JSX.Element[] = [];
-        for(let i = 0; i < 5; i++){
-            services.push(
-                <div className="border-2 bg-green-200 rounded-lg text-center p-3 mr-2 my-1">Oil Change</div>
+        if(shopOwner === null) return [];
+        let result: JSX.Element[] = [];
+        let services = shopOwner.shop.services;
+        for(let service of services){
+            let content: string = service.defaultPrice ? `${service.defaultPrice}` : "N/A";
+            result.push(
+                <div className="border-2 bg-green-200 rounded-lg text-center p-3 mr-2 my-1">{service.name} {content}</div>
             )
         }
-        return services;
+        return result;
     }
     return (
         <div className="pt-2 ml-2">

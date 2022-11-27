@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { carModels } from "src/utilities/constants";
+import { API_ROOT, carModels } from "src/utilities/constants";
 import { serviceTypes } from "src/utilities/mockData";
 import { Calendar } from "@mantine/dates";
+import { APIError, Quote } from "src/utilities/interfaces";
+import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
 
 interface FormData {
     firstName: string,
@@ -20,10 +22,12 @@ interface FormData {
 //list of all car models
 
 interface AppointmentFormProps {
+    shopId: string,
     setVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
+const CreateQuoteForm = ({setVisibility, shopId}: AppointmentFormProps) => {
+    const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
     const initialForm: FormData = {
         firstName: "",
         lastName: "",
@@ -37,6 +41,7 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
         serviceType: "",
         notes: "",
     }
+    const [serverError, setServerError] = useState("");
     const [formData, setFormData] = useState<FormData>(initialForm);
     const [availableDays, setAvailableDays] = useState<Date[]>([]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,10 +107,51 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
             </select>
         )
     }
+
+    const handleSubmit = async() => {
+        const sendToServer = {
+            "shopId": shopId,
+            "vehicleOwner": {
+                "firstName": formData.firstName,
+                "lastName": formData.lastName,
+                "email": formData.email,
+                "phoneNumber": formData.phoneNumber,
+                "vehicle": {
+                    "year": formData.vehicleYear,
+                    "make": formData.vehicleMake,
+                    "model": formData.vehicleModel,
+                    "vin": formData.vehicleVIN,
+                    "plate": formData.liscensePlate
+                }
+            },
+            "service": formData.serviceType,
+            "description": formData.notes
+        }
+        const res = await fetch(`${API_ROOT}/vehicleOwner/quotes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(sendToServer)
+        })
+        if(res.ok){
+            const data: Quote = await res.json();
+            setServerError("");
+            if(vehicleOwner === null){
+                setVehicleOwner(`${data.vehicleOwner.id}`);
+            }
+            setVisibility(false);
+            return;
+        }
+        const data: APIError = await res.json();
+        setServerError(data.message);
+        console.log(data.message);
+    }
     return (
         <div className="flex justify-center mb-8">
-            <form className="grid grid-cols-1 gap-2 w-[400px]">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2 w-[400px]">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Request A Quote</h3>
+                {serverError && <p className="text-red-500">{serverError}</p>}
                 <section className="flex">
                     <div className="pr-1">
                         <label>First Name</label>
@@ -220,7 +266,8 @@ const CreateQuoteForm = ({setVisibility}: AppointmentFormProps) => {
                         text-black font-semibold py-2 px-4 rounded border border-black">Cancel
                     </button>
                     <button
-                        onClick={() => setVisibility(false)}
+                        type="button"
+                        onClick={handleSubmit}
                         className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
                         text-black font-semibold py-2 px-4 rounded border border-black">Submit
                     </button>
