@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 //import Home from './pages/Home';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -30,6 +30,8 @@ function App() {
   //   refresh?.();
   // }, []);
 
+  //force a rerender when the refresh token changes (i.e when the user logs out or logs in)
+  useEffect(() => {}, [cookies]);
   return (
     <div>
       <Router>
