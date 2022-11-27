@@ -56,7 +56,7 @@ const generateApptRows = (appointments: Appointment[]) => {
 const VehicleOwnerAppointments = () => {
     let navigate = useNavigate();
     const [appointments, setAppointments] = useState<Appointment[]>([])
-    const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
+    const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
         const getData = async () => {

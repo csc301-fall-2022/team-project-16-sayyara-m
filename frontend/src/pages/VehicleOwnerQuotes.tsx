@@ -50,7 +50,7 @@ const columns: GridColDef[] = [
 const VehicleOwnerQuotes = () => {
     const [quotes, setQuotes] = useState<Quote[]>([])
     const [selectedQuoteId, setSelectedQuoteId] = useState<number>(-1);
-    const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
+    const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
         const getData = async () => {
