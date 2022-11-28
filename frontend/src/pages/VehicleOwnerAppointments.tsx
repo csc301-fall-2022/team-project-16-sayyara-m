@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
 import { API_ROOT } from "../utilities/constants";
 import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
 import { APIError, Appointment, ShopInfo, VehicleOwner } from "../utilities/interfaces";
@@ -61,8 +61,9 @@ const generateApptRows = (appointments: Appointment[]) => {
 }
 
 const VehicleOwnerAppointments = () => {
-    let navigate = useNavigate();
-    const [appointments, setAppointments] = useState<Appointment[]>([])
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [selectedAptId, setSelectedAptId] = useState<string>("");
+    
     const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
@@ -110,7 +111,16 @@ const VehicleOwnerAppointments = () => {
     }, [])
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
-        navigate(`/appointments/${params.id}`);
+        setSelectedAptId(`${params.id}`);
+    }
+
+    const renderDetailsDialog = () => {
+        // Render nothing if no appointment is currently selected
+        if (selectedAptId === "")
+            return(<></>);
+
+        // Render the details dialog component with the selected appointment ID
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={false}/>);
     }
 
     return (
@@ -124,6 +134,7 @@ const VehicleOwnerAppointments = () => {
                 onRowClick={handleRowClick}
 
             />
+            {renderDetailsDialog()}
         </div>
     )
 }
