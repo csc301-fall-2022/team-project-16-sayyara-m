@@ -4,6 +4,7 @@ import { useGetShopOwner } from "src/utilities/hooks/api/useGetShopOwner";
 import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
 import QuoteDialog from "src/components/QuoteDialog";
 import { useGetAllQuotes } from "src/utilities/hooks/api/useGetAllQuotes";
+import ServicesOffered from "src/components/ServicesOffered";
 interface AppointmentCardProps {
     ap: Appointment;
 }
@@ -16,7 +17,7 @@ const MyShop = () => {
     const [selectedQuoteId, setSelectedQuoteId] = useState(-1);
 
     const { quotes, setQuotes } = useGetAllQuotes(); // Cant use shopOwner.shop.quotes because dialog needs a setter
-    
+
     const { shopOwner } = useGetShopOwner();
     console.log(shopOwner);
 
@@ -25,7 +26,7 @@ const MyShop = () => {
         const vehicle: Vehicle = vehicleOwner.vehicle;
 
         return (
-            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
+            <div className="cursor-pointer hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
             onClick={() => {setSelectedAptId(`${ap.id}`)}}>
                 <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
                 <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
@@ -39,10 +40,21 @@ const MyShop = () => {
     const QuoteCard = ({ quote }: QuoteCardProps) => {
         const vehicleOwner: VehicleOwner = quote.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
+        const statusColour = () => {
+            if(quote.status === "Accepted" || quote.status === "Pending Approval"){
+                return "text-xs text-green-500"
+            }
+            else{
+                return "text-xs text-red-500"
+            }
+        }
         return ( //quote.id
-            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
+            <div className="cursor-pointer hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
             onClick={() => {setSelectedQuoteId(quote.id)}}>
-                <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
+                <div className="flex justify-between whitespace-nowrap">
+                    <h1 className="text-lg sm:text-2xl pt-4"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
+                    <p className={statusColour()}>{quote.status}</p>
+                </div>
                 <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
                 <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
                 <p className="whitespace-nowrap">Expires: {quote.expiryDate.substring(0, 10)}</p>
@@ -67,22 +79,6 @@ const MyShop = () => {
         return quotes.map((q, i) => {
             return <QuoteCard key={q.id} quote={q}/>
         })
-    }
-
-    const generateServiceCards = () => {
-        if(shopOwner === null) return [];
-        let services: JSX.Element[] = [];
-        let shopServices = shopOwner.shop.services;
-        for(let service of shopServices){
-            const price = service.defaultPrice ? `$${service.defaultPrice}` : "N/A (Contact Shop)";
-            services.push(
-                <div
-                    className="grid grid-cols-1 justify-items-start border-2 bg-green-200 rounded-lg text-center p-2">
-                    <p className="font-semibold">{service.name}</p><p className="text-xs">{price}</p >
-                </div>
-            )
-        }
-        return services;
     }
 
     const renderAppointmentDetailsDialog = () => {
@@ -124,9 +120,7 @@ const MyShop = () => {
             </div>
             <br></br>
             <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
-            <div className="inline-grid grid-cols-2 gap-2">
-                {generateServiceCards()}
-            </div>
+            <ServicesOffered services={shopOwner ? shopOwner.shop.services : []} />
             <form className="block">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Add a New Service</h3>
                 <label className="">Service:</label>
