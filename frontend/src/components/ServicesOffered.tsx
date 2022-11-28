@@ -5,7 +5,7 @@ import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 import { API_ROOT } from "src/utilities/constants";
 interface ServicesOfferedProps {
     services: Service[],
-    deleteService: (id: number) => void
+    deleteService?: (id: number) => void
 }
 const ServicesOffered = (props: ServicesOfferedProps) => {
     const { services, deleteService } = props;
@@ -13,6 +13,7 @@ const ServicesOffered = (props: ServicesOfferedProps) => {
     if(services.length === 0) return <div>No Services Currently Offered</div>
 
     const handleDelete = async(id: number) => {
+        if(deleteService === undefined) return;
         const res = await authFetch(`${API_ROOT}/services/${id}`, {
             method: "DELETE"
         });
@@ -31,7 +32,7 @@ const ServicesOffered = (props: ServicesOfferedProps) => {
                     className="grid grid-cols-1 justify-items-start border-2 bg-slate-200 rounded-lg text-center p-2">
                     <div className="flex justify-between w-full">
                         <p className="font-semibold">{service.name}</p>
-                        <DeleteIcon onClick={() => handleDelete(service.id)} className="text-red-600 cursor-pointer" fontSize="small"/>
+                        {deleteService ? <DeleteIcon onClick={() => handleDelete(service.id)} className="text-red-600 cursor-pointer" fontSize="small"/> : null}
                     </div>
                     <p className="text-xs">{price}</p >
                 </div>
