@@ -6,6 +6,7 @@ import com.backend.spring.entities.QuoteStatus;
 import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.VehicleOwner;
 import com.backend.spring.exceptions.DataNotFoundException;
+import com.backend.spring.exceptions.ForbiddenException;
 import com.backend.spring.exceptions.ViolatedConstraintException;
 import com.backend.spring.repositories.AppointmentRepository;
 import com.backend.spring.repositories.QuoteRepository;
@@ -66,7 +67,10 @@ public class VehicleOwnerAppointmentService {
         vehicleOwner = vehicleOwnerSaveHelper.save(vehicleOwner);
         return vehicleOwner
                 .getAppointments()
-                .get(vehicleOwner.getAppointments().size() - 1);
+                .stream()
+                .filter(prevAppointment -> prevAppointment.equals(appointment))
+                .findFirst()
+                .orElseThrow(() -> new ForbiddenException("Something went wrong while creating the appointment"));
     }
 
     public Appointment createAppointmentFromQuote(long vehicleOwnerId, Appointment appointment, long quoteId) {
@@ -91,7 +95,10 @@ public class VehicleOwnerAppointmentService {
         vehicleOwner = vehicleOwnerSaveHelper.save(vehicleOwner);
         return vehicleOwner
                 .getAppointments()
-                .get(vehicleOwner.getAppointments().size() - 1);
+                .stream()
+                .filter(curAppointment -> curAppointment.equals(newAppointment))
+                .findFirst()
+                .orElseThrow(() -> new ForbiddenException("Something went wrong while creating the appointment"));
     }
 
     private void validateAppointmentTimes(Appointment appointment) {
@@ -107,7 +114,7 @@ public class VehicleOwnerAppointmentService {
 
     private Appointment quoteToAppointment(Quote quote, LocalDateTime startTime, LocalDateTime endTime) {
         Appointment appointment = new Appointment(quote.getShop(), quote.getVehicleOwner(), startTime, endTime, quote.getService(), quote.getPrice());
-        appointment.setService(new com.backend.spring.entities.Service(appointment.getServiceName()));
+        appointment.setService(new com.backend.spring.entities.Service(quote.getServiceName()));
         appointment.setWasQuote(true);
         return appointment;
     }
