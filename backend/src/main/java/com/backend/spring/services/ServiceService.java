@@ -3,6 +3,7 @@ package com.backend.spring.services;
 import com.backend.spring.entities.Service;
 import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.ServiceRepository;
+import com.backend.spring.validators.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
@@ -13,15 +14,12 @@ import java.util.List;
 public class ServiceService {
     private final ServiceRepository repository;
 
-    public List<Service> getAllServices() {
-        return repository.findAll();
-    }
-
     public Service getService(long id) throws DataNotFoundException {
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Service with id " + id + " doesn't exist"));
     }
 
     public Service createService(Service service) {
+        new ServiceValidator(service).validate();
         return repository.save(service);
     }
 
