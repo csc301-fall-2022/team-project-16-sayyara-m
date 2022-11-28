@@ -63,7 +63,7 @@ const Appointments = () => {
         <div className="h-[650px] w-full">
             <h1 className="flex justify-center font-semibold text-blue-900 sm:text-3xl py-4">Upcoming Appointments</h1>
             <DataGrid
-                className="cursor-pointer"
+                getRowClassName={() => "cursor-pointer"}
                 rows={generateApptRows(appointments)}
                 columns={columns}
                 pageSize={10}

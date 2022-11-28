@@ -131,7 +131,7 @@ const VehicleOwnerQuotes = () => {
         <div className="h-[650px] w-full">
             <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Your Quotes</h1>
             <DataGrid
-                className="cursor-pointer"
+                getRowClassName={() => "cursor-pointer"}
                 rows={generateQuoteRows(quotes)}
                 columns={columns}
                 pageSize={10}
