@@ -3,10 +3,10 @@ import { API_ROOT } from "src/utilities/constants";
 import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 import { APIError, Service } from "src/utilities/interfaces";
 interface ServiceCreationFormProps {
-    refreshServices: (service: Service) => void
+    addService: (service: Service) => void
 }
 const ServiceCreationForm = (props: ServiceCreationFormProps) => {
-    const { refreshServices: addService } = props;
+    const { addService } = props;
     const [service, setService] = useState<string>("")
     const [price, setPrice] = useState("");
     const [error, setError] = useState("");
