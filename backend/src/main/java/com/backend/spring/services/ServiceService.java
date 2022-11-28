@@ -3,6 +3,7 @@ package com.backend.spring.services;
 import com.backend.spring.entities.Service;
 import com.backend.spring.exceptions.DataNotFoundException;
 import com.backend.spring.repositories.ServiceRepository;
+import com.backend.spring.validators.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
@@ -18,6 +19,7 @@ public class ServiceService {
     }
 
     public Service createService(Service service) {
+        new ServiceValidator(service).validate();
         return repository.save(service);
     }
 
