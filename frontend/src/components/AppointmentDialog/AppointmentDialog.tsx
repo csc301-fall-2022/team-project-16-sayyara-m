@@ -8,7 +8,7 @@ import AnimateHeight, { Height } from 'react-animate-height';
 import './AppointmentDialog.css';
 import 'react-calendar/dist/Calendar.css';
 import { API_ROOT } from 'src/utilities/constants';
-import { Appointment, Vehicle, VehicleOwner } from "src/utilities/interfaces";
+import { Appointment, ShopInfo, Vehicle, VehicleOwner } from "src/utilities/interfaces";
 
 import { ReactComponent as CloseBtnSvg } from "src/resources/svgs/close.svg";
 import { ReactComponent as ChevronDownSvg } from "src/resources/svgs/chevron-down.svg";
@@ -26,33 +26,8 @@ const unloadedAppt: Appointment = {
     startTime: "", endTime: "", duration: 0, wasQuote: false, price: 0
 }
 
-// TODO: DELETE LATER
-// const demoAppt: Appointment = {
-//     id: 1,
-//     vehicleOwner: {
-//         id: 1,
-//         firstName: "Nathan",
-//         lastName: "Raymant",
-//         username: "Nathan7934",
-//         phoneNumber: "416-412-5124",
-//         email: "nathanraymant@gmail.com",
-//         vehicle: {
-//             year: 2016,
-//             make: "Jeep",
-//             model: "Grand Cherokee",
-//             vin: "4Y1SL65848Z411439",
-//             plate: "BPNW 958",
-//             owner: "Dana Christian Raymant"
-//         }
-//     },
-//     startDate: "2022-11-29T15:45:00",
-//     endDate: "2022-11-29T16:30:00",
-//     duration: 0
-// }
-
 const formatEmail = (email: string): ReactElement => {
     // Formats email to word break before the email domain. Assumes correct format.
-
     const arr: string[] = email.split('@');
     return(<>{arr[0]}<wbr/>@{arr[1]}</>);
 }
@@ -105,12 +80,15 @@ const formatDateStrings = (startDate: Date, endDate: Date): FormatededDates => {
 
 interface Props {
     id: string,
-    setSelectedAptId: Dispatch<SetStateAction<string>>
+    setSelectedAptId: Dispatch<SetStateAction<string>>,
+    isShopOwner: boolean
 }
 function AppointmentDialog(props: Props) {
 
     const { authFetch } = useAuthFetch();
     const [appointment, setAppointment] = useState<Appointment>(unloadedAppt);
+
+    const isShopOwner: boolean = props.isShopOwner;
 
     // States for animation control
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -134,6 +112,8 @@ function AppointmentDialog(props: Props) {
     // Values for UI display
     const vOwner: VehicleOwner = appointment.vehicleOwner;
     const vehicle: Vehicle = vOwner.vehicle;
+    const shopInfo: ShopInfo = appointment.shopInfo;
+    
     let dates: FormatededDates;
     const startDate: Date = new Date(appointment.startTime);
     const endDate: Date = new Date(appointment.endTime);
@@ -150,6 +130,12 @@ function AppointmentDialog(props: Props) {
         return(<></>);
     }
 
+    const renderTitle = () => {
+        if (isShopOwner)
+            return(<>Your appointment with <span className='text-blue-800'>{vOwner.firstName}&nbsp;{vOwner.lastName}</span></>);
+        return(<>Your appointment at <span className='text-blue-800 whitespace-nowrap'>{shopInfo.name}</span></>);
+    }
+
     return(<>
         {/* This is the overlay div that 'covers' the page while the dialog is up */}
         <div className='fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10'
@@ -162,7 +148,7 @@ function AppointmentDialog(props: Props) {
                 <CloseBtnSvg className='close-btn-svg'/>
             </button>
             <div className='text-xl sm:text-2xl font-semibold text-black mt-2 mr-8'>
-                Your appointment with <span className='text-blue-800'>{vOwner.firstName}&nbsp;{vOwner.lastName}</span>
+                {renderTitle()}
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 border-t mt-4 pt-4'>
                 <label className='font-semibold'>
@@ -172,14 +158,14 @@ function AppointmentDialog(props: Props) {
                     Phone Number
                 </label>
                 <div className='text-lg mr-2 transition duration-500 hover:text-blue-800 cursor-pointer'>
-                    {formatEmail(vOwner.email)}
+                    {formatEmail(isShopOwner ? vOwner.email : shopInfo.email)}
                 </div>
                 {/* We have the phone number label twice due to grid reformats on mobile */}
                 <label className='mt-2 sm:mt-0 sm:hidden font-semibold'>
                     Phone Number
                 </label>
                 <div className='text-lg'>
-                    {vOwner.phoneNumber}
+                    {isShopOwner ? vOwner.phoneNumber : shopInfo.phoneNumber}
                 </div>
             </div>
             <div className='grid grid-cols-3 sm:grid-cols-2 mt-3 border-b pb-4'>
@@ -192,11 +178,11 @@ function AppointmentDialog(props: Props) {
                 <div className='col-span-2 sm:col-span-1'>
                     <div className='service-type bg-gray-50 text-blue-900 w-min mt-1 py-1 px-2
                     whitespace-nowrap rounded-md shadow-md'>
-                        Tire Rotation
+                        {appointment.serviceName}
                     </div>
                 </div>
-                <div className='relative top-[2px] text-2xl font-light'>
-                    $<span className='font-normal'>349.99</span>
+                <div className='relative top-[2px] text-2xl font-light text-blue-900'>
+                    $<span className='font-normal'>{appointment.price.toFixed(2)}</span>
                 </div>
             </div>
             <div className='mt-3 mb-3 font-semibold text-xl'>
@@ -231,7 +217,7 @@ function AppointmentDialog(props: Props) {
                 }}>
                     <ChevronDownSvg className={clsx({chevronClosedToOpen: expanded, chevronOpenToClosed: !expanded && expandedOnce})}/>
                     <div className='relative bottom-[3px] ml-1'>
-                        Client Vehicle Info
+                        {isShopOwner ? 'Client' : 'Your'} Vehicle Info
                     </div>
                 </button>
             </div>

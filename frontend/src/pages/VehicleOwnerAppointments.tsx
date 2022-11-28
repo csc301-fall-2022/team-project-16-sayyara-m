@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
 import { API_ROOT } from "../utilities/constants";
 import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
 import { APIError, Appointment, ShopInfo, VehicleOwner } from "../utilities/interfaces";
@@ -12,12 +12,8 @@ const columns: GridColDef[] = [
     { field: 'phoneNumber', headerName: 'Shop Phone', width: 150 },
     { field: 'location', headerName: 'Location', width: 150 },
     { field: 'date', headerName: 'Date', width: 100 },
+    { field: 'startTime', headerName: 'Start Time', width: 100 },
     { field: 'endTime', headerName: 'End Time', width: 100 },
-    {
-      field: 'Duration',
-      headerName: 'Duration',
-      width: 90,
-    },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
     { field: 'description', headerName: 'Description', width: 200 },
 
@@ -51,7 +47,6 @@ const generateApptRows = (appointments: Appointment[]) => {
             date: appointment.startTime.substring(0, 10),
             startTime: new Date(appointment.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
             endTime: new Date(appointment.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
-            Duration: appointment.duration,
             serviceType: appointment.serviceName,
             description: "Some additional notes can be provided here"
         })
@@ -61,8 +56,9 @@ const generateApptRows = (appointments: Appointment[]) => {
 }
 
 const VehicleOwnerAppointments = () => {
-    let navigate = useNavigate();
-    const [appointments, setAppointments] = useState<Appointment[]>([])
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [selectedAptId, setSelectedAptId] = useState<string>("");
+
     const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
@@ -110,13 +106,23 @@ const VehicleOwnerAppointments = () => {
     }, [])
 
     const handleRowClick = (params: GridRowParams, event: MuiEvent<React.MouseEvent<HTMLElement, MouseEvent>>) => {
-        navigate(`/appointments/${params.id}`);
+        setSelectedAptId(`${params.id}`);
+    }
+
+    const renderDetailsDialog = () => {
+        // Render nothing if no appointment is currently selected
+        if (selectedAptId === "")
+            return(<></>);
+
+        // Render the details dialog component with the selected appointment ID
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={false}/>);
     }
 
     return (
         <div className="h-[650px] w-full">
             <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Upcoming Appointments</h1>
             <DataGrid
+                getRowClassName={() => "cursor-pointer"}
                 rows={generateApptRows(appointments)}
                 columns={columns}
                 pageSize={10}
@@ -124,6 +130,7 @@ const VehicleOwnerAppointments = () => {
                 onRowClick={handleRowClick}
 
             />
+            {renderDetailsDialog()}
         </div>
     )
 }

@@ -165,6 +165,7 @@ const Home = () => {
             onChange={(e) => setsearchText(e.target.value)}
             />
             <DataGrid
+                getRowClassName={() => "cursor-pointer"}
                 rows={generateRows(searchText, shops)}
                 columns={columns}
                 pageSize={10}

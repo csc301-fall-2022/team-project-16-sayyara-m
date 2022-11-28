@@ -25,6 +25,6 @@ export const useGetShopOwner = () => {
     useEffect(() => {
         fetchShopOwner();
     }, []);
-    return { shopOwner }
+    return { shopOwner, setShopOwner }
 
 }

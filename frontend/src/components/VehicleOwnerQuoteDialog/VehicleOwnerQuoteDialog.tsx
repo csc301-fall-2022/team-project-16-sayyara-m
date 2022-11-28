@@ -14,6 +14,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
     let navigate = useNavigate();
     const [creatingAppointment, setCreatingAppointment] = useState<boolean>(false)
     const [date, setDate] = useState<Date>(new Date())
+    console.log(date);
 
     const changeQuoteStatus = async (newStatus: string) => {
         const res = await fetch(API_ROOT + "/quotes/" + props.quote.id, {
@@ -41,6 +42,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
     }
 
     const createAppointment = async (apptDate: Date) => {
+        console.log("From Create Appointment: " + apptDate.toLocaleTimeString())
         const res = await fetch(API_ROOT + "/vehicleOwner/" + props.quote.vehicleOwner.id + "/appointments" + `?quoteId=${props.quote.id}`, {
             method: "POST",
             headers: {

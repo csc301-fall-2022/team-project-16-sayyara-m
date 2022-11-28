@@ -252,7 +252,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <label className="align-top">Additional Notes: </label>
                 <div>
                     <textarea
-                        placeholder="Please provide a detailed descritpion of the work you need done. Especiialy if you are requesting a custom service."
+                        placeholder="Please provide a detailed description of the work you need done. Especially if you are requesting a custom service."
                         className="border-2 border-black w-full h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
