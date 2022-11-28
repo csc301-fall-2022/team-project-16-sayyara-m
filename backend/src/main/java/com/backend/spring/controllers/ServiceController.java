@@ -51,8 +51,8 @@ public class ServiceController {
     public void deleteService(@RequestHeader(AUTHORIZATION) String authHeader,
                               @PathVariable("service_id") long serviceId) {
         shopService.removeService(authHeader, serviceId);
-        // TODO Jamie: What if service to delete was used in existing appointments/quotes, retain in DB?
-        // serviceService.deleteService(id);
+         serviceService.deleteService(serviceId);
+        // TODO Jamie: Handle case where Service was used in preexisting appointments/quotes?
     }
 
     @PutMapping(path = "{service_id}")
