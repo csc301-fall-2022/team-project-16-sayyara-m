@@ -17,7 +17,7 @@ const MyShop = () => {
     const { shopOwner, setShopOwner } = useGetShopOwner();
     console.log(shopOwner);
 
-    const refreshServices = (service: Service) => {
+    const addService = (service: Service) => {
         if (shopOwner === null) return;
         setShopOwner({ ...shopOwner, shop: { ...(shopOwner.shop), services: [...(shopOwner.shop.services), service] } })
     }
@@ -66,26 +66,26 @@ const MyShop = () => {
     }
 
     return (
-        <div className="pt-2 ml-2">
+        <div className="pt-2 ml-5">
             <div>
                 <h1 className="flex justify-center text-2xl text-blue-800 font-semibold sm:text-4xl">{shopOwner?.shop.name}</h1>
             </div>
             <div>
-                <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Appointments</h1>
+                <h1 className="text-2xl py-3 text-blue-800 sm:text-3xl">Upcoming Appointments</h1>
                 <div className="flex overflow-auto pb-4">
                     {generateAppointmentCards()}
                 </div>
             </div>
             <div>
-                <h1 className="text-2xl pt-2 text-blue-800 sm:text-3xl">My Quotes</h1>
+                <h1 className="text-2xl py-3 text-blue-800 sm:text-3xl">Requested Quotes</h1>
                 <div className="flex overflow-auto pb-4">
                     {generateQuoteCards()}
                 </div>
             </div>
             <br></br>
-            <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
+            <h3 className="text-2xl py-3 text-blue-800 sm:text-3xl">My Services</h3>
             <ServicesOffered deleteService={deleteService} services={shopOwner ? shopOwner.shop.services : []} />
-            <ServiceCreationForm refreshServices={refreshServices} />
+            <ServiceCreationForm addService={addService} />
             {renderAppointmentDetailsDialog()}
             {renderQuoteDetailsDialog()}
         </div>

@@ -26,7 +26,7 @@ const ServicesOffered = (props: ServicesOfferedProps) => {
     }
     const generateServices = () => {
         return services.map(service => {
-        const price = service.defaultPrice ? `$${service.defaultPrice}` : "N/A (Contact Shop)";
+        const price = service.defaultPrice ? `$${service.defaultPrice}` : "N/A (Request a Quote)";
             return (
                 <div
                     className="grid grid-cols-1 justify-items-start border-2 bg-slate-200 rounded-lg text-center p-2">
