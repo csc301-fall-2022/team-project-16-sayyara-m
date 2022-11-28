@@ -36,7 +36,7 @@ const columns: GridColDef[] = [
             id: quote.id,
             firstName: quoteVehicleOwner.firstName,
             lastName: quoteVehicleOwner.lastName,
-            price: quote.price ? `$${quote.price}` : 'N/A',
+            price: quote.price ? `$${quote.price.toFixed(2)}` : 'N/A',
             expiryTime: new Date(quote.expiryDate).toLocaleString(),
             serviceType: quote.serviceName,
             shopInfo: quote.shopInfo,
@@ -54,8 +54,8 @@ const VehicleOwnerQuotes = () => {
 
     useEffect(() => {
         const getData = async () => {
-            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch quotes 
-            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage 
+            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch quotes
+            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage
 
             // let ids = [1, 2, 3]
             // let newQuotes: Quote[] = []
@@ -64,12 +64,12 @@ const VehicleOwnerQuotes = () => {
                 const res = await fetch(API_ROOT + "/vehicleOwner/" + vehicleOwner + "/quotes", {
                     method: "GET",
                 })
-    
+
                 if (res.ok) {
                     const data: Quote[] = await res.json();
                     setQuotes(data)
                 }
-    
+
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);

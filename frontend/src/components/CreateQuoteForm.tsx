@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { API_ROOT, carModels } from "src/utilities/constants";
-import { serviceTypes } from "src/utilities/mockData";
 import { Calendar } from "@mantine/dates";
-import { APIError, Quote } from "src/utilities/interfaces";
+import { APIError, Quote, Service } from "src/utilities/interfaces";
 import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
 
 interface FormData {
@@ -21,12 +20,13 @@ interface FormData {
 
 //list of all car models
 
-interface AppointmentFormProps {
+interface QuoteFormProps {
+    services: Service[],
     shopId: string,
     setVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const CreateQuoteForm = ({setVisibility, shopId}: AppointmentFormProps) => {
+const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
     const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
     const initialForm: FormData = {
         firstName: "",
@@ -38,20 +38,18 @@ const CreateQuoteForm = ({setVisibility, shopId}: AppointmentFormProps) => {
         vehicleYear: "2022",
         vehicleVIN: "",
         liscensePlate: "",
-        serviceType: "",
+        serviceType: "Other",
         notes: "",
     }
     const [serverError, setServerError] = useState("");
     const [formData, setFormData] = useState<FormData>(initialForm);
     const [availableDays, setAvailableDays] = useState<Date[]>([]);
+    console.log(formData);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
         const newFormData: FormData = { ...formData, [changing]: e.target.value };
         setFormData(newFormData);
     }
-    console.log(formData.vehicleMake);
-    console.log(formData.vehicleModel);
-    console.log(availableDays);
     const CarMakeDropdown = () => {
         // create drop down with all car makes
         return (
@@ -96,11 +94,15 @@ const CreateQuoteForm = ({setVisibility, shopId}: AppointmentFormProps) => {
         );
     }
     const ServiceTypeDropDown = () => {
-        const options = serviceTypes.map(service => {
-            return (
-                <option value={service}>{service}</option>
-            )
+        const options = services.map(service => {
+            if (service.defaultPrice === null){
+                return (
+                    <option value={service.name}>{service.name}</option>
+                )
+            }
+            return <></>
         })
+        options.push(<option value="Other">Other</option>);
         return (
             <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
                 {options}

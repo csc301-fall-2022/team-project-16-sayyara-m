@@ -151,6 +151,8 @@ const Home = () => {
         navigate(`/shop/${params.id}`);
     }
 
+    // replace with some kind of spinning wheel
+    if(shops.length === 0) return <div>Loading...</div>
     return (
         <div className="h-[650px] w-full">
             <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Shops</h1>

@@ -59,7 +59,7 @@ export interface Appointment {
 export interface Service {
     id: number,
     name: string,
-    defaultPrice: number,
+    defaultPrice: number | null,
 }
 export interface Quote {
     id: number,

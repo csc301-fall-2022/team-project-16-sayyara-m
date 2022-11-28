@@ -1,7 +1,7 @@
 import { DatePicker, TimeRangeInput } from "@mantine/dates";
 import React, { useState } from "react";
 import { carModels } from "src/utilities/constants";
-import { serviceTypes } from "src/utilities/mockData";
+import { Service } from "src/utilities/interfaces";
 interface FormData {
     firstName: string,
     lastName: string,
@@ -19,10 +19,11 @@ interface FormData {
 //list of all car models
 
 interface AppointmentFormProps {
-    setVisibility: React.Dispatch<React.SetStateAction<boolean>>
+    setVisibility: React.Dispatch<React.SetStateAction<boolean>>,
+    services: Service[]
 }
 
-const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
+const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) => {
     const initialForm: FormData = {
         firstName: "",
         lastName: "",
@@ -78,16 +79,17 @@ const CreateAppointmentForm = ({setVisibility}: AppointmentFormProps) => {
     }
     const ServiceTypeDropDown = () => {
         // change to display services with fixed costs
-        const options = serviceTypes.map(service => {
-            if(service !== "Other") {
+        const options: JSX.Element[] = services.map(service => {
+            if(service.name !== "Other" && service.defaultPrice !== null) {
                 return (
-                    <option value={service}>{service}</option>
+                    <option value={service.name}>{service.name}</option>
                 )
             }
 
             // return no option when the service is other, this form is for directly booking an appointment
             return <></>;
         })
+        options.push(<option value={""}></option>)
         return (
             <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
                 {options}

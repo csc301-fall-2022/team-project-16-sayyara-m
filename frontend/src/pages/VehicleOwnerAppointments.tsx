@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ROOT } from "../utilities/constants";
 import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
-import { APIError, Appointment, VehicleOwner } from "../utilities/interfaces";
+import { APIError, Appointment, ShopInfo, VehicleOwner } from "../utilities/interfaces";
 import { mAppointment } from "../utilities/mockData";
 
 const columns: GridColDef[] = [
-    { field: 'firstName', headerName: 'First name', width: 200},
-    { field: 'lastName', headerName: 'Last name', width: 200 },
-    { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'startTime', headerName: 'Start Time', width: 100 },
+    { field: 'shopName', headerName: 'Shop Name', width: 150},
+    { field: 'address', headerName: 'Shop Address', width: 200 },
+    { field: 'phoneNumber', headerName: 'Shop Phone', width: 150 },
+    { field: 'location', headerName: 'Location', width: 150 },
+    { field: 'date', headerName: 'Date', width: 100 },
     { field: 'endTime', headerName: 'End Time', width: 100 },
     {
       field: 'Duration',
@@ -18,6 +19,8 @@ const columns: GridColDef[] = [
       width: 90,
     },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
+    { field: 'description', headerName: 'Description', width: 200 },
+
   ];
 
 const generateApptRows = (appointments: Appointment[]) => {
@@ -37,16 +40,20 @@ const generateApptRows = (appointments: Appointment[]) => {
         });
     }
     for (var appointment of appointments) {
-        const apptVehicleOwner: VehicleOwner = appointment.vehicleOwner;
+        const shopInfo: ShopInfo = appointment.shopInfo;
+        const shopAddress = shopInfo.address.streetNumber + " " + shopInfo.address.street;
         appointmentRows.push({
             id: appointment.id,
-            firstName: apptVehicleOwner.firstName,
-            lastName: apptVehicleOwner.lastName,
-            date: new Date(appointment.startTime).toISOString().substring(0, 10),
-            startTime: new Date(appointment.startTime).toLocaleTimeString(),
-            endTime: new Date(appointment.endTime).toLocaleTimeString(),
+            shopName: shopInfo.name,
+            address: shopAddress,
+            phoneNumber: shopInfo.phoneNumber,
+            location: shopInfo.address.city + ", " + shopInfo.address.province,
+            date: appointment.startTime.substring(0, 10),
+            startTime: new Date(appointment.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
+            endTime: new Date(appointment.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
             Duration: appointment.duration,
-            serviceType: "Oil Change"
+            serviceType: appointment.serviceName,
+            description: "Some additional notes can be provided here"
         })
     }
     // Return rows to test with mock data
@@ -60,8 +67,8 @@ const VehicleOwnerAppointments = () => {
 
     useEffect(() => {
         const getData = async () => {
-            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch appointments 
-            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage 
+            // Uncomment the commented lines and comment out the uncommented lines in getData() to fetch appointments
+            // with id's 1, 2, and 3 instead of using the vehicle owner's id from local storage
 
             // let ids = [1, 2, 3]
             // let newAppointments: Appointment[] = []
@@ -70,12 +77,12 @@ const VehicleOwnerAppointments = () => {
                 const res = await fetch(API_ROOT + "/vehicleOwner/" + vehicleOwner + "/appointments", {
                     method: "GET",
                 })
-    
+
                 if (res.ok) {
                     const data: Appointment[] = await res.json();
                     setAppointments(data)
                 }
-    
+
                 else {
                     const data: APIError = await res.json();
                     console.log(data.message);
