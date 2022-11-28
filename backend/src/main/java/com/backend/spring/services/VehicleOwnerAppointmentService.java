@@ -100,6 +100,9 @@ public class VehicleOwnerAppointmentService {
 
         if (appointment.getStartTime().isAfter(appointment.getEndTime()))
             throw new ViolatedConstraintException("Start time must be before end time");
+
+        if (appointment.getStartTime().isBefore(LocalDateTime.now()))
+            throw new ViolatedConstraintException("Start time cannot be before the current time");
     }
 
     private Appointment quoteToAppointment(Quote quote, LocalDateTime startTime, LocalDateTime endTime) {

@@ -14,10 +14,6 @@ import java.util.List;
 public class ServiceService {
     private final ServiceRepository repository;
 
-    public List<Service> getAllServices() {
-        return repository.findAll();
-    }
-
     public Service getService(long id) throws DataNotFoundException {
         return repository.findById(id).orElseThrow(() -> new DataNotFoundException("Service with id " + id + " doesn't exist"));
     }
