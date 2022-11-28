@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Appointment, Quote, Vehicle, VehicleOwner } from "../utilities/interfaces";
-import { Link } from "react-router-dom";
 import { useGetShopOwner } from "src/utilities/hooks/api/useGetShopOwner";
+import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
+import QuoteDialog from "src/components/QuoteDialog";
+import { useGetAllQuotes } from "src/utilities/hooks/api/useGetAllQuotes";
 interface AppointmentCardProps {
     ap: Appointment;
 }
@@ -9,53 +11,56 @@ interface QuoteCardProps {
     quote: Quote;
 }
 const MyShop = () => {
-    // const { auth } = useAuth();
     const [service, setService] = useState<string>("")
+    const [selectedAptId, setSelectedAptId] = useState<string>("");
+    const [selectedQuoteId, setSelectedQuoteId] = useState(-1);
+
+    const { quotes, setQuotes } = useGetAllQuotes(); // Cant use shopOwner.shop.quotes because dialog needs a setter
+    
     const { shopOwner } = useGetShopOwner();
     console.log(shopOwner);
+
     const AppointmentCard = ({ ap }: AppointmentCardProps) => {
         const vehicleOwner: VehicleOwner = ap.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
 
         return (
-            <Link to={`/appointments/${ap.id}`}>
-                <div
-                    className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
-                >
-                    <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
-                    <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">{ap.startTime.substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{new Date(ap.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
-                    <p>{ap.quote?.serviceName}</p>
-                </div>
-            </Link>
+            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
+            onClick={() => {setSelectedAptId(`${ap.id}`)}}>
+                <h1 className="text-xl sm:text-2xl"><strong>{vehicleOwner.firstName} {vehicleOwner.lastName}</strong></h1>
+                <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
+                <p className="whitespace-nowrap">{ap.startTime.substring(0, 10)}</p>
+                <p className="whitespace-nowrap">{new Date(ap.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}-{new Date(ap.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}</p>
+                <p>{ap.quote?.serviceName}</p>
+            </div>
         )
     }
+
     const QuoteCard = ({ quote }: QuoteCardProps) => {
         const vehicleOwner: VehicleOwner = quote.vehicleOwner;
         const vehicle: Vehicle = vehicleOwner.vehicle;
-        return (
-            <Link to={`/quotes/${quote.id}`}>
-                <div
-                    className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl">
-                    <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
-                    <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
-                    <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
-                    <p className="whitespace-nowrap">Expires: {quote.expiryDate.substring(0, 10)}</p>
-                    <p className="whitespace-nowrap">{quote.serviceName}</p>
-                </div>
-            </Link>
+        return ( //quote.id
+            <div className="hover:bg-blue-200 bg-blue-100 text-sm border-solid border-inherit border-4 rounded-md w-full px-3 mx-1 sm:text-xl"
+            onClick={() => {setSelectedQuoteId(quote.id)}}>
+                <h1 className="text-lg sm:text-2xl"><strong>{vehicleOwner.lastName}</strong></h1>
+                <p className="whitespace-nowrap">{vehicle.make} {vehicle.model}</p>
+                <p className="whitespace-nowrap">Price: {quote.price === null ? "No price yet" : `$${quote.price.toFixed(2)}`}</p>
+                <p className="whitespace-nowrap">Expires: {quote.expiryDate.substring(0, 10)}</p>
+                <p className="whitespace-nowrap">{quote.serviceName}</p>
+            </div>
         )
     }
+
     const generateAppointmentCards = () => {
         if(shopOwner === null) return [];
         let appointments = shopOwner.shop.appointments;
-             return appointments.map((ap, i) => {
-                    return (
-                        <AppointmentCard key={ap.id + i}  ap={ap}/>
-                    );
-                });
+        return appointments.map((ap, i) => {
+            return (
+                <AppointmentCard key={ap.id + i}  ap={ap}/>
+            );
+        });
     }
+
     const generateQuoteCards = () => {
         if(shopOwner === null) return [];
         let quotes: Quote[] = shopOwner.shop.quotes;
@@ -63,6 +68,7 @@ const MyShop = () => {
             return <QuoteCard key={q.id} quote={q}/>
         })
     }
+
     const generateServiceCards = () => {
         if(shopOwner === null) return [];
         let services: JSX.Element[] = [];
@@ -78,6 +84,27 @@ const MyShop = () => {
         }
         return services;
     }
+
+    const renderAppointmentDetailsDialog = () => {
+        // Render nothing if no appointment is currently selected
+        if (selectedAptId === "")
+            return(<></>);
+
+        // Render the details dialog component with the selected appointment ID
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId}/>);
+    }
+
+    const renderQuoteDetailsDialog = () => {
+        if(selectedQuoteId === -1){
+            return <></>
+        }
+        const selectedQuote = quotes.find(quote => quote.id === selectedQuoteId);
+        if(selectedQuote !== undefined){
+            return <QuoteDialog quote={selectedQuote} setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>
+        }
+        return <></>
+    }
+
     return (
         <div className="pt-2 ml-2">
             <div>
@@ -119,6 +146,8 @@ const MyShop = () => {
                     Add Service
                 </button>
             </form>
+            {renderAppointmentDetailsDialog()}
+            {renderQuoteDetailsDialog()}
         </div>
     )
 };
