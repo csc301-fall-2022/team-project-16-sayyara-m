@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -64,19 +65,15 @@ public class Appointment {
 
     @Column(name = "end_date", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime endTime;
-
     @ToString.Exclude
     @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = false)
     private Service service;
-
     @Transient
     @Getter(NONE)
     private String serviceName;
-
     private boolean wasQuote = false;
-
     private Double price;
 
     public Appointment(Shop shop, VehicleOwner vehicleOwner, LocalDateTime startTime, LocalDateTime endTime, Service service, Double price) {
@@ -86,6 +83,18 @@ public class Appointment {
         this.endTime = endTime;
         this.service = service;
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Appointment that)) return false;
+        return Objects.equals(shopInfo, that.shopInfo) &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(endTime, that.endTime) &&
+                Objects.equals(that.getServiceName(), that.getServiceName()) &&
+                Objects.equals(price, that.price)
+                || Objects.equals(id, that.id);
     }
 
     public Long getShopId() {
