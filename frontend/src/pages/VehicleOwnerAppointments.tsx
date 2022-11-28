@@ -12,12 +12,8 @@ const columns: GridColDef[] = [
     { field: 'phoneNumber', headerName: 'Shop Phone', width: 150 },
     { field: 'location', headerName: 'Location', width: 150 },
     { field: 'date', headerName: 'Date', width: 100 },
+    { field: 'startTime', headerName: 'Start Time', width: 100 },
     { field: 'endTime', headerName: 'End Time', width: 100 },
-    {
-      field: 'Duration',
-      headerName: 'Duration',
-      width: 90,
-    },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
     { field: 'description', headerName: 'Description', width: 200 },
 
@@ -51,7 +47,6 @@ const generateApptRows = (appointments: Appointment[]) => {
             date: appointment.startTime.substring(0, 10),
             startTime: new Date(appointment.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
             endTime: new Date(appointment.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
-            Duration: appointment.duration,
             serviceType: appointment.serviceName,
             description: "Some additional notes can be provided here"
         })
@@ -63,7 +58,7 @@ const generateApptRows = (appointments: Appointment[]) => {
 const VehicleOwnerAppointments = () => {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [selectedAptId, setSelectedAptId] = useState<string>("");
-    
+
     const { vehicleOwner } = useVehicleOwner();
 
     useEffect(() => {
