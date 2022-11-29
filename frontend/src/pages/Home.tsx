@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { API_ROOT } from "../App";
+import { API_ROOT } from "../utilities/constants";
 import { APIError, Shop } from "../utilities/interfaces";
 import { useNavigate } from "react-router-dom";
 import useAuthFetch from "../utilities/hooks/useAuthFetch";

@@ -3,13 +3,20 @@ openapi: 3.0.1
 info:
   title: Sayyara Backend
   version: v0
-  description: "# How to Authenticate
+#  "bob12345", "johnsmith", "janejones", "bobbrown", "alicewilson", "joedavis", "marymiller", "tomtaylor", "sallyanderson", "billthomas", "sarahjackson"
+  description: "## How to Authenticate
   \n\nThis API uses Bearer/Token authentication to authenticate a user that is logged in. Once successfully logged in using the `/api/user/login` endpoint, you will receive a JWT `access_token` and `refresh_token`. Both tokens are encrypted and contain information about the user like their username, and can be decrypted by the backend to retrieve that information.
 
   \n\nWhen accessing an endpoint that requires a user's info, you can just pass in the JWT access token using the header `Authorization: \"Bearer <token>\"`. The API will decrypt the `access_token` and retrieve the username and use that to get data for the specific user. This way, you don't need to pass in any information about the user through a parameter or request body.
 
   \n\n For security reasons, the `access_token` will expire every few minutes, and will need to be refreshed. To refresh the token, pass in the `refresh_token` to the endpoint `/api/token/refresh` (see below), which will give you a new `access_token`.\n\n
-  **Note:** The lock icon on the right side of each endpoint indicates that this endpoint can only be accessed by an authorized Shop Owner, meaning that an access token must be passed from the `Authorization` header. Likewise, an endpoint without the lock can be accessed by a user that isn't logged in."
+  **Note:** The lock icon on the right side of each endpoint indicates that this endpoint can only be accessed by an authorized Shop Owner, meaning that an access token must be passed from the `Authorization` header. Likewise, an endpoint without the lock can be accessed by a user that isn't logged in.\n\n
+  
+  ## Preset Data \n\n
+  There are some Shop Owner accounts that were created for testing purposes. The following are some usernames which all share the same password:\n\n
+  
+  **Usernames**: `bob12345`, `johnsmith`, `janejones`, `bobbrown`, `alicewilson`, `joedavis`, `marymiller`, `tomtaylor`, `sallyanderson`, `billthomas`, `sarahjackson`\n\n
+  **Password**: `Password1!`\n\n"
 paths:
 
   ############## AUTHENTICATION ##############

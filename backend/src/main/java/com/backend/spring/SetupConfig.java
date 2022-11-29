@@ -142,7 +142,7 @@ public class SetupConfig {
                 randomInt = ThreadLocalRandom.current().nextInt(0, randomShop.getServices().size());
                 Service randomService = randomShop.getServices().get(randomInt);
 
-                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService, prices[i % prices.length]);
+                Appointment appointment = new Appointment(randomShop, randomVehicleOwner, randomStartDate, randomEndDate, randomService, prices[i % prices.length] == null ? 10 : prices[i % prices.length]);
 
                 // Quote
                 String randomDescription = requestQuoteDescriptions[i % requestQuoteDescriptions.length];
