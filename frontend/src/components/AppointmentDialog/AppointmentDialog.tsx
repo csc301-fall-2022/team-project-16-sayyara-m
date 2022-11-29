@@ -113,10 +113,11 @@ function AppointmentDialog(props: Props) {
     const vOwner: VehicleOwner = appointment.vehicleOwner;
     const vehicle: Vehicle = vOwner.vehicle;
     const shopInfo: ShopInfo = appointment.shopInfo;
-    
+
     let dates: FormatededDates;
-    const startDate: Date = new Date(appointment.startTime);
-    const endDate: Date = new Date(appointment.endTime);
+
+    const startDate = new Date(appointment.startTime + "Z")
+    const endDate = new Date(appointment.endTime + "Z")
     // We do not want to attempt to format Dates if the data is unloaded
     if (appointment !== unloadedAppt)
         dates = formatDateStrings(startDate, endDate);

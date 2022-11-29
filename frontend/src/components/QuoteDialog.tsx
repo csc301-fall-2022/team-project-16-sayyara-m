@@ -41,13 +41,13 @@ const QuoteDialog = (props: QuoteDialogProps) => {
             const data: Quote = await res.json();
             console.log("Quote price sent to vehicle owner");
             console.log(data);
-            setSelectedQuoteId(-1);
             setQuotes(prevQuotes => prevQuotes.map(prevQuote => {
                 if(prevQuote.id === quoteId){
                     return {...prevQuote, price: priceAsNumber, status: "Pending Approval"}
                 }
                 return prevQuote;
             }));
+            setSelectedQuoteId(-1);
             return;
         }
         const data: APIError = await res.json();

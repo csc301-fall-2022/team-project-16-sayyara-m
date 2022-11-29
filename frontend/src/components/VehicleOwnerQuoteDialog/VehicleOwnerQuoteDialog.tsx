@@ -14,7 +14,6 @@ function VehicleOwnerQuoteDialog(props: Props) {
     let navigate = useNavigate();
     const [creatingAppointment, setCreatingAppointment] = useState<boolean>(false)
     const [date, setDate] = useState<Date>(new Date())
-    console.log(date);
 
     const changeQuoteStatus = async (newStatus: string) => {
         const res = await fetch(API_ROOT + "/quotes/" + props.quote.id, {
@@ -51,7 +50,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
             body: JSON.stringify(
                 {
                     startTime: apptDate,
-                    endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)), // TODO: Change 30 to duration in minutes
+                    endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)).toDateString(), // TODO: Change 30 to duration in minutes
                 }
             )
         })
@@ -95,7 +94,7 @@ function VehicleOwnerQuoteDialog(props: Props) {
                         Price
                     </label>
                     <div className='text-lg'>
-                        {props.quote.price ? props.quote.price : 'N/A'}
+                        {props.quote.price ? `$${props.quote.price.toFixed(2)}` : 'N/A'}
                     </div>
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 mb-2 pt-4 pb-2'>
