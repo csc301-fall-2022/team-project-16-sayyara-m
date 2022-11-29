@@ -82,6 +82,7 @@ public class SetupConfig {
         return args -> {
             System.out.println("Inserting data...");
 
+            if (roleRepository.findAll().size() != 0) return;
             roleRepository.save(new Role(RoleEnum.SHOP_OWNER));
 
             // Shops and shop owners
