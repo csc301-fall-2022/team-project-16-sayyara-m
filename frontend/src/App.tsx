@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-//import Home from './pages/Home';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-// import useRefreshToken from './utilities/hooks/useRefreshToken';
 
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -16,8 +14,6 @@ import ShopDetails from './pages/ShopDetails';
 import Home from './pages/Home';
 import VehicleOwnerAppointments from './pages/VehicleOwnerAppointments';
 import VehicleOwnerQuotes from './pages/VehicleOwnerQuotes';
-
-export const API_ROOT: string = "https://sayyara.herokuapp.com/api";
 
 function App() {
 

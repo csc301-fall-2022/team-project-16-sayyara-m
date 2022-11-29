@@ -1,5 +1,6 @@
 import useAuth from "./useAuth";
 import useRefreshToken from "./useRefreshToken";
+import { useLogout } from "./useLogout";
 
 /*
     This hook returns a function that is used EXACTLY as a `fetch` call.
@@ -23,6 +24,7 @@ import useRefreshToken from "./useRefreshToken";
 const useAuthFetch = () => {
     let { auth: token } = useAuth();
     const refresh = useRefreshToken();
+    const { logout } = useLogout();
 
     const authFetch = async (url: string, options: RequestInit = {}) => {
         let response = await fetch(url, {
@@ -35,13 +37,15 @@ const useAuthFetch = () => {
         if (response.status === 401) {
             token = await refresh?.()
             if (token !== null) {
-                response = await fetch(url, {
-                    ...options,
-                    headers: {
-                        ...options.headers,
-                        Authorization: `Bearer ${token}`,
-                    }
-                })
+                    response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            ...options.headers,
+                            Authorization: `Bearer ${token}`,
+                        }
+                    })
+            } else {
+                logout();
             }
         }
         return response;
