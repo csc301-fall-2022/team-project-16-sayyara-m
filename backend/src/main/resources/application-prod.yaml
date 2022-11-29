@@ -1,11 +1,11 @@
 ########## PRODUCTION environment ##########
 spring:
   datasource:
-    url: "jdbc:postgresql://ec2-44-195-132-31.compute-1.amazonaws.com:5432/d8pbit7u2vl22n?user=owmgucfutpdwpp&password=66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
-    username: "owmgucfutpdwpp"
-    password: "66261252a45b6050596b72eae80c25de2b1cc57d9442a0b28804ee8539c58940"
+    url: "jdbc:postgresql://db.avigyuspyyfdvvbppufi.supabase.co:5432/postgres?user=postgres&password=fGwqr1LjWJnVWtHL"
+    username: "postgres"
+    password: "fGwqr1LjWJnVWtHL"
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 server:
   port: ${PORT}
