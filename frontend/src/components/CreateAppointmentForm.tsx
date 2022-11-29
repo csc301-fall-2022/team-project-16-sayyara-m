@@ -50,7 +50,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
         // create drop down with all car makes
         return (
             <div>
-                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})}>
+                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {Object.keys(carModels).map((make) => {
                         return (
                             <option value={make}>{make}</option>
@@ -70,7 +71,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
             options.push(<option key={i} value={i}>{i}</option>)
         };
         return (
-            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})}>
+            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
         )
@@ -89,7 +91,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
         })
         options.push(<option value={""}></option>)
         return (
-            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
+            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
         )
@@ -102,7 +105,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
         })
         return (
             <div>
-                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})}>
+                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {modelOptions}
                 </select>
             </div>
@@ -111,14 +115,15 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
 
     return (
         <div className="flex justify-center mb-8">
-            <form className="grid grid-cols-1 gap-2 w-[400px]">
+            <form className="grid grid-cols-1 gap-1 w-[400px]">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Create An Appointment</h3>
                 <section className="flex">
                     <div className="pr-1">
                         <label>First Name</label>
                         <input
                             name="firstName"
-                            className="border-2 border-black w-full"
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                             type="text"
                             value={formData.firstName}
                             onChange={handleChange}
@@ -127,7 +132,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                     <div className="pl-1">
                         <label>Last Name</label>
                         <input
-                            className="border-2 border-black w-full"
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                             name="lastName"
                             type="text"
                             value={formData.lastName}
@@ -138,7 +144,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 <label>Email: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="email"
                         value={formData.email}
@@ -148,7 +155,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 <label>Phone Number: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="phoneNumber"
                         value={formData.phoneNumber}
@@ -173,7 +181,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 <label>Vehicle VIN: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="vehicleVIN"
                         value={formData.vehicleVIN}
@@ -183,7 +192,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 <label>License Plate: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="liscensePlate"
                         value={formData.liscensePlate}
@@ -196,6 +206,7 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 </div>
 
                 {/* Choose date and time of appointment */}
+                <div className="text-xl text-blue-800 sm:text-2xl mt-3 mb-1">Choose a time that works</div>
                 <div>
                     <DatePicker label="Appointment Date" excludeDate={date => date < new Date()} value={day} onChange={date => setDay(date)} />
                     <TimeRangeInput format="12" label="Appointment Time" value={timeRange} onChange={setTimeRange}  />
@@ -203,7 +214,8 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                 <label className="align-top">Additional Notes: </label>
                 <div>
                     <textarea
-                        className="border-2 border-black w-full h-48 text-start p-1"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"
@@ -213,12 +225,12 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                     <button
                         onClick={() => setVisibility(false)}
                         className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
-                        text-black font-semibold py-2 px-4 rounded border border-black">Cancel
+                        text-gray-600 font-semibold py-2 px-4 rounded border border-gray-400">Cancel
                     </button>
                     <button
                         onClick={() => setVisibility(false)}
-                        className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
-                        text-black font-semibold py-2 px-4 rounded border border-black">Submit
+                        className="transition duration-100 ease-in-out w-[125px] bg-blue-500 hover:bg-blue-700 text-white
+                        font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit
                     </button>
                 </div>
             </form>
