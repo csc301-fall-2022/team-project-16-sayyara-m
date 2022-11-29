@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.CascadeType.ALL;
@@ -38,5 +39,14 @@ public class VehicleOwner extends UserInfo {
     public VehicleOwner(String firstName, String lastName, String email, String phoneNumber, Vehicle vehicle) {
         super(firstName, lastName, email, phoneNumber);
         this.vehicle = vehicle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VehicleOwner that)) return false;
+        return Objects.equals(vehicle, that.vehicle) &&
+                Objects.equals(quotes, that.quotes) &&
+                Objects.equals(appointments, that.appointments);
     }
 }

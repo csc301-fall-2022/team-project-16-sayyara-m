@@ -147,7 +147,7 @@ public class SetupConfig {
                 // Quote
                 String randomDescription = requestQuoteDescriptions[i % requestQuoteDescriptions.length];
                 Double randomPrice = prices[i % prices.length];
-                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate, randomPrice, randomDescription);
+                Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomPrice, randomDescription);
                 quote.setStatus(randomPrice == null ? QuoteStatus.PENDING_REVIEW : QuoteStatus.PENDING_APPROVAL);
 
                 randomVehicleOwner.getAppointments().add(appointment);
