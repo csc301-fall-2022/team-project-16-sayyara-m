@@ -54,7 +54,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         // create drop down with all car makes
         return (
             <div>
-                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})}>
+                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {Object.keys(carModels).map((make) => {
                         return (
                             <option value={make}>{make}</option>
@@ -74,7 +75,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
             options.push(<option key={i} value={i}>{i}</option>)
         };
         return (
-            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})}>
+            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
         )
@@ -87,7 +89,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         })
         return (
             <div>
-                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})}>
+                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {modelOptions}
                 </select>
             </div>
@@ -104,7 +107,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         })
         options.push(<option value="Other">Other</option>);
         return (
-            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}>
+            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
         )
@@ -151,7 +155,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
     }
     return (
         <div className="flex justify-center mb-8">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2 w-[400px]">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-1 w-[400px]">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Request A Quote</h3>
                 {serverError && <p className="text-red-500">{serverError}</p>}
                 <section className="flex">
@@ -159,7 +163,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                         <label>First Name</label>
                         <input
                             name="firstName"
-                            className="border-2 border-black w-full"
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                             type="text"
                             value={formData.firstName}
                             onChange={handleChange}
@@ -168,7 +173,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                     <div className="pl-1">
                         <label>Last Name</label>
                         <input
-                            className="border-2 border-black w-full"
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                             name="lastName"
                             type="text"
                             value={formData.lastName}
@@ -179,7 +185,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <label>Email: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="email"
                         value={formData.email}
@@ -189,7 +196,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <label>Phone Number: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="phoneNumber"
                         value={formData.phoneNumber}
@@ -214,7 +222,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <label>Vehicle VIN: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="vehicleVIN"
                         value={formData.vehicleVIN}
@@ -224,7 +233,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <label>License Plate: </label>
                 <div>
                     <input
-                        className="border-2 border-black w-full"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                         type="text"
                         name="liscensePlate"
                         value={formData.liscensePlate}
@@ -237,14 +247,14 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 </div>
 
                 {/* Calendar from Mantine */}
-                <label>Choose Availability</label>
+                <div className="text-xl text-blue-800 sm:text-2xl mt-3 mb-1">Choose when you are available</div>
                 <div>
                     <Calendar
                         multiple={true}
                         value={availableDays}
                         onChange={setAvailableDays}
                         excludeDate={date => date < new Date()}
-
+                        fullWidth={true}
                     />
                 </div>
 
@@ -253,7 +263,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 <div>
                     <textarea
                         placeholder="Please provide a detailed description of the work you need done. Especially if you are requesting a custom service."
-                        className="border-2 border-black w-full h-48 text-start p-1"
+                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 h-48 text-start p-1"
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         datatype="text"
@@ -265,13 +276,13 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                     <button
                         onClick={() => setVisibility(false)}
                         className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
-                        text-black font-semibold py-2 px-4 rounded border border-black">Cancel
+                        text-gray-600 font-semibold py-2 px-4 rounded border border-gray-400">Cancel
                     </button>
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="transition duration-100 ease-in-out w-32 bg-white hover:bg-gray-100
-                        text-black font-semibold py-2 px-4 rounded border border-black">Submit
+                        className="transition duration-100 ease-in-out w-[125px] bg-blue-500 hover:bg-blue-700 text-white
+                        font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit
                     </button>
                 </div>
             </form>
