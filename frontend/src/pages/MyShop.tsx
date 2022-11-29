@@ -16,7 +16,6 @@ const MyShop = () => {
 
     const { shopOwner, setShopOwner } = useGetShopOwner();
     console.log(shopOwner);
-
     const refreshServices = (service: Service) => {
         if (shopOwner === null) return;
         setShopOwner({ ...shopOwner, shop: { ...(shopOwner.shop), services: [...(shopOwner.shop.services), service] } })
@@ -83,9 +82,14 @@ const MyShop = () => {
                 </div>
             </div>
             <br></br>
-            <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
-            <ServicesOffered deleteService={deleteService} services={shopOwner ? shopOwner.shop.services : []} />
-            <ServiceCreationForm refreshServices={refreshServices} />
+            <div className="flex justify-between">
+                <section>
+
+                    <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Services You Offer:</h3>
+                    <ServicesOffered deleteService={deleteService} services={shopOwner ? shopOwner.shop.services : []} />
+                    <ServiceCreationForm refreshServices={refreshServices} />
+                </section>
+            </div>
             {renderAppointmentDetailsDialog()}
             {renderQuoteDetailsDialog()}
         </div>
