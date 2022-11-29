@@ -13,7 +13,7 @@ interface MapProps {
     location: Location,
     zoomLevel: number
 }
-interface PinProps {
+interface PinProps extends GoogleMapReact.ChildComponentProps {
     address: string
 }
 const LocationPin = (props : PinProps) => {
@@ -39,6 +39,8 @@ const Map = (props: MapProps) => {
                     defaultZoom={zoomLevel}
                 >
                     <LocationPin
+                        lat={location.lat}
+                        lng={location.lng}
                         address={address}
                     />
                 </GoogleMapReact>
