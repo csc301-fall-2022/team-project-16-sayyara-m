@@ -3,7 +3,7 @@ spring:
   datasource:
     url: "jdbc:postgresql://db.avigyuspyyfdvvbppufi.supabase.co:5432/postgres?user=postgres&password=fGwqr1LjWJnVWtHL"
     username: "postgres"
-    password: "fGwqr1LjWJnVWtHL"
+    password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
