@@ -40,14 +40,12 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
     const [formData, setFormData] = useState<FormData>(initialForm);
     const [timeRange, setTimeRange] = useState<[Date, Date]>([new Date(), new Date()]);
     const [day, setDay] = useState<Date | null>(new Date());
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
         const newFormData: FormData = { ...formData, [changing]: e.target.value };
         setFormData(newFormData);
     }
-    console.log(formData.vehicleMake);
-    console.log(formData.vehicleModel);
+    console.log(timeRange);
     const CarMakeDropdown = () => {
         // create drop down with all car makes
         return (

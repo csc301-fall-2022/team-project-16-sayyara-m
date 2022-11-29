@@ -32,7 +32,7 @@ const ServicesOffered = (props: ServicesOfferedProps) => {
                     className="grid grid-cols-1 justify-items-start border-2 bg-slate-200 rounded-lg text-center p-2">
                     <div className="flex justify-between w-full">
                         <p className="font-semibold">{service.name}</p>
-                        {deleteService ? <DeleteIcon onClick={() => handleDelete(service.id)} className="text-red-600 cursor-pointer" fontSize="small"/> : null}
+                        {deleteService ? <DeleteIcon onClick={() => {handleDelete(service.id)}} className="text-red-600 cursor-pointer" fontSize="small"/> : null}
                     </div>
                     <p className="text-xs">{price}</p >
                 </div>

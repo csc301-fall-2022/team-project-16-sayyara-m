@@ -53,7 +53,7 @@ const ShopDetails = () => {
 
                 {/* Section to show the map of the shop */}
             </div>
-            <div className="p-4 grid grid-cols-1">
+            <div className={apptPopup || quotePopup ? "hidden" : "p-4 grid grid-cols-1"}>
                 <Map location={location} zoomLevel={15}/>
                 {/* Form buttons Section (Appointment or Quotes) */}
                 <section className="text-sm pt-4 flex justify-between flex-wrap">

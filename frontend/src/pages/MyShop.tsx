@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Quote, Service } from "../utilities/interfaces";
+import { Service } from "../utilities/interfaces";
 import { useGetShopOwner } from "src/utilities/hooks/api/useGetShopOwner";
 import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
 import QuoteDialog from "src/components/QuoteDialog";
@@ -39,7 +39,6 @@ const MyShop = () => {
 
     const generateQuoteCards = () => {
         if (shopOwner === null) return [];
-        let quotes: Quote[] = shopOwner.shop.quotes;
         return quotes.map((q, i) => {
             return <QuoteCard setSelectedQuoteId={setSelectedQuoteId} key={q.id} quote={q} />
         })
