@@ -44,9 +44,9 @@ const generateApptRows = (appointments: Appointment[]) => {
             address: shopAddress,
             phoneNumber: shopInfo.phoneNumber,
             location: shopInfo.address.city + ", " + shopInfo.address.province,
-            date: appointment.startTime.substring(0, 10),
-            startTime: new Date(appointment.startTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
-            endTime: new Date(appointment.endTime).toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"}),
+            date: new Date(appointment.startTime + "Z").toISOString().substring(0, 10),
+            startTime: new Date(appointment.startTime + "Z").toLocaleTimeString(),
+            endTime: new Date(appointment.endTime + "Z").toLocaleTimeString(),
             serviceType: appointment.serviceName,
             description: "Some additional notes can be provided here"
         })

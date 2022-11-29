@@ -9,7 +9,7 @@ const columns: GridColDef[] = [
     { field: 'firstName', headerName: 'First name', width: 200},
     { field: 'lastName', headerName: 'Last name', width: 200 },
     { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'startTime', headerName: 'Start Time', width: 150 },
+    { field: 'startTime', headerName: 'Start Time', width: 200 },
     { field: 'endTime', headerName: 'End Time', width: 150 },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
     // {
@@ -31,9 +31,9 @@ const generateApptRows = (appointments: Appointment[]) => {
             id: (appt.id),
             firstName: vehicleOwner.firstName,
             lastName: vehicleOwner.lastName,
-            date: new Date(appt.startTime).toISOString().substring(0, 10),
-            startTime: new Date(appt.startTime).toLocaleTimeString(),
-            endTime: new Date(appt.endTime).toLocaleTimeString(),
+            date: new Date(appt.startTime + "Z").toISOString().substring(0, 10),
+            startTime: new Date(appt.startTime + "Z").toLocaleTimeString(),
+            endTime: new Date(appt.endTime + "Z").toLocaleTimeString(),
             serviceType: appt.serviceName
         });
     }
