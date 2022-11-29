@@ -4,6 +4,7 @@ import com.backend.spring.entities.Quote;
 import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.VehicleOwner;
 import com.backend.spring.exceptions.DataNotFoundException;
+import com.backend.spring.exceptions.ForbiddenException;
 import com.backend.spring.repositories.QuoteRepository;
 import com.backend.spring.repositories.ShopRepository;
 import com.backend.spring.repositories.VehicleOwnerRepository;
@@ -58,7 +59,10 @@ public class VehicleOwnerService {
 
         return vehicleOwner
                 .getQuotes()
-                .get(vehicleOwner.getQuotes().size() - 1);
+                .stream()
+                .filter(curQuote -> curQuote.equals(quote))
+                .findFirst()
+                .orElseThrow(() -> new ForbiddenException("Something went wrong while creating the Quote"));
     }
 
     @Transactional

@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -59,34 +60,40 @@ public class Quote {
     @ManyToOne(optional = false, cascade = MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private VehicleOwner vehicleOwner;
-
     @ToString.Exclude
     @JsonProperty(access = WRITE_ONLY)
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
     private Service service;
-
     @Transient
     @Getter(value = NONE)
     private String serviceName;
-
     @Column(name = "expiry_time", nullable = false, columnDefinition = "timestamp without time zone")
     private LocalDateTime expiryDate = LocalDateTime.now().plusMonths(6);
-
     @Getter(value = NONE)
     private QuoteStatus status = QuoteStatus.PENDING_REVIEW;
-
     private Double price = null;
-
     private String description = "";
 
-    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, LocalDateTime expiryDate, Double price, String description) {
+    public Quote(Shop shop, VehicleOwner vehicleOwner, Service service, Double price, String description) {
         this.shop = shop;
         this.vehicleOwner = vehicleOwner;
         this.service = service;
-        this.expiryDate = expiryDate;
         this.price = price;
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Quote quote)) return false;
+        return Objects.equals(getShopInfo(), quote.getShopInfo()) &&
+                Objects.equals(vehicleOwner, quote.vehicleOwner) &&
+                Objects.equals(getServiceName(), quote.getServiceName()) &&
+                Objects.equals(expiryDate, quote.expiryDate) &&
+                status == quote.status &&
+                Objects.equals(price, quote.price) &&
+                Objects.equals(description, quote.description);
     }
 
     public QuoteStatus getStatus() {
