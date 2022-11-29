@@ -3,6 +3,7 @@ package com.backend.spring;
 import com.backend.spring.entities.Address;
 import com.backend.spring.entities.Appointment;
 import com.backend.spring.entities.Quote;
+import com.backend.spring.entities.QuoteStatus;
 import com.backend.spring.entities.Role;
 import com.backend.spring.entities.RoleEnum;
 import com.backend.spring.entities.Service;
@@ -147,6 +148,7 @@ public class SetupConfig {
                 String randomDescription = requestQuoteDescriptions[i % requestQuoteDescriptions.length];
                 Double randomPrice = prices[i % prices.length];
                 Quote quote = new Quote(randomShop, randomVehicleOwner, randomService, randomEndDate, randomPrice, randomDescription);
+                quote.setStatus(randomPrice == null ? QuoteStatus.PENDING_REVIEW : QuoteStatus.PENDING_APPROVAL);
 
                 randomVehicleOwner.getAppointments().add(appointment);
                 randomVehicleOwner.getQuotes().add(quote);
