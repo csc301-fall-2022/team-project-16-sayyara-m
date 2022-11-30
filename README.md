@@ -4,7 +4,8 @@ Sayyara is a web app that connects Vehicle Mechanics to Vehicle Owners.
 It is a platform where Vehicle Mechanics can advertise their services and Vehicle Owners can find the best mechanics in their area.
 
 ### Deployed Applicaiton
-[Sayyara](https://sayyara.netlify.app)
+- [Sayyara](https://sayyara.netlify.app)
+- [Backend Swagger Docs](https://sayyara-backend.onrender.com/api/swagger-ui/index.html)
 ### Development Requirements
 
 **For building and running the application you need:**
