@@ -45,7 +45,7 @@ public class AppointmentController {
         return ResponseEntity.ok(service.getAppointment(appointmentId));
     }
 
-    @PostMapping("appointments")
+    @PostMapping
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment receivedAppointment) throws URISyntaxException {
         Appointment appointment = service.createAppointment(receivedAppointment);
         return ResponseEntity.created(new URI("/api/appointments/" + appointment.getId())).body(appointment);
