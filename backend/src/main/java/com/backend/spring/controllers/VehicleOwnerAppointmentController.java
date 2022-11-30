@@ -31,12 +31,12 @@ public class VehicleOwnerAppointmentController {
     }
 
     @PostMapping("appointments")
-    public ResponseEntity<Appointment> createAppointment(@PathVariable long vehicleOwnerId,
-                                                         @RequestBody Appointment receivedAppointment,
-                                                         @RequestParam(required = false) Long quoteId) throws URISyntaxException {
+    public ResponseEntity<Appointment> createAppointmentWithVehicleOwner(@PathVariable long vehicleOwnerId,
+                                                                         @RequestBody Appointment receivedAppointment,
+                                                                         @RequestParam(required = false) Long quoteId) throws URISyntaxException {
         Appointment appointment;
         if (quoteId == null)
-            appointment = service.createAppointment(vehicleOwnerId, receivedAppointment);
+            appointment = service.createAppointmentWithVehicleOwner(vehicleOwnerId, receivedAppointment);
         else
             appointment = service.createAppointmentFromQuote(vehicleOwnerId, receivedAppointment, quoteId);
         return ResponseEntity.created(new URI("/api/appointments/" + appointment.getId())).body(appointment);
