@@ -1,7 +1,8 @@
 import { DatePicker, TimeRangeInput } from "@mantine/dates";
 import React, { useState } from "react";
-import { carModels } from "src/utilities/constants";
-import { Service } from "src/utilities/interfaces";
+import { API_ROOT, carModels } from "src/utilities/constants";
+import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
+import { APIError, Service } from "src/utilities/interfaces";
 interface FormData {
     firstName: string,
     lastName: string,
@@ -19,11 +20,12 @@ interface FormData {
 //list of all car models
 
 interface AppointmentFormProps {
+    shopId: string,
     setVisibility: React.Dispatch<React.SetStateAction<boolean>>,
     services: Service[]
 }
 
-const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) => {
+const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFormProps) => {
     const initialForm: FormData = {
         firstName: "",
         lastName: "",
@@ -40,6 +42,9 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
     const [formData, setFormData] = useState<FormData>(initialForm);
     const [timeRange, setTimeRange] = useState<[Date, Date]>([new Date(), new Date()]);
     const [day, setDay] = useState<Date | null>(new Date());
+    const [error, setError] = useState("");
+    const {vehicleOwner} = useVehicleOwner();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
         const newFormData: FormData = { ...formData, [changing]: e.target.value };
@@ -112,93 +117,125 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
             </div>
         );
     }
-
+    const handleAppointmentSubmit = async () => {
+        // handle case where vehicle owner id exists in local storage
+        if(vehicleOwner && day && timeRange){
+            const servicePrice = services.find(service => service.name === formData.serviceType)?.defaultPrice
+            console.log(servicePrice);
+            if(servicePrice === null) return;
+            const reqBody = {
+                shopId: shopId,
+                startTime: timeRange[0].toISOString(),
+                endTime: timeRange[1].toISOString(),
+                price: servicePrice
+            }
+            const res = await fetch(`${API_ROOT}/vehicleOwner/${vehicleOwner}/appointments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(reqBody)
+            })
+            if(res.ok){
+                console.log("Appointment successfully createed");
+                setVisibility(false);
+                return;
+            }
+            console.log("Appointment COULD NOT be created");
+            const error: APIError = await res.json();
+            console.log(error.message);
+            setError(error.message);
+        }
+        return;
+    }
     return (
         <div className="flex justify-center mb-8">
             <form className="grid grid-cols-1 gap-1 w-[400px]">
                 <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Create An Appointment</h3>
-                <section className="flex">
-                    <div className="pr-1">
-                        <label>First Name</label>
+                <div className={vehicleOwner ? "hidden" : ""}>
+                    <section className="flex">
+                        <div className="pr-1">
+                            <label>First Name</label>
+                            <input
+                                name="firstName"
+                                className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
+                                type="text"
+                                value={formData.firstName}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="pl-1">
+                            <label>Last Name</label>
+                            <input
+                                className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                                focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
+                                name="lastName"
+                                type="text"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </section>
+                    <label>Email: </label>
+                    <div>
                         <input
-                            name="firstName"
                             className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
                             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
                             type="text"
-                            value={formData.firstName}
+                            name="email"
+                            value={formData.email}
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="pl-1">
-                        <label>Last Name</label>
+                    <label>Phone Number: </label>
+                    <div>
                         <input
                             className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
                             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                            name="lastName"
                             type="text"
-                            value={formData.lastName}
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
                             onChange={handleChange}
                         />
                     </div>
-                </section>
-                <label>Email: </label>
-                <div>
-                    <input
-                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                        type="text"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <label>Phone Number: </label>
-                <div>
-                    <input
-                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                        type="text"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleChange}
-                    />
-                </div>
-                <section className="flex justify-between">
+                    <section className="flex justify-between">
+                        <div>
+                            <label>Vehicle Make: </label>
+                            <CarMakeDropdown />
+                        </div>
+                        <div>
+                            <label>Vehicle Model: </label>
+                            <CarModelDropdown />
+                        </div>
+                    </section>
+                    <label>Vehicle Year: </label>
                     <div>
-                        <label>Vehicle Make: </label>
-                        <CarMakeDropdown />
+                        {/* {YearDropDown(1990, 2022)} */}
+                        <YearDropDown start={1990} currentYear={2022} />
                     </div>
+                    <label>Vehicle VIN: </label>
                     <div>
-                        <label>Vehicle Model: </label>
-                        <CarModelDropdown />
+                        <input
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
+                            type="text"
+                            name="vehicleVIN"
+                            value={formData.vehicleVIN}
+                            onChange={handleChange}
+                        />
                     </div>
-                </section>
-                <label>Vehicle Year: </label>
-                <div>
-                    {/* {YearDropDown(1990, 2022)} */}
-                    <YearDropDown start={1990} currentYear={2022} />
-                </div>
-                <label>Vehicle VIN: </label>
-                <div>
-                    <input
-                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                        type="text"
-                        name="vehicleVIN"
-                        value={formData.vehicleVIN}
-                        onChange={handleChange}
-                    />
-                </div>
-                <label>License Plate: </label>
-                <div>
-                    <input
-                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                        type="text"
-                        name="liscensePlate"
-                        value={formData.liscensePlate}
-                        onChange={handleChange}
-                    />
+                    <label>License Plate: </label>
+                    <div>
+                        <input
+                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
+                            type="text"
+                            name="liscensePlate"
+                            value={formData.liscensePlate}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
                 <label className="">Service Type</label>
                 <div className="">
@@ -221,6 +258,7 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                         datatype="text"
                     />
                 </div>
+                {error && <div className="text-red-500 text-xs">{error}</div>}
                 <div className="flex justify-between">
                     <button
                         onClick={() => setVisibility(false)}
@@ -228,7 +266,10 @@ const CreateAppointmentForm = ({setVisibility, services}: AppointmentFormProps) 
                         text-gray-600 font-semibold py-2 px-4 rounded border border-gray-400">Cancel
                     </button>
                     <button
-                        onClick={() => setVisibility(false)}
+                        onClick={e => {
+                            e.preventDefault()
+                            handleAppointmentSubmit()
+                        }}
                         className="transition duration-100 ease-in-out w-[125px] bg-blue-500 hover:bg-blue-700 text-white
                         font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit
                     </button>

@@ -18,14 +18,14 @@ const ShopDetails = () => {
         lat: lat,
         lng: lng
     }
-    if(shop === null) return <div>Loading...</div>
+    if(shop === null || id === undefined) return <div>Loading...</div>
     return (
         <div className="flex justify-center flex-wrap">
             <div className="grid grid-cols-1">
                 {/* Section to show the details of the shop */}
                 {apptPopup &&
                     <div className="w-full flex justify-center">
-                        <CreateAppointmentForm services={shop.services} setVisibility={setApptPopup}/>
+                        <CreateAppointmentForm shopId={id} services={shop.services} setVisibility={setApptPopup}/>
                     </div>
                 }
                 {quotePopup && id &&
