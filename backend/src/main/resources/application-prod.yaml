@@ -1,11 +1,14 @@
 ########## PRODUCTION environment ##########
 spring:
   datasource:
-    url: "jdbc:postgresql://db.avigyuspyyfdvvbppufi.supabase.co:5432/postgres?user=postgres&password=fGwqr1LjWJnVWtHL"
+    url: "jdbc:postgresql://containers-us-west-108.railway.app:6852/railway?user=postgres&password=Xioxdb5rkXhXsntt8J9k"
     username: "postgres"
     password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
 server:
   port: ${PORT}
