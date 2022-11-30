@@ -1,9 +1,10 @@
 # Sayyara
 
-Sayyara is a web app that connects Vehicle Mechanics to Vehicle Owners. 
+Sayyara is a web app that connects Vehicle Mechanics to Vehicle Owners.
 It is a platform where Vehicle Mechanics can advertise their services and Vehicle Owners can find the best mechanics in their area.
 
-
+### Deployed Applicaiton
+[Sayyara](https://sayyara.netlify.app)
 ### Development Requirements
 
 **For building and running the application you need:**
@@ -24,7 +25,7 @@ The server listens on port `8080`. You can access it at http://localhost:8080/<e
 Docs are available at http://localhost:8080/api/docs
 
 
-Optionally test queries on the database in a terminal while the server is running with the command: 
+Optionally test queries on the database in a terminal while the server is running with the command:
 ```bash
 # After running the server
 docker-compose exec postgres psql -U postgres
