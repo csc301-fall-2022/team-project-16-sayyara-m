@@ -353,7 +353,11 @@ paths:
         '400':
           $ref: "#/components/responses/InvalidData"
         404:
-          $ref: "#/components/responses/NotFound"
+          description: Shop id in Appointment not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
 
   /api/appointments/{appointmentId}:
     get:
