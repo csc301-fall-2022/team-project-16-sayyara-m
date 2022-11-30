@@ -38,7 +38,7 @@ public class VehicleOwnerAppointmentService {
                 .orElseThrow(() -> new DataNotFoundException("Vehicle owner with id " + id + " not found"));
     }
 
-    public Appointment createAppointment(long vehicleOwnerId, Appointment appointment) {
+    public Appointment createAppointmentWithVehicleOwner(long vehicleOwnerId, Appointment appointment) {
         new AppointmentValidator(appointment).validate();
 
         VehicleOwner vehicleOwner = vehicleOwnerRepository.findById(vehicleOwnerId)

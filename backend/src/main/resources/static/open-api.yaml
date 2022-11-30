@@ -118,8 +118,6 @@ paths:
       tags:
         - Shop Owner
       operationId: signUp
-      security:
-        - bearerAuth: [ ]
       summary: Sign up
       description: Create a new Shop Owner in the database
       requestBody:
@@ -239,13 +237,13 @@ paths:
       description: Get a service by its ID
       operationId: getService
       parameters:
-          - name: service_id
-            in: path
-            description: ID of the service to retrieve
-            required: true
-            schema:
-                type: integer
-                format: int64
+        - name: service_id
+          in: path
+          description: ID of the service to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: Successfully retrieved Service with given ID
@@ -265,6 +263,8 @@ paths:
       summary: Create Service
       description: Create a new service for the shop of the currently logged in shop owner
       operationId: createService
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -279,32 +279,34 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Service"
     delete:
-        tags:
-            - Services
-        summary: Delete Service
-        description: Delete a service by its ID
-        operationId: deleteService
-        parameters:
-            - name: service_id
-              in: path
-              description: ID of the service to delete
-              required: true
+      tags:
+        - Services
+      summary: Delete Service
+      description: Delete a service by its ID
+      operationId: deleteService
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: service_id
+          in: path
+          description: ID of the service to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully deleted Service with given ID
+          content:
+            "application/json":
               schema:
-                  type: integer
-                  format: int64
-        responses:
-            '200':
-              description: Successfully deleted Service with given ID
-              content:
-                  "application/json":
-                    schema:
-                        "$ref": "#/components/schemas/Service"
-            '404':
-              description: Service with given ID not found
-              content:
-                  "application/json":
-                    schema:
-                        $ref: "#/components/schemas/DataNotFoundError"
+                "$ref": "#/components/schemas/Service"
+        '404':
+          description: Service with given ID not found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/DataNotFoundError"
 
 
 
@@ -329,6 +331,29 @@ paths:
                   "$ref": "#/components/schemas/ResponseAppointment"
         '401':
           $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - Appointment
+      operationId: createAppointment
+      summary: Create Appointment
+      description: Create a new appointment and associated vehicle owner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RequestAppointment"
+        required: true
+      responses:
+        '201':
+          description: Successfully created Appointment
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/ResponseAppointment"
+        '400':
+          $ref: "#/components/responses/InvalidData"
+        404:
+          $ref: "#/components/responses/NotFound"
 
   /api/appointments/{appointmentId}:
     get:

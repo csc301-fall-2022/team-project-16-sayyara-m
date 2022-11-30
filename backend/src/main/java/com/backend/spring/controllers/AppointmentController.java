@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,9 +45,10 @@ public class AppointmentController {
         return ResponseEntity.ok(service.getAppointment(appointmentId));
     }
 
-    @PostMapping
-    public Appointment createAppointment(@RequestBody Appointment appointment) {
-        return service.createAppointment(appointment);
+    @PostMapping("appointments")
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment receivedAppointment) throws URISyntaxException {
+        Appointment appointment = service.createAppointment(receivedAppointment);
+        return ResponseEntity.created(new URI("/api/appointments/" + appointment.getId())).body(appointment);
     }
 
     @DeleteMapping(path = "{appointment_id}")

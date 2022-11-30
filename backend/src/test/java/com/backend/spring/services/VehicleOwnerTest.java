@@ -26,7 +26,7 @@ class VehicleOwnerTest {
     void setUp() {
         Vehicle vehicle = new Vehicle(2022, "Honda", "Civic", "1G1ZB5ST1GF285824", "ABC1234", "Bob Joe");
 
-        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "416-423-1423", vehicle);
+        vehicleOwner = new VehicleOwner("bob", "jack", "bob3@gmail.com", "+14164231423", vehicle);
 
         vehicleOwner = saveHelper.save(vehicleOwner);
     }
