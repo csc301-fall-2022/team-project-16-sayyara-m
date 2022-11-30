@@ -2,7 +2,7 @@ import React, {useState}  from "react";
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import { Appointment, VehicleOwner } from "src/utilities/interfaces";
 import { useGetAllAppointments } from "src/utilities/hooks/api/useGetAllAppointments";
-import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
+import AppointmentDialog from "src/components/Appointments/AppointmentDialog";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },

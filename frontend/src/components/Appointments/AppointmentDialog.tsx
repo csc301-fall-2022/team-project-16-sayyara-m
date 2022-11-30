@@ -1,5 +1,4 @@
-import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
-import useAuthFetch from 'src/utilities/hooks/useAuthFetch';
+import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
 
 import clsx from 'clsx';
 import Calendar from 'react-calendar';
@@ -7,11 +6,11 @@ import AnimateHeight, { Height } from 'react-animate-height';
 
 import './AppointmentDialog.css';
 import 'react-calendar/dist/Calendar.css';
-import { API_ROOT } from 'src/utilities/constants';
 import { Appointment, ShopInfo, Vehicle, VehicleOwner } from "src/utilities/interfaces";
 
 import { ReactComponent as CloseBtnSvg } from "src/resources/svgs/close.svg";
 import { ReactComponent as ChevronDownSvg } from "src/resources/svgs/chevron-down.svg";
+import { useGetAppointmentById } from 'src/utilities/hooks/api/useGetAppointmentById';
 
 // A placeholder appointment for while the fetch call is loading
 const unloadedAppt: Appointment = {
@@ -84,30 +83,16 @@ interface Props {
     isShopOwner: boolean
 }
 function AppointmentDialog(props: Props) {
-
-    const { authFetch } = useAuthFetch();
-    const [appointment, setAppointment] = useState<Appointment>(unloadedAppt);
-
     const isShopOwner: boolean = props.isShopOwner;
-
+    const { appointment } = useGetAppointmentById(props.id);
     // States for animation control
     const [expanded, setExpanded] = useState<boolean>(false);
     const [expandedOnce, setExpandedOnce] = useState<boolean>(false);
     const [height, setHeight] = useState<Height>(0);
+    if(!appointment) return <div>Something went wrong</div>
 
     // When the component mounts, get the appointment data via its Id
-    useEffect(() => {
-        console.log(`Getting appointment data for id: ${props.id}`);
-        authFetch(`${API_ROOT}/appointments/${props.id}`, { method: 'GET' })
-        .then((response) => {
-            // TODO: Check response status codes
-            return response.json();
-        })
-        .then((parsedJson) => {
-            setAppointment(parsedJson);
-            console.log("Data successfully retrieved.");
-        });
-    }, [props.id]);
+
 
     // Values for UI display
     const vOwner: VehicleOwner = appointment.vehicleOwner;
@@ -118,6 +103,7 @@ function AppointmentDialog(props: Props) {
 
     const startDate = new Date(appointment.startTime + "Z")
     const endDate = new Date(appointment.endTime + "Z")
+    if(!appointment) return <div>Something Went Wrong</div>
     // We do not want to attempt to format Dates if the data is unloaded
     if (appointment !== unloadedAppt)
         dates = formatDateStrings(startDate, endDate);

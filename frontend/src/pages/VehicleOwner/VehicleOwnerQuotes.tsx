@@ -1,10 +1,10 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import VehicleOwnerQuoteDialog from "../components/VehicleOwnerQuoteDialog/VehicleOwnerQuoteDialog";
-import { API_ROOT } from "../utilities/constants";
-import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
-import { APIError, Quote, VehicleOwner } from "../utilities/interfaces";
-import { mQuote } from "../utilities/mockData";
+import VehicleOwnerQuoteDialog from "../../components/Quotes/VehicleOwnerQuoteDialog";
+import { API_ROOT } from "../../utilities/constants";
+import { useVehicleOwner } from "../../utilities/hooks/useVehicleOwner";
+import { APIError, Quote, VehicleOwner } from "../../utilities/interfaces";
+import { mQuote } from "../../utilities/mockData";
 
 const columns: GridColDef[] = [
     { field: 'serviceType', headerName: 'Service Type', width: 160 },

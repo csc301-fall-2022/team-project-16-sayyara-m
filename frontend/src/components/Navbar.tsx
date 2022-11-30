@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Disclosure} from "@headlessui/react"
-import ProfileDropdown from "./ProfileDropdown";
+import ProfileDropdown from "./Profile/ProfileDropdown";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useCookies } from "react-cookie";
 

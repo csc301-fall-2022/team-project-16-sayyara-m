@@ -2,6 +2,9 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"]
+    },
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es2017",
@@ -33,4 +36,5 @@
     "postcss.config.js",
     "tailwind.config.js"
   ]
+
 }

@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { API_ROOT } from "src/utilities/constants";
 import { APIError, Quote } from "src/utilities/interfaces";
 import { ReactComponent as CloseBtnSvg } from "src/resources/svgs/close.svg";
+import { useGetQuoteById } from "src/utilities/hooks/api/useGetQuoteById";
 interface QuoteDialogProps {
-    quote: Quote,
     quoteId: number,
     setSelectedQuoteId: React.Dispatch<React.SetStateAction<number>>,
     setQuotes: React.Dispatch<React.SetStateAction<Quote[]>>
 }
 const QuoteDialog = (props: QuoteDialogProps) => {
-    const { quote, quoteId, setSelectedQuoteId, setQuotes } = props;
+    const { quoteId, setSelectedQuoteId, setQuotes } = props;
+    const { quote } = useGetQuoteById(String(quoteId));
     const [price, setPrice] = useState("");
     const [error, setError] = useState("");
+    if(!quote) return <div>Something Went Wrong</div>
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPrice(e.target.value);
         if(Number(price) < 0 || e.target.value === "-"){

@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent, } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import QuoteDialog from "src/components/QuoteDialog";
+import QuoteDialog from "src/components/Quotes/QuoteDialog";
 import { useGetAllQuotes } from "src/utilities/hooks/api/useGetAllQuotes";
 import { Quote, VehicleOwner } from "src/utilities/interfaces";
 const columns: GridColDef[] = [
@@ -45,11 +45,7 @@ const Quotes = () => {
         if(selectedQuoteId === -1){
             return <></>
         }
-        const selectedQuote = quotes.find(quote => quote.id === selectedQuoteId);
-        if(selectedQuote !== undefined){
-            return <QuoteDialog quote={selectedQuote} setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>
-        }
-        return <></>
+        return <QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>
     }
     return(
         <div className="h-[650px] w-full">

@@ -1,10 +1,10 @@
 import { DataGrid, GridColDef, GridRowParams, MuiEvent } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
-import { API_ROOT } from "../utilities/constants";
-import { useVehicleOwner } from "../utilities/hooks/useVehicleOwner";
-import { APIError, Appointment, ShopInfo, VehicleOwner } from "../utilities/interfaces";
-import { mAppointment } from "../utilities/mockData";
+import AppointmentDialog from "src/components/Appointments/AppointmentDialog";
+import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
+import { APIError, Appointment, ShopInfo, VehicleOwner } from "../../utilities/interfaces";
+import { mAppointment } from "src/utilities/mockData";
+import { API_ROOT } from "src/utilities/constants";
 
 const columns: GridColDef[] = [
     { field: 'shopName', headerName: 'Shop Name', width: 150},

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { validatePassword } from '../../utilities/ValidationUtil';
 
-interface ChangePasswordProps { 
-    setChangingPassword: (arg0: boolean) => void; 
-    setIsOldPasswordIncorrect: (arg0: boolean) => void; 
-    saveUserInfo: (arg0: string, arg1: string) => void; 
+interface ChangePasswordProps {
+    setChangingPassword: (arg0: boolean) => void;
+    setIsOldPasswordIncorrect: (arg0: boolean) => void;
+    saveUserInfo: (arg0: string, arg1: string) => void;
     isOldPasswordIncorrect: boolean; userInfo: {
         firstName: string;
         lastName: string;

@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import Appointments from './pages/Appointments';
-import Profile from './pages/Profile';
+import Login from './pages/User/Login';
+import SignUp from './pages/User/SignUp';
+import Appointments from './pages/ShopOwner/Appointments';
+import Profile from './pages/ShopOwner/Profile';
 import Navbar from './components/Navbar';
-import MyShop from './pages/MyShop';
-import Quotes from './pages/Quotes';
-import QuoteDetails from './pages/QuoteDetails';
-import ShopDetails from './pages/ShopDetails';
-import Home from './pages/Home';
-import VehicleOwnerAppointments from './pages/VehicleOwnerAppointments';
-import VehicleOwnerQuotes from './pages/VehicleOwnerQuotes';
+import MyShop from './pages/ShopOwner/MyShop';
+import Quotes from './pages/ShopOwner/Quotes';
+import QuoteDetails from './pages/ShopOwner/QuoteDetails';
+import ShopDetails from './pages/ShopOwner/ShopDetails';
+import Home from './pages/VehicleOwner/Home';
+import VehicleOwnerAppointments from './pages/VehicleOwner/VehicleOwnerAppointments';
+import VehicleOwnerQuotes from './pages/VehicleOwner/VehicleOwnerQuotes';
 
 function App() {
 

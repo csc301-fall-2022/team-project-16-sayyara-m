@@ -2,7 +2,7 @@ import { DatePicker, TimeRangeInput } from "@mantine/dates";
 import React, { useState } from "react";
 import { API_ROOT, carModels } from "src/utilities/constants";
 import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
-import { APIError, Service } from "src/utilities/interfaces";
+import { APIError, Appointment, Service } from "src/utilities/interfaces";
 interface FormData {
     firstName: string,
     lastName: string,
@@ -43,7 +43,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
     const [timeRange, setTimeRange] = useState<[Date, Date]>([new Date(), new Date()]);
     const [day, setDay] = useState<Date | null>(new Date());
     const [error, setError] = useState("");
-    const {vehicleOwner} = useVehicleOwner();
+    const {vehicleOwner, setVehicleOwner} = useVehicleOwner();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
@@ -119,16 +119,17 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
     }
     const handleAppointmentSubmit = async () => {
         // handle case where vehicle owner id exists in local storage
+        const servicePrice = services.find(service => service.name === formData.serviceType)?.defaultPrice
+        if(servicePrice === null) return;
+        let reqBody: any = {
+            shopId: shopId,
+            startTime: timeRange[0].toISOString(),
+            endTime: timeRange[1].toISOString(),
+            serviceName: formData.serviceType,
+            price: servicePrice
+        }
         if(vehicleOwner && day && timeRange){
-            const servicePrice = services.find(service => service.name === formData.serviceType)?.defaultPrice
-            console.log(servicePrice);
-            if(servicePrice === null) return;
-            const reqBody = {
-                shopId: shopId,
-                startTime: timeRange[0].toISOString(),
-                endTime: timeRange[1].toISOString(),
-                price: servicePrice
-            }
+
             const res = await fetch(`${API_ROOT}/vehicleOwner/${vehicleOwner}/appointments`, {
                 method: "POST",
                 headers: {
@@ -139,6 +140,40 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
             if(res.ok){
                 console.log("Appointment successfully createed");
                 setVisibility(false);
+                return;
+            }
+            console.log("Appointment COULD NOT be created");
+            const error: APIError = await res.json();
+            console.log(error.message);
+            setError(error.message);
+        }
+        else {
+            const vOwner = {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phoneNumber: formData.phoneNumber,
+                vehicle: {
+                    year: Number(formData.vehicleYear),
+                    make: formData.vehicleMake,
+                    model: formData.vehicleModel,
+                    vin: formData.vehicleVIN,
+                    plate: formData.liscensePlate
+                }
+            }
+            reqBody = {...reqBody, vehicleOwner: vOwner}
+            const res = await fetch(`${API_ROOT}/appointments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(reqBody)
+            })
+            if(res.ok){
+                console.log("Appointment successfully createed");
+                const data: Appointment = await res.json();
+                setVisibility(false);
+                setVehicleOwner(String(data.vehicleOwner.id));
                 return;
             }
             console.log("Appointment COULD NOT be created");

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { API_ROOT } from "../utilities/constants";
-import useAuth from "../utilities/hooks/useAuth";
-import { APIError, ShopOwner } from "../utilities/interfaces";
-import UserInfoPage from '../components/Profile/UserInfoPage';
-import EditUserPage from '../components/Profile/EditUserPage';
-import ChangePasswordPage from '../components/Profile/ChangePasswordPage';
-import ShopInfoPage from '../components/Profile/ShopInfoPage';
-import EditShopPage from "../components/Profile/EditShopPage";
-import { mShop, mShopOwner } from "../utilities/mockData";
-import useAuthFetch from "../utilities/hooks/useAuthFetch";
+import { API_ROOT } from "../../utilities/constants";
+import useAuth from "../../utilities/hooks/useAuth";
+import { APIError, ShopOwner } from "../../utilities/interfaces";
+import UserInfoPage from '../../components/Profile/UserInfoPage';
+import EditUserPage from '../../components/Profile/EditUserPage';
+import ChangePasswordPage from '../../components/Profile/ChangePasswordPage';
+import ShopInfoPage from '../../components/Profile/ShopInfoPage';
+import EditShopPage from "../../components/Profile/EditShopPage";
+import { mShop, mShopOwner } from "../../utilities/mockData";
+import useAuthFetch from "../../utilities/hooks/useAuthFetch";
 
 const Profile = () => {
 
@@ -19,7 +19,7 @@ const Profile = () => {
     const [isChangingPassword, setChangingPassword] = useState<boolean>(false)
     const [isViewingShop, setIsViewingShop] = useState<boolean>(false)
     const [isEditingShop, setIsEditingShop] = useState<boolean>(false)
-    
+
     const [userInfo, setUserInfo] = useState< {
         firstName: string;
         lastName: string;
@@ -175,20 +175,20 @@ const Profile = () => {
             <div className='flex flex-wrap h-full max-w-md min-w-[330px] w-full'>
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
                     {!isEditingProfile && !isChangingPassword && !isViewingShop && !isEditingShop ?
-                        <UserInfoPage 
+                        <UserInfoPage
                             setChangingPassword={setChangingPassword}
                             setEditingProfile={setEditingProfile}
                             setIsViewingShop={setIsViewingShop}
                             userInfo={userInfo}
                         />
                         : !isChangingPassword && !isViewingShop && !isEditingShop ?
-                        <EditUserPage 
+                        <EditUserPage
                             setEditingProfile={setEditingProfile}
                             userInfo={userInfo}
                             saveUserInfo={saveUserInfo}
                         />
                         : !isViewingShop && !isEditingShop ?
-                        <ChangePasswordPage 
+                        <ChangePasswordPage
                             setChangingPassword={setChangingPassword}
                             userInfo={userInfo}
                             saveUserInfo={saveUserPassword}

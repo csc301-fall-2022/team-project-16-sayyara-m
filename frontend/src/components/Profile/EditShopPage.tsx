@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { matchIsValidTel, MuiTelInput } from 'mui-tel-input';
-import DropDown from "../DropDown";
+import DropDown from "./DropDown";
 import { validateEmail, validatePostalCode, validateStreetNumber } from "../../utilities/ValidationUtil";
 
 const EditShopPage = (props: { setIsEditingShop: (arg0: boolean) => void; saveShopInfo: (arg0: {
@@ -99,7 +99,7 @@ const validateInput = () => {
                 <div className="col-span-2 ml-2">
                     <input className={`col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
                     focus:outline-blue-500 focus:shadow-outline hover:border-gray-700`} id="street" type="text" placeholder="" value={street} onChange={(e) => setStreet(e.target.value)}/>
-                </div>                
+                </div>
                 <label className='font-semibold self-end text-sm sm:text-base'>
                     City
                 </label>

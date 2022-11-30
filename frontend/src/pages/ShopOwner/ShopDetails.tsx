@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import CreateAppointmentForm from "src/components/CreateAppointmentForm";
-import CreateQuoteForm from "src/components/CreateQuoteForm";
-import ServicesOffered from "src/components/ServicesOffered";
+import CreateAppointmentForm from "src/components/Appointments/CreateAppointmentForm";
+import CreateQuoteForm from "src/components/Quotes/CreateQuoteForm";
+import ServicesOffered from "src/components/Services/ServicesOffered";
 import { useGetLatLong } from "src/utilities/hooks/api/map/useGetLatLong";
 import { useGetShopById } from "src/utilities/hooks/api/useGetShopById";
-import Map from "src/components/maps/Map";
+import Map from "src/components/GoogleMap/Map";
 
 const ShopDetails = () => {
     const [apptPopup, setApptPopup] = useState(false);

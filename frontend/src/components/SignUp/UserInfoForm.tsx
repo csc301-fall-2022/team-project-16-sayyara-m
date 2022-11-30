@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { MuiTelInput, matchIsValidTel } from 'mui-tel-input';
 
-import { SignUpInfo, UserInfoValidationStates } from '../../pages/SignUp';
+import { SignUpInfo, UserInfoValidationStates } from '../../pages/User/SignUp';
 import { validatePassword, validateEmail } from '../../utilities/ValidationUtil';
 
 // THIS COMPONENT IS NOT DESIGNED TO BE REUSABLE - this may change if it is needed elsewhere
@@ -61,7 +61,7 @@ function UserInfoForm(props: Props) {
         let invalidMessage: string = validatePassword(newVal);
         setValidation(prevState => (
             {
-                ...prevState, 
+                ...prevState,
                 passwordInvalidMessage: invalidMessage,
                 confirmPasswordValid: (signUpPasswordConfirm === "" || newVal === signUpPasswordConfirm)
             }
@@ -122,8 +122,8 @@ function UserInfoForm(props: Props) {
                 Must be at least 8 characters
             </p>
             {/* USERNAME INPUT FIELD */}
-            <input className='col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 
-            text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700' 
+            <input className='col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3
+            text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700'
             type="text" placeholder="" value={signUpInfo.username} onChange={usernameFieldOnChange}/>
             <label className='font-semibold'>
                 Password
@@ -133,7 +133,7 @@ function UserInfoForm(props: Props) {
                 {v.passwordInvalidMessage}
             </p>
             {/* PASSWORD INPUT FIELD */}
-            <input className='col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 
+            <input className='col-span-2 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3
             text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700'
             type="password" placeholder="************" value={signUpInfo.password} onChange={passwordFieldOnChange}/>
             <label className='font-semibold whitespace-nowrap'>

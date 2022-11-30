@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Service } from "../utilities/interfaces";
+import { Service } from "../../utilities/interfaces";
 import { useGetShopOwner } from "src/utilities/hooks/api/useGetShopOwner";
-import AppointmentDialog from "src/components/AppointmentDialog/AppointmentDialog";
-import QuoteDialog from "src/components/QuoteDialog";
+import AppointmentDialog from "src/components/Appointments/AppointmentDialog";
+import QuoteDialog from "src/components/Quotes/QuoteDialog";
 import { useGetAllQuotes } from "src/utilities/hooks/api/useGetAllQuotes";
-import ServicesOffered from "src/components/ServicesOffered";
-import ServiceCreationForm from "src/components/ServiceCreationForm";
+import ServicesOffered from "src/components/Services/ServicesOffered";
+import ServiceCreationForm from "src/components/Services/ServiceCreationForm";
 import QuoteCard from "src/components/Cards/QuoteCard";
 import AppointmentCard from "src/components/Cards/AppointmentCard";
 
@@ -57,11 +57,7 @@ const MyShop = () => {
         if (selectedQuoteId === -1) {
             return <></>
         }
-        const selectedQuote = quotes.find(quote => quote.id === selectedQuoteId);
-        if (selectedQuote !== undefined) {
-            return <QuoteDialog quote={selectedQuote} setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId} />
-        }
-        return <></>
+        return <QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId} />
     }
 
     return (

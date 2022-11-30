@@ -3,8 +3,8 @@ import { matchIsValidTel, MuiTelInput } from 'mui-tel-input';
 import clsx from 'clsx';
 
 import { validateEmail, validateStreetNumber, validatePostalCode } from 'src/utilities/ValidationUtil';
-import { SignUpInfo, ShopInfo, ShopInfoValidationStates } from '../../pages/SignUp';
-import DropDown from '../DropDown';
+import { SignUpInfo, ShopInfo, ShopInfoValidationStates } from '../../pages/User/SignUp';
+import DropDown from '../Profile/DropDown';
 
 const provinces: string[] = ['AB', 'BC', 'MB', 'NB', 'NL', 'NT', 'NS', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
@@ -71,7 +71,7 @@ function ShopCreationForm(props: Props) {
         // Accept only valid postal codes
         setValidation(prevState => ({...prevState, postalValid: validatePostalCode(newVal)}));
     }
-    
+
     return(<>
         <div className='grid grid-cols-3 grid-rows-12 gap-1 mt-10 mb-4'>
             <label className='mt-1 font-semibold whitespace-nowrap text-sm sm:text-base'>
@@ -83,7 +83,7 @@ function ShopCreationForm(props: Props) {
             </p>
             {/* SHOP NAME INPUT FIELD */}
             <input className="col-span-3 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 leading-tight
-            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder="" 
+            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" type="text" placeholder=""
             value={shopInfo.name} onChange={nameFieldOnChange}/>
             <label className='mt-1 font-semibold whitespace-nowrap text-sm sm:text-base'>
                 Email Address
@@ -138,7 +138,7 @@ function ShopCreationForm(props: Props) {
                 value={shopInfo.address.city} onChange={cityOnChange}/>
             </div>
             {/* PROVINCE DROP DOWN MENU */}
-            <DropDown className={clsx({'border-red-500': !v.provinceValid})} 
+            <DropDown className={clsx({'border-red-500': !v.provinceValid})}
             onSelectionChanged={provinceDropDownSelectionChanged} items={provinces} selectedItem={selectedProvince}/>
             {/* POSTAL CODE INPUT FIELD */}
             <div className='ml-2'>

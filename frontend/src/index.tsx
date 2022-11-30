@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 import { CookiesProvider } from 'react-cookie';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './utilities/context/AuthContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
