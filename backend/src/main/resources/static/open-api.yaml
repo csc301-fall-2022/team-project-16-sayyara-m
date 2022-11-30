@@ -3,7 +3,6 @@ openapi: 3.0.1
 info:
   title: Sayyara Backend
   version: v0
-#  "bob12345", "johnsmith", "janejones", "bobbrown", "alicewilson", "joedavis", "marymiller", "tomtaylor", "sallyanderson", "billthomas", "sarahjackson"
   description: "## How to Authenticate
   \n\nThis API uses Bearer/Token authentication to authenticate a user that is logged in. Once successfully logged in using the `/api/user/login` endpoint, you will receive a JWT `access_token` and `refresh_token`. Both tokens are encrypted and contain information about the user like their username, and can be decrypted by the backend to retrieve that information.
 
