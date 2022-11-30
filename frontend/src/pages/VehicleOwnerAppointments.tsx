@@ -12,8 +12,8 @@ const columns: GridColDef[] = [
     { field: 'phoneNumber', headerName: 'Shop Phone', width: 150 },
     { field: 'location', headerName: 'Location', width: 150 },
     { field: 'date', headerName: 'Date', width: 100 },
-    { field: 'startTime', headerName: 'Start Time', width: 100 },
-    { field: 'endTime', headerName: 'End Time', width: 100 },
+    { field: 'startTime', headerName: 'Start Time', width: 150 },
+    { field: 'endTime', headerName: 'End Time', width: 150 },
     { field: 'serviceType', headerName: 'Service Type', width: 160 },
     { field: 'description', headerName: 'Description', width: 200 },
 

@@ -49,8 +49,8 @@ function VehicleOwnerQuoteDialog(props: Props) {
                 },
             body: JSON.stringify(
                 {
-                    startTime: apptDate,
-                    endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)).toDateString(), // TODO: Change 30 to duration in minutes
+                    startTime: apptDate.toISOString(),
+                    endTime: new Date(apptDate.getTime() + (1000 * 60 * 30)).toISOString(), // TODO: Change 30 to duration in minutes
                 }
             )
         })
