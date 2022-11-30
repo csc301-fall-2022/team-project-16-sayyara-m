@@ -39,10 +39,12 @@ public class VehicleOwnerAppointmentService {
     }
 
     public Appointment createAppointmentWithVehicleOwner(long vehicleOwnerId, Appointment appointment) {
-        new AppointmentValidator(appointment).validate();
-
         VehicleOwner vehicleOwner = vehicleOwnerRepository.findById(vehicleOwnerId)
                 .orElseThrow(() -> new DataNotFoundException("Vehicle owner with id " + vehicleOwnerId + " not found"));
+
+        appointment.setVehicleOwner(vehicleOwner);
+
+        new AppointmentValidator(appointment).validate();
 
         Shop shop = shopRepository.findById(appointment.getShopId())
                 .orElseThrow(() -> new DataNotFoundException("Shop with id " + appointment.getShopId() + " not found"));
@@ -62,7 +64,6 @@ public class VehicleOwnerAppointmentService {
         appointment.setShop(shop);
         appointment.setService(service);
 
-        appointment.setVehicleOwner(vehicleOwner);
         vehicleOwner.getAppointments().add(appointment);
         vehicleOwner = vehicleOwnerSaveHelper.save(vehicleOwner);
         return vehicleOwner
