@@ -192,8 +192,12 @@ function SignUp() {
         })
         .then((response) => {
             if (!response.ok) {
+                response.json().then((data) => {
+                    console.log(data);
+                })
                 throw new Error('Sign up failed');
             }
+
             requestLogin(signUpInfo.username, signUpInfo.password)
         })
         .catch((err) => {

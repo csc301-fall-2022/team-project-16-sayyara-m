@@ -1,5 +1,6 @@
 package com.backend.spring.services;
 
+import com.backend.spring.entities.Role;
 import com.backend.spring.entities.RoleEnum;
 import com.backend.spring.entities.Shop;
 import com.backend.spring.entities.ShopOwner;
@@ -47,7 +48,9 @@ public class ShopOwnerSaveHelper {
     }
 
     private void setShopOwner(ShopOwner shopOwner) {
-        shopOwner.addRole(roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue()));
+        Role role = roleRepository.findByName(RoleEnum.SHOP_OWNER.getValue())
+                .orElseGet(() -> roleRepository.save(new Role(RoleEnum.SHOP_OWNER)));
+        shopOwner.addRole(role);
         shopOwner.getShop().setShopOwner(shopOwner);
         new ShopOwnerValidator(shopOwner).validate(); // validate before encrypting password
         shopOwner.setPassword(passwordEncoder.encode(shopOwner.getPassword()));
