@@ -29,11 +29,11 @@ class ShopValidator implements Validator {
     }
 
     private void validatePhoneNumber() {
-        // Canadian phone number
-        String phoneNumber = shop.getPhoneNumber();
-
-        if (phoneNumber == null || phoneNumber.length() == 0)
+        if (shop.getPhoneNumber() == null || shop.getPhoneNumber().length() == 0)
             throw new ViolatedConstraintException("Shop phone number must be provided.");
+
+        String phoneNumber = shop.getPhoneNumber().replaceAll("\\s", "").replaceAll("-", "");
+        shop.setPhoneNumber(phoneNumber);
 
         if (phoneNumber.length() > 15)
             throw new ViolatedConstraintException("Shop phone number must be at most 15 characters.");

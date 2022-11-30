@@ -20,6 +20,21 @@ class UserInfoValidator implements Validator {
         validateFirstName();
         validateLastName();
         validateEmail();
+        validatePhoneNumber();
+    }
+
+    private void validatePhoneNumber() {
+        if (userInfo.getPhoneNumber() == null || userInfo.getPhoneNumber().length() == 0)
+            throw new ViolatedConstraintException("Shop phone number must be provided.");
+
+        String phoneNumber = userInfo.getPhoneNumber().replaceAll("\\s", "").replaceAll("-", "");
+        userInfo.setPhoneNumber(phoneNumber);
+
+        if (phoneNumber.length() > 15)
+            throw new ViolatedConstraintException("Shop phone number must be at most 15 characters.");
+
+        if (!phoneNumber.matches("^\\+[0-9]{11}$"))
+            throw new ViolatedConstraintException("Shop phone number must be in the form +14161239876.");
     }
 
     private void validateEmail() {

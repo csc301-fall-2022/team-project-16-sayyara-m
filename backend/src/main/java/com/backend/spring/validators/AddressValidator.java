@@ -45,6 +45,9 @@ class AddressValidator implements Validator {
         if (postalCode == null || postalCode.isEmpty())
             throw new ViolatedConstraintException("Postal code must be provided.");
 
+        postalCode = postalCode.replaceAll("\\s", "");
+        address.setPostalCode(postalCode);
+
         if (!postalCode.matches("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$"))
             throw new ViolatedConstraintException("Postal code must be in the form of A1A 1A1.");
     }

@@ -9,6 +9,9 @@ export const useGetLatLong = (address: string) => {
         });
         if(res.ok){
             const data = await res.json();
+            if(data.results[0] === undefined){
+                return;
+            }
             setLat(data.results[0].geometry.location.lat);
             setLng(data.results[0].geometry.location.lng);
             setFormattedAddress(data.results[0].formatted_address);

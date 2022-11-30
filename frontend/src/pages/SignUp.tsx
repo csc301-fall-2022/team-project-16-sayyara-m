@@ -195,12 +195,6 @@ function SignUp() {
                 throw new Error('Sign up failed');
             }
             requestLogin(signUpInfo.username, signUpInfo.password)
-            .then((errorMsg: string) => {
-                if (errorMsg === "") {
-                    // TODO: Do something on success
-
-                }
-            })
         })
         .catch((err) => {
             console.log('Request Failed');
