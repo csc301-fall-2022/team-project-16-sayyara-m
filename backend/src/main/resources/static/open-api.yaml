@@ -420,7 +420,7 @@ paths:
     post:
       tags:
         - Appointment
-      operationId: createAppointment
+      operationId: createAppointmentForVehicleOwner
       summary: Create Appointment
       description: "Create a new Appointment for the Vehicle Owner either by passing in the Appointment object or 
       passing in a quoteId to create an appointment from a quote.\n\n
@@ -454,12 +454,6 @@ paths:
                 "$ref": "#/components/schemas/ResponseAppointment"
         '400':
           $ref: "#/components/responses/InvalidData"
-        403:
-          description: The user is not authorized to create an appointment for this vehicle owner
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/AuthorizationError"
         '404':
           description: "Vehicle Owner or Quote were not found by their id, or Shop was not found within the Quote, or 
           Quote was not associated with the Vehicle Owner"
@@ -529,6 +523,13 @@ paths:
       **Note:** Only the status or the price can be updated at a time. If both are provided, there will be an error.\n\n
       Once the price is updated, the status of this quote will automatically be set to `Pending Approval`.\n\n
       Viable statuses are {`Pending Approval`, `Pending Review`, `Accepted`, `Rejected`, `Expired`} case insensitive."
+      parameters:
+        - name: quoteId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
@@ -801,9 +802,6 @@ components:
     RequestAppointment:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
         shopId:
           type: integer
           format: int64
@@ -850,8 +848,6 @@ components:
     RequestQuote:
       type: object
       properties:
-        id:
-          type: integer
         shopId:
           type: integer
           format: int64
