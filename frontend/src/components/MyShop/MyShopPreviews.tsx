@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 export const AppointmentsPreview = () => {
 
@@ -44,8 +45,24 @@ export const AppointmentsPreview = () => {
 
 export const QuotesPreview = () => {
 
-
-    return(<></>);
+    return(
+        <div className='w-full'>
+            <div className='ml-2 md:ml-4 md:mt-2'>
+                <div className='text-xl lg:text-2xl'>
+                    Requests awaiting your response:<span className='ml-3 text-3xl lg:text-4xl text-blue-700 font-normal'>12</span> 
+                </div>
+                <div className='text-xl lg:text-2xl mt-2'>
+                    Responses requiring client approval:<span className='ml-3 text-3xl lg:text-4xl text-blue-700 font-normal'>7</span>
+                </div>
+            </div>
+            <span className='ml-2 md:ml-4 text-gray-500'>For a complete list:</span>
+            <Link to='/quotes'>
+                <button className='ml-2 mt-5 transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>
+                    View All Quotes
+                </button>
+            </Link>
+        </div>
+    );
 }
 
 export const ServicesPreview = () => {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 
 export const AppointmentsView = () => {
 
@@ -15,10 +16,21 @@ export const AppointmentsView = () => {
     );
 }
 
-export const QuotesView = () => {
+interface QuotesViewProps {
+    quoteCards: ReactElement[];
+}
+export const QuotesView = (props: QuotesViewProps) => {
 
-
-    return(<></>);
+    return(
+        <div className='w-full'>
+            <div className='text-2xl mb-4'>
+                Quote requests that still require a price:
+            </div>
+            <div className="flex flex-wrap pb-4">
+                {props.quoteCards}
+            </div>
+        </div>
+    );
 }
 
 export const ServicesView = () => {
