@@ -4,7 +4,8 @@ import clsx from 'clsx';
 
 import { useGetShopOwner } from 'src/utilities/hooks/api/useGetShopOwner';
 
-import { AppointmentsView, QuotesView, ServicesView } from 'src/components/MyShopViews';
+import { AppointmentsPreview, QuotesPreview, ServicesPreview } from 'src/components/MyShop/MyShopPreviews';
+import { AppointmentsView, QuotesView, ServicesView } from 'src/components/MyShop/MyShopViews';
 import './MyShop.css';
 
 const APPOINTMENTS: number = 0;
@@ -16,18 +17,19 @@ function MyShop() {
     const [view, setView] = useState<number>(APPOINTMENTS);
     
     const { shopOwner } = useGetShopOwner();
-
-    const renderView = (): ReactElement => {
+    
+    const renderView = (isPreview: boolean): ReactElement => {
         // Conditionally renders the selected view
+        // Will render preview or view depending on isPreview argument
         switch(view) {
             case APPOINTMENTS:
-                return(<AppointmentsView />);
+                return(isPreview ? <AppointmentsPreview/> : <AppointmentsView/>);
             case QUOTES:
-                return(<QuotesView />);
+                return(isPreview ? <QuotesPreview/> : <QuotesView/>);
             case SERVICES:
-                return(<ServicesView />);
+                return(isPreview ? <ServicesPreview/> : <ServicesView/>);
         }
-        return(<AppointmentsView />);
+        return(isPreview ? <AppointmentsPreview/> : <AppointmentsView/>);
     }
 
     const handleNavigation = (newView: number): void => {
@@ -46,29 +48,28 @@ function MyShop() {
                     {shopOwner?.shop.name}
                 </div>
             </div>
-            {/* Navigation menu */}
-            {/* hover:border-blue-500 */}
-            <div className='w-full sm:w-64 mt-8 shadow-md rounded-md'>
-                <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
-                rounded-t-md border border-gray-300 overflow-hidden `
-                + clsx({'selected-view': view === APPOINTMENTS})}
-                onClick={() => {handleNavigation(APPOINTMENTS)}}>
-                    Upcoming Appointments
-                </button>
-                <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
-                border-x border-gray-300 `
-                + clsx({'selected-view': view === QUOTES})}
-                onClick={() => {handleNavigation(QUOTES)}}>
-                    Quote Requests
-                </button>
-                <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
-                rounded-b-md border border-gray-300 overflow-hidden `
-                + clsx({'selected-view': view === SERVICES})}
-                onClick={() => {handleNavigation(SERVICES)}}>
-                    Manage Services
-                </button>
+            <div className='flex flex-wrap md:flex-nowrap my-8'>
+                {/* Navigation menu */}
+                <div className='w-full h-min md:max-w-[250px] shadow-md rounded-md md:mr-4 mb-4 md:mb-0'>
+                    <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
+                    rounded-t-md border border-gray-300 overflow-hidden ` + clsx({'selected-view': view === APPOINTMENTS})}
+                    onClick={() => {handleNavigation(APPOINTMENTS)}}>
+                        Upcoming Appointments
+                    </button>
+                    <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
+                    border-x border-gray-300 ` + clsx({'selected-view': view === QUOTES})}
+                    onClick={() => {handleNavigation(QUOTES)}}>
+                        Quote Requests
+                    </button>
+                    <button className={`navigation-button w-full py-4 pl-4 text-lg text-gray-800 font-semibold text-left
+                    rounded-b-md border border-gray-300 overflow-hidden ` + clsx({'selected-view': view === SERVICES})}
+                    onClick={() => {handleNavigation(SERVICES)}}>
+                        Manage Services
+                    </button>
+                </div>
+                {renderView(true)}
             </div>
-            {renderView()}
+            {renderView(false)}
         </div>
     );
 }

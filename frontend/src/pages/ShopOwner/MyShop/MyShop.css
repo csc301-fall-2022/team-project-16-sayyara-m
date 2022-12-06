@@ -1,13 +1,12 @@
 .navigation-button {
     cursor: pointer;
-    /* The text color change (after, before) */
+    /* The text color change on hover (.., hovered, unhovered) */
     background: linear-gradient(90deg, white 50%, rgb(31 41 55) 50%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
     -webkit-tap-highlight-color: transparent;
 }
-
 .navigation-button::after {
     content: "";
     position: absolute;
@@ -15,7 +14,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* The background color change (after, before) */
+    /* The background color change on hover (.., hovered, unhovered) */
     background: linear-gradient(90deg, rgb(107 114 128) 50%, rgb(249 250 251) 50%);
     z-index: -1;
 }
@@ -23,14 +22,15 @@
 .navigation-button::after {
     background-size: 300%;
     background-position: 100%;
-    transition: 0.8s, font-size 0.3s;
+    transition: 0.5s, font-size 0.3s;
 }
 .navigation-button.selected-view {
+    /* Border color of the currently selected view button */
     border-color: rgb(30 64 175);
-    /* transition: 0.8s; */
 }
 .navigation-button.selected-view::after {
     background-position: 0%;
+    /* Background color of the currently selected view button */
     background: rgb(30 64 175);
 }
 .navigation-button:hover,
