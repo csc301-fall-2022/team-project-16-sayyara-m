@@ -1,9 +1,9 @@
 ########## PRODUCTION environment ##########
 spring:
   datasource:
-    url: ${POSTGRES_URL}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${DB_DOMAIN}:${DB_PORT}/${DB_NAME}?user=${DB_USER}&password=${DB_PASSWORD}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
