@@ -5,7 +5,7 @@ It is a platform where Vehicle Mechanics can advertise their services and Vehicl
 
 ### Deployed Applicaiton
 - [Sayyara](https://sayyara.netlify.app)
-- [Backend Swagger Docs](https://sayyara-backend.onrender.com/api/swagger-ui/index.html)
+- [Backend Swagger Docs](https://sayyara-backend.up.railway.app/api/docs)
 ### Development Requirements
 
 **For building and running the application you need:**
