@@ -1,8 +1,8 @@
 ########## PRODUCTION environment ##########
 spring:
   datasource:
-    url: "jdbc:postgresql://containers-us-west-108.railway.app:6852/railway?user=postgres&password=Xioxdb5rkXhXsntt8J9k"
-    username: "postgres"
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
