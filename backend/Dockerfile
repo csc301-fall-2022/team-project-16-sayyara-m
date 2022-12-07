@@ -4,6 +4,6 @@ COPY pom.xml ./
 RUN mvn -f ./pom.xml clean package -DskipTests
 
 FROM amazoncorretto:17
-VOLUME /tmp
+#VOLUME /tmp
 COPY --from=build target/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
