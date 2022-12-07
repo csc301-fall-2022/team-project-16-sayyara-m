@@ -21,7 +21,7 @@ function MyShop() {
     const [view, setView] = useState<number>(APPOINTMENTS);
     const [selectedQuoteId, setSelectedQuoteId] = useState(-1);
     
-    const { shopOwner } = useGetShopOwner();
+    const { shopOwner, setShopOwner } = useGetShopOwner();
     const { quotes, setQuotes } = useGetAllQuotes();
 
     const generateQuoteCards = () => {
@@ -40,7 +40,7 @@ function MyShop() {
             case QUOTES:
                 return(isPreview ? <QuotesPreview/> : <QuotesView quoteCards={generateQuoteCards()}/>);
             case SERVICES:
-                return(isPreview ? <ServicesPreview/> : <ServicesView/>);
+                return(isPreview ? <ServicesPreview shopOwner={shopOwner} setShopOwner={setShopOwner}/> : <ServicesView shopOwner={shopOwner} setShopOwner={setShopOwner}/>);
         }
         return(isPreview ? <AppointmentsPreview/> : <AppointmentsView/>);
     }
@@ -58,7 +58,7 @@ function MyShop() {
     }
 
     return(<>
-        <div className='absolute right-[50%] top-[10%] translate-x-[50%] w-[95%] sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2'>
+        <div className='absolute right-[50%] top-[10%] translate-x-[50%] w-[95%] sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 min-w-[400px]'>
             {/* Title bar */}
             <div className='w-full bg-gray-50 py-2 px-4 rounded-md shadow-sm border border-gray-300'>
                 <div className='text-2xl sm:text-3xl text-blue-900 inline-block font-light'>

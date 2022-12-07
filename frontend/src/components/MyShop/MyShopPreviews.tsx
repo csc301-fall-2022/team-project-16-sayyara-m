@@ -1,7 +1,13 @@
 import * as React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Service, ShopOwner } from 'src/utilities/interfaces';
+import ServiceCreationForm from '../Services/ServiceCreationForm';
+
 export const AppointmentsPreview = () => {
+    // This component is rendered as the head block (adjacent to navigation menu)
+    // for the "Upcoming Appointments" tab on the home page
 
     return(
         <div className='w-full'>
@@ -44,18 +50,20 @@ export const AppointmentsPreview = () => {
 }
 
 export const QuotesPreview = () => {
+    // This component is rendered as the head block (adjacent to navigation menu)
+    // for the "Quote Requests" tab on the home page
 
     return(
         <div className='w-full'>
-            <div className='ml-2 md:ml-4 md:mt-2'>
+            <div className='ml-2'>
                 <div className='text-xl lg:text-2xl'>
-                    Requests awaiting your response:<span className='ml-3 text-3xl lg:text-4xl text-blue-700 font-normal'>12</span> 
+                    Requests awaiting your response:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>12</span> 
                 </div>
                 <div className='text-xl lg:text-2xl mt-2'>
-                    Responses requiring client approval:<span className='ml-3 text-3xl lg:text-4xl text-blue-700 font-normal'>7</span>
+                    Responses requiring client approval:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>7</span>
                 </div>
             </div>
-            <span className='ml-2 md:ml-4 text-gray-500'>For a complete list:</span>
+            <span className='ml-2 text-gray-500'>For a complete list:</span>
             <Link to='/quotes'>
                 <button className='ml-2 mt-5 transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>
                     View All Quotes
@@ -65,8 +73,24 @@ export const QuotesPreview = () => {
     );
 }
 
-export const ServicesPreview = () => {
+interface ServicesPreviewProps {
+    shopOwner: ShopOwner | null,
+    setShopOwner: Dispatch<SetStateAction<ShopOwner>>
+}
+export const ServicesPreview = (props: ServicesPreviewProps) => {
+    // This component is rendered as the head block (adjacent to navigation menu)
+    // for the "Manage Services" tab on the home page
 
+    const {shopOwner, setShopOwner} = props;
 
-    return(<></>);
+    const addService = (service: Service) => {
+        if (shopOwner === null) return;
+        setShopOwner({ ...shopOwner, shop: { ...(shopOwner.shop), services: [...(shopOwner.shop.services), service] } })
+    }
+
+    return(
+        <div className='w-full'>
+            <ServiceCreationForm addService={addService} />
+        </div>
+    );
 }
