@@ -98,7 +98,7 @@ export const QuotesView = (props: QuotesViewProps) => {
                 {renderAwaitingResponseQuotes()}
             </div>
             <div className='text-2xl mb-4 md:ml-1'>
-                Quote requests need client approval:
+                Quote requests that need client approval:
             </div>
             <div className="flex flex-wrap pb-4">
                 {renderRequiringApprovalQuotes()}
