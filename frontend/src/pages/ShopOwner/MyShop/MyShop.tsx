@@ -7,8 +7,10 @@ import { useGetAllQuotes } from 'src/utilities/hooks/api/useGetAllQuotes';
 
 import { AppointmentsPreview, QuotesPreview, ServicesPreview } from 'src/components/MyShop/MyShopPreviews';
 import { AppointmentsView, QuotesView, ServicesView } from 'src/components/MyShop/MyShopViews';
+import AppointmentDialog from 'src/components/Appointments/AppointmentDialog';
 import QuoteDialog from 'src/components/Quotes/QuoteDialog';
 import QuoteCard from 'src/components/Cards/QuoteCard';
+import { QuoteStats } from 'src/utilities/interfaces';
 
 import './MyShop.css';
 
@@ -19,16 +21,31 @@ const SERVICES: number = 2;
 function MyShop() {
 
     const [view, setView] = useState<number>(APPOINTMENTS);
-    const [selectedQuoteId, setSelectedQuoteId] = useState(-1);
+    const [selectedQuoteId, setSelectedQuoteId] = useState<number>(-1);
+    const [selectedAptId, setSelectedAptId] = useState<string>("");
     
     const { shopOwner, setShopOwner } = useGetShopOwner();
     const { quotes, setQuotes } = useGetAllQuotes();
 
-    const generateQuoteCards = () => {
+    const generateQuoteCards = (status: string): ReactElement[] => {
+        // Returns a list of QuoteCard components that are filtered by the status argument
         if (shopOwner === null) return [];
-        return quotes.map((q, i) => {
-            return <QuoteCard setSelectedQuoteId={setSelectedQuoteId} key={q.id} quote={q} />
-        })
+        const filteredQuotes = quotes.filter((q) => q.status === status);
+        return filteredQuotes.map((quote) => {
+            return <QuoteCard setSelectedQuoteId={setSelectedQuoteId} key={quote.id} quote={quote} />
+        }); 
+    }
+
+    const computeQuoteStats = (): QuoteStats => {
+        let numAwaitingResponse: number = 0;
+        let numRequiringApproval: number = 0;
+        quotes.forEach((q) => {
+            if (q.status === "Pending Review")
+                numAwaitingResponse++;
+            else if (q.status === "Pending Approval")
+                numRequiringApproval++;
+        });
+        return {numAwaitingResponse, numRequiringApproval};
     }
     
     const renderView = (isPreview: boolean): ReactElement => {
@@ -36,13 +53,30 @@ function MyShop() {
         // Will render preview or view depending on isPreview argument
         switch(view) {
             case APPOINTMENTS:
-                return(isPreview ? <AppointmentsPreview/> : <AppointmentsView/>);
+                return(
+                    isPreview ? 
+                    <AppointmentsPreview/> : 
+                    <AppointmentsView appointments={shopOwner?.shop.appointments} setSelectedAptId={setSelectedAptId}/>
+                );
             case QUOTES:
-                return(isPreview ? <QuotesPreview/> : <QuotesView quoteCards={generateQuoteCards()}/>);
+                return(
+                    isPreview ? 
+                    <QuotesPreview quoteStats={computeQuoteStats()}/> : 
+                    <QuotesView awaitingResponseQuoteCards={generateQuoteCards("Pending Review")} 
+                    requiringApprovalQuoteCards={generateQuoteCards("Pending Approval")}/>
+                );
             case SERVICES:
-                return(isPreview ? <ServicesPreview shopOwner={shopOwner} setShopOwner={setShopOwner}/> : <ServicesView shopOwner={shopOwner} setShopOwner={setShopOwner}/>);
+                return(
+                    isPreview ? 
+                    <ServicesPreview shopOwner={shopOwner} setShopOwner={setShopOwner}/> : 
+                    <ServicesView shopOwner={shopOwner} setShopOwner={setShopOwner}/>
+                );
         }
-        return(isPreview ? <AppointmentsPreview/> : <AppointmentsView/>);
+        return(
+            isPreview ? 
+            <AppointmentsPreview/> : 
+            <AppointmentsView appointments={shopOwner?.shop.appointments} setSelectedAptId={setSelectedAptId}/>
+        );
     }
 
     const handleNavigation = (newView: number): void => {
@@ -50,11 +84,22 @@ function MyShop() {
         setView(newView);
     }
 
-    const renderQuoteDetailsDialog = () => {
-        if (selectedQuoteId === -1) {
-            return <></>
-        }
-        return <QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId} />
+    const renderAppointmentDetailsDialog = (): ReactElement => {
+        // Render nothing if no appointment is currently selected
+        if (selectedAptId === "")
+            return(<></>);
+
+        // Render the details dialog component with the selected appointment ID
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={true}/>);
+    }
+
+    const renderQuoteDetailsDialog = (): ReactElement => {
+        // Render nothing if no quote is currently selected
+        if (selectedQuoteId === -1)
+            return(<></>);
+
+        // Render the details dialog component with the selected quote ID
+        return(<QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>);
     }
 
     return(<>
@@ -92,6 +137,7 @@ function MyShop() {
             {renderView(false)}
         </div>
         {renderQuoteDetailsDialog()}
+        {renderAppointmentDetailsDialog()}
     </>);
 }
 

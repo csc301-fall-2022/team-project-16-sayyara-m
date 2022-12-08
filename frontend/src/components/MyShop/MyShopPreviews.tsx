@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Service, ShopOwner } from 'src/utilities/interfaces';
+import { Service, ShopOwner, QuoteStats } from 'src/utilities/interfaces';
 import ServiceCreationForm from '../Services/ServiceCreationForm';
 
 export const AppointmentsPreview = () => {
@@ -49,18 +49,23 @@ export const AppointmentsPreview = () => {
     );
 }
 
-export const QuotesPreview = () => {
+interface QuotesPreviewProps {
+    quoteStats: QuoteStats
+}
+export const QuotesPreview = (props: QuotesPreviewProps) => {
     // This component is rendered as the head block (adjacent to navigation menu)
     // for the "Quote Requests" tab on the home page
+
+    const {numAwaitingResponse, numRequiringApproval} = props.quoteStats;
 
     return(
         <div className='w-full'>
             <div className='ml-2'>
                 <div className='text-xl lg:text-2xl'>
-                    Requests awaiting your response:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>12</span> 
+                    Requests awaiting your response:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>{numAwaitingResponse}</span> 
                 </div>
                 <div className='text-xl lg:text-2xl mt-2'>
-                    Responses requiring client approval:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>7</span>
+                    Responses requiring client approval:<span className='ml-3 text-2xl lg:text-3xl text-blue-700 font-semibold'>{numRequiringApproval}</span>
                 </div>
             </div>
             <span className='ml-2 text-gray-500'>For a complete list:</span>

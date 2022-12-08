@@ -24,7 +24,6 @@ const MyShop = () => {
     const deleteService = (id: number) => {
         if (shopOwner === null) return;
         setShopOwner({ ...shopOwner, shop: { ...(shopOwner.shop), services: shopOwner.shop.services.filter(service => service.id !== id) } })
-
     }
 
     const generateAppointmentCards = () => {
