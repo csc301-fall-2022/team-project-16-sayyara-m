@@ -11,10 +11,10 @@ const QuoteCard = ({ quote, setSelectedQuoteId }: QuoteCardProps) => {
     const determineStyle = () => {
         const styleStr: string = "relative bottom-2 self-end text-sm"
         if (quote.status === "Accepted" || quote.status === "Pending Approval") {
-            return styleStr + " text-green-500";
+            return styleStr + " text-gray-400";
         }
         else {
-            return styleStr + " text-red-500";
+            return styleStr + " text-blue-500";
         }
     }
 
