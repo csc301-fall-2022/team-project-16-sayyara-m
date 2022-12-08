@@ -55,7 +55,7 @@ function MyShop() {
             case APPOINTMENTS:
                 return(
                     isPreview ? 
-                    <AppointmentsPreview/> : 
+                    <AppointmentsPreview appointments={shopOwner?.shop.appointments}/> : 
                     <AppointmentsView appointments={shopOwner?.shop.appointments} setSelectedAptId={setSelectedAptId}/>
                 );
             case QUOTES:
@@ -74,7 +74,7 @@ function MyShop() {
         }
         return(
             isPreview ? 
-            <AppointmentsPreview/> : 
+            <AppointmentsPreview appointments={shopOwner?.shop.appointments}/> : 
             <AppointmentsView appointments={shopOwner?.shop.appointments} setSelectedAptId={setSelectedAptId}/>
         );
     }
