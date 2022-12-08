@@ -27,7 +27,7 @@ function App() {
   // }, []);
 
   //force a rerender when the refresh token changes (i.e when the user logs out or logs in)
-  useEffect(() => {}, [cookies]);
+  useEffect(() => {}, [cookies.refresh_token]);
   return (
     <div>
       <Router>
