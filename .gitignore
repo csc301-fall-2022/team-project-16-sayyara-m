@@ -38,3 +38,4 @@ build/
 .obsidian/
 frontend/.env
 .DS_Store
+.vercel
