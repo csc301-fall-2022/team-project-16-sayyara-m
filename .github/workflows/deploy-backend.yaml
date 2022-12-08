@@ -5,6 +5,8 @@ env:
 
 on:
   push:
+    paths:
+      - 'backend/**'
     branches:
       - main
 
