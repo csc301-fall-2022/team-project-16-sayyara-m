@@ -19,7 +19,7 @@ Start the server:
 ```bash
 # Start from root directory
 cd backend
-docker-compose up -d
+docker-compose up --build -d
 ```
 The server listens on port `8080`. You can access it at http://localhost:8080/<endpoint-here>
 
