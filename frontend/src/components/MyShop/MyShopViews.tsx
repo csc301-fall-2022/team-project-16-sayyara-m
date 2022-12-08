@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
 import Paper from '@mui/material/Paper';
-import { Scheduler, WeekView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+import { Scheduler, WeekView, DayView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 import { AppointmentModel } from '@devexpress/dx-react-scheduler';
-
 import { Appointment as Appt, ShopOwner } from 'src/utilities/interfaces';
 import ServicesOffered from '../Services/ServicesOffered';
+import useWindowDimensions from 'src/utilities/hooks/useWindowDimensions';
 
 interface AppointmentsViewProps {
     appointments: Appt[] | undefined,
@@ -14,6 +14,8 @@ interface AppointmentsViewProps {
 export const AppointmentsView = (props: AppointmentsViewProps) => {
     // This component is rendered as the main body for the "Upcoming Appointments" tab on the home page
     const {appointments, setSelectedAptId} = props;
+
+    const {width} = useWindowDimensions();
     
     const generateAppointmentData = (): AppointmentModel[] => {
         if (appointments == undefined)
@@ -40,16 +42,24 @@ export const AppointmentsView = (props: AppointmentsViewProps) => {
         setSelectedAptId(`${aptId}`);
     }
 
+    const determineScheduleView = (): ReactElement => {
+        // If the screen width is less than 768px (Tailwind 'md' breakpoint),
+        // then the week view is used. Otherwise, the day view is used.
+        if (width >= 768)
+            return(<WeekView startDayHour={7} endDayHour={20}/>);
+        return(<DayView startDayHour={7} endDayHour={20}/>);
+    }
+
     return(
         <div className='w-full'>
             <div className='text-2xl mb-4'>
-                Here's what your week looks like:
+                Here's what your {width >= 768 ? 'week' : 'day'} looks like:
             </div>
             <div className='w-full mb-4'>
                 <Paper>
                     <Scheduler data={generateAppointmentData()} height={750}>
                         {/* In future versions, start and end times should be based on shop hours*/}
-                        <WeekView startDayHour={7} endDayHour={20}/>
+                        {determineScheduleView()}
                         <Appointments appointmentComponent={apptComponentWrapper}/>
                     </Scheduler>
                 </Paper>
@@ -69,13 +79,13 @@ export const QuotesView = (props: QuotesViewProps) => {
 
     const renderAwaitingResponseQuotes = (): ReactElement => {
         if (awaitingResponseQuoteCards.length === 0)
-            return(<div className='ml-4 text-lg text-gray-400'>You have no outstanding requests</div>);
+            return(<div className='ml-1 text-lg text-gray-400 font-light'>You have no outstanding requests</div>);
         return(<>{awaitingResponseQuoteCards}</>);
     }
 
     const renderRequiringApprovalQuotes = (): ReactElement => {
         if (requiringApprovalQuoteCards.length === 0)
-            return(<div className='text-lg'>No quotes are awaiting client approval</div>);
+            return(<div className='ml-1 text-lg text-gray-400 font-light'>No quotes are awaiting client approval</div>);
         return(<>{requiringApprovalQuoteCards}</>);
     }
 

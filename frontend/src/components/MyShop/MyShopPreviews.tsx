@@ -84,25 +84,25 @@ export const AppointmentsPreview = (props: AppointemntsPreviewProps) => {
             <div className='text-2xl mb-4'>
                 Your next appointment is with <span className='whitespace-nowrap font-bold'>{nextApptFullName}</span>
             </div>
-            <div className='grid grid-cols-2 mb-3'>
+            <div className='grid grid-cols-2 2xl:grid-cols-3 mb-3'>
                 <label className='font-bold text-lg'>
                     Date
                 </label>
-                <label className='font-bold text-lg'>
+                <label className='font-bold text-lg 2xl:col-span-2'>
                     Time
                 </label>
                 <div className='text-xl'>
                     {formatMonthDay(new Date(nextAppt.startTime + 'Z'))}
                 </div>
-                <div className='text-xl'>
+                <div className='text-xl 2xl:col-span-2'>
                     {formatTimeRange(new Date(nextAppt.startTime + 'Z'), new Date(nextAppt.endTime + 'Z'))}
                 </div>
             </div>
-            <div className='grid grid-cols-2'>
+            <div className='grid grid-cols-2 2xl:grid-cols-3'>
                 <label className='font-bold text-lg'>
                     Service
                 </label>
-                <label className='font-bold text-lg'>
+                <label className='font-bold text-lg 2xl:col-span-2'>
                     Vehicle
                 </label>
                 <div className=''>
@@ -111,7 +111,7 @@ export const AppointmentsPreview = (props: AppointemntsPreviewProps) => {
                         {nextAppt.serviceName}
                     </div>
                 </div>
-                <div className='text-xl'>
+                <div className='text-xl 2xl:col-span-2'>
                     {vehicleStr}
                 </div>
             </div>

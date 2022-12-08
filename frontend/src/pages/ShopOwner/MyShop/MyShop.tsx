@@ -102,8 +102,8 @@ function MyShop() {
         return(<QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>);
     }
 
-    return(<>
-        <div className='absolute right-[50%] top-[10%] translate-x-[50%] w-[95%] sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 min-w-[400px]'>
+    return(<div className='relative flex w-full flex-wrap justify-centere'>
+        <div className='absolute right-[50%] top-8 translate-x-[50%] w-[95%] sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 min-w-[350px]'>
             {/* Title bar */}
             <div className='w-full bg-gray-50 py-2 px-4 rounded-md shadow-sm border border-gray-300'>
                 <div className='text-2xl sm:text-3xl text-blue-900 inline-block font-light'>
@@ -138,7 +138,7 @@ function MyShop() {
         </div>
         {renderQuoteDetailsDialog()}
         {renderAppointmentDetailsDialog()}
-    </>);
+    </div>);
 }
 
 export default MyShop;
