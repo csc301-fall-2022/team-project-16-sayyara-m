@@ -115,7 +115,7 @@ const VehicleOwnerAppointments = () => {
             return(<></>);
 
         // Render the details dialog component with the selected appointment ID
-        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={false}/>);
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={false} homePage={false}/>);
     }
 
     return (
