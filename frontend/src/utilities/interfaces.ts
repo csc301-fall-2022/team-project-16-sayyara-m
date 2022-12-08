@@ -72,7 +72,10 @@ export interface Quote {
     shopInfo: ShopInfo,
     description: string
 }
-
+export interface QuoteStats {
+    numAwaitingResponse: number,
+    numRequiringApproval: number
+}
 export interface APIError {
     message: string
 }

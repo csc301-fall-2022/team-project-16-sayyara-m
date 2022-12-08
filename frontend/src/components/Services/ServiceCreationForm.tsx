@@ -1,30 +1,34 @@
 import React, { useState } from "react";
+
 import { API_ROOT } from "src/utilities/constants";
 import useAuthFetch from "src/utilities/hooks/useAuthFetch";
 import { APIError, Service } from "src/utilities/interfaces";
+
 interface ServiceCreationFormProps {
     addService: (service: Service) => void
 }
 const ServiceCreationForm = (props: ServiceCreationFormProps) => {
     const { addService } = props;
+    
+    const { authFetch } = useAuthFetch();
+
     const [service, setService] = useState<string>("")
     const [price, setPrice] = useState("");
     const [error, setError] = useState("");
-    const { authFetch } = useAuthFetch();
 
-    const handleServiceCreate = async() => {
+    const handleServiceCreate = async () => {
         const req = {
             defaultPrice: price === null || price === "" ? null : Number(price),
             name: service
-        }
+        };
         const res = await authFetch(`${API_ROOT}/services`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(req)
-        })
-        if(res.ok){
+        });
+        if (res.ok) {
             const data: Service = await res.json();
             addService(data)
             return;
@@ -34,47 +38,35 @@ const ServiceCreationForm = (props: ServiceCreationFormProps) => {
         console.log(data.message);
     }
 
-    return (
-        <form className="block">
-                <h3 className="text-2xl pt-2 text-blue-800 sm:text-3xl">Add a New Service</h3>
-                <section className="flex">
-                    <div className="pr-2">
-                        <label className="">Service:</label>
-                        <br />
-                        <input
-                            className="p-2 mt-3 border-2 rounded box-border"
-                            type="text"
-                            onChange={(e) => setService(e.target.value)}
-                            value={service}
-                        />
-                    </div>
-                    <div>
-
-                        <label>Price: (Optional)</label>
-                        <br />
-                        <input
-                            className="p-2 mt-3 border-2 rounded box-border"
-                            type="number"
-                            value={price}
-                            onChange={e => {
-                                console.log(e.target.value)
-                                setPrice(e.target.value)}
-                            }
-                        />
-                        <br></br>
-                    </div>
-                </section>
-                {error && <div className="text-red-500">{error}</div>}
-                <button
-                    className="cursor-pointer bg-blue-700 my-4 p-2.5 rounded text-white text-center "
-                    onClick={e => {
-                        e.preventDefault();
-                        handleServiceCreate()}
-                    }
-                >
-                    Add Service
-                </button>
-            </form>
-    )
+    return (<>
+        <div className="text-3xl w-full">
+            Add a New Service
+        </div>
+        <div className="mt-4 grid grid-cols-7 gap-2 max-w-[450px]">
+            <label className="col-span-4 font-semibold">
+                Service Name:
+            </label>
+            <label className="col-span-3 font-semibold">
+                Price (Optional):
+            </label>
+            <input className="col-span-4 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 
+            leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" 
+            type="text" value={service} onChange={e => { setService(e.target.value); }}/>
+            <input className="col-span-3 shadow-sm appearance-none border border-[#0000003b] rounded w-full py-2 px-3 text-gray-700 
+            leading-tight focus:outline-blue-500 focus:shadow-outline hover:border-gray-700" 
+            type="number" value={price} onChange={e => { setPrice(e.target.value); }}/>
+            <button className="col-span-4 transition duration-100 ease-in-out w-[125px] bg-gray-200 border border-gray-300 
+            text-gray-600 hover:bg-blue-600 hover:text-white font-semibold py-1 rounded-md shadow-sm"
+            onClick={e => {
+                e.preventDefault();
+                handleServiceCreate()
+            }}>
+                Add Service
+            </button>
+            {/* Error Message */}
+            <div className="col-span-3 text-red-500 self-center">{error}</div>
+        </div>
+    </>);
 }
+
 export default ServiceCreationForm;

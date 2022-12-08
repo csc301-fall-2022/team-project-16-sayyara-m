@@ -7,7 +7,7 @@ import SignUp from './pages/User/SignUp';
 import Appointments from './pages/ShopOwner/Appointments';
 import Profile from './pages/ShopOwner/Profile';
 import Navbar from './components/Navbar';
-import MyShop from './pages/ShopOwner/MyShop';
+import MyShop from './pages/ShopOwner/MyShop/MyShop';
 import Quotes from './pages/ShopOwner/Quotes';
 import QuoteDetails from './pages/ShopOwner/QuoteDetails';
 import ShopDetails from './pages/ShopOwner/ShopDetails';
