@@ -1,25 +1,11 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import useRequestLogin from 'src/utilities/hooks/useRequestLogin';
 
 // This page displays the login form
 function Login() {
-
-    // Add a keyboard event listener on document mount. When enter is pressed, attempt a login
-    useEffect(() => {
-        const listener = (event: KeyboardEvent) => {
-        if (event.code === "Enter" || event.code === "NumpadEnter") {
-            event.preventDefault();
-            loginClicked();
-        }
-        };
-        document.addEventListener("keydown", listener);
-        return () => {
-            document.removeEventListener("keydown", listener);
-        };
-    }, []);
 
     const requestLogin = useRequestLogin();
 
@@ -39,7 +25,8 @@ function Login() {
     }
 
     // Function is called when the login button is clicked.
-    const loginClicked = (): void => {
+    const loginClicked = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
         requestLogin(loginUsername, loginPassword)
         .then((errorMsg: string) => {
             setErrorMsg(errorMsg);
@@ -54,7 +41,7 @@ function Login() {
         <div className='flex w-screen h-screen justify-center flex-wrap bg-gray-100 px-8 pt-8'>
             <div className='flex flex-wrap h-full max-w-md min-w-[330px] w-full'>
                 <div className='w-full h-min border-2 border-gray-300 rounded-lg shadow-lg bg-white'>
-                    <div className='mx-8'>
+                    <form className='mx-8' onSubmit={loginClicked}>
                         <div className='flex justify-center my-8'>
                             <label className='text-4xl font-bold'>Owner Login</label>
                         </div>
@@ -64,7 +51,7 @@ function Login() {
                             </label>
                             {/* USERNAME INPUT FIELD */}
                             <input className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline" id="email" type="text"
+                            focus:outline-blue-500 focus:shadow-outline" id="username" type="text"
                             value={loginUsername} onChange={usernameFieldOnChange}/>
                         </div>
                         <div className="mb-3">
@@ -83,8 +70,7 @@ function Login() {
                         <div className="flex items-center justify-between mb-6">
                             {/* LOGIN BUTTON */}
                             <button className="transition duration-100 ease-in-out w-32 bg-blue-500 hover:bg-blue-700 text-white
-                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
-                            onClick={loginClicked}>
+                            font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                 Log In
                             </button>
                             {/* FORGOT PASSWORD LINK */}
@@ -99,7 +85,7 @@ function Login() {
                                 <a className='transition duration-100 ease-in-out text-blue-500 font-semibold hover:text-blue-800'>Sign Up</a>
                             </Link>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
