@@ -2,8 +2,10 @@ name: Backend Unit Tests
 
 on:
   push:
-      branches:
-        - main
+    paths:
+      - 'backend/**'
+    branches:
+      - main
   workflow_dispatch:
   pull_request:
 
