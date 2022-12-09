@@ -32,9 +32,18 @@ export const AppointmentsView = (props: AppointmentsViewProps) => {
         return data;
     }
 
-    const apptComponentWrapper = (props: Appointments.AppointmentProps): ReactElement => {
-        const data: AppointmentModel = props.data;
-        return(<Appointments.Appointment {...props} onClick={() => {appointmentClicked(data.id)}}/>);
+    const apptComponentWrapper = (
+        {children, ...restProps}: Appointments.AppointmentProps, 
+        {style}: Appointments.ContainerProps
+    ): ReactElement => {
+        const data: AppointmentModel = restProps.data;
+        return(
+            <Appointments.Appointment {...restProps} 
+            onClick={() => {appointmentClicked(data.id)}}
+            style={{...style, backgroundColor: '#2563EB'}}> {/* Override style to tailwind bg-blue-600 */}
+                {children}
+            </Appointments.Appointment>
+        );
     }
     const appointmentClicked = (aptId: number | string | undefined): void => {
         if (aptId == undefined)
@@ -43,7 +52,7 @@ export const AppointmentsView = (props: AppointmentsViewProps) => {
     }
 
     const determineScheduleView = (): ReactElement => {
-        // If the screen width is less than 768px (Tailwind 'md' breakpoint),
+        // If the screen width is greater than 768px (Tailwind 'md' breakpoint),
         // then the week view is used. Otherwise, the day view is used.
         if (width >= 768)
             return(<WeekView startDayHour={7} endDayHour={20}/>);

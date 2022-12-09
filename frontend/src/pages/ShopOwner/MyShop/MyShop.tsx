@@ -90,7 +90,7 @@ function MyShop() {
             return(<></>);
 
         // Render the details dialog component with the selected appointment ID
-        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={true}/>);
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={true} homePage={true}/>);
     }
 
     const renderQuoteDetailsDialog = (): ReactElement => {
@@ -99,10 +99,10 @@ function MyShop() {
             return(<></>);
 
         // Render the details dialog component with the selected quote ID
-        return(<QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>);
+        return(<QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId} homePage={true}/>);
     }
 
-    return(<div className='relative flex w-full flex-wrap justify-centere'>
+    return(<div className='relative flex w-full flex-wrap justify-center'>
         <div className='absolute right-[50%] top-8 translate-x-[50%] w-[95%] sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 min-w-[350px]'>
             {/* Title bar */}
             <div className='w-full bg-gray-50 py-2 px-4 rounded-md shadow-sm border border-gray-300'>

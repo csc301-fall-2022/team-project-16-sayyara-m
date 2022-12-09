@@ -45,11 +45,11 @@ const Quotes = () => {
         if(selectedQuoteId === -1){
             return <></>
         }
-        return <QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId}/>
+        return <QuoteDialog setQuotes={setQuotes} quoteId={selectedQuoteId} setSelectedQuoteId={setSelectedQuoteId} homePage={false}/>
     }
     return(
         <div className="h-[650px] w-full">
-            <h1 className="flex justify-center font-semibold text-blue-500 sm:text-3xl py-4">Your Quotes</h1>
+            <h1 className="flex justify-center font-semibold text-blue-900 sm:text-3xl py-4">Your Quotes</h1>
             <DataGrid
                 getRowClassName={() => "cursor-pointer"}
                 rows={generateQuoteRows(quotes)}

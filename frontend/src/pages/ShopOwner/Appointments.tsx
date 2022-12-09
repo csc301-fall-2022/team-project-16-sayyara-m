@@ -56,7 +56,7 @@ const Appointments = () => {
             return(<></>);
 
         // Render the details dialog component with the selected appointment ID
-        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={true}/>);
+        return(<AppointmentDialog id={selectedAptId} setSelectedAptId={setSelectedAptId} isShopOwner={true} homePage={false}/>);
     }
 
     return (

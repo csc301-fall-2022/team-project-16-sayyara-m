@@ -3,13 +3,15 @@ import { API_ROOT } from "src/utilities/constants";
 import { APIError, Quote } from "src/utilities/interfaces";
 import { ReactComponent as CloseBtnSvg } from "src/resources/svgs/close.svg";
 import { useGetQuoteById } from "src/utilities/hooks/api/useGetQuoteById";
+import clsx from "clsx";
 interface QuoteDialogProps {
     quoteId: number,
     setSelectedQuoteId: React.Dispatch<React.SetStateAction<number>>,
-    setQuotes: React.Dispatch<React.SetStateAction<Quote[]>>
+    setQuotes: React.Dispatch<React.SetStateAction<Quote[]>>,
+    homePage: boolean
 }
 const QuoteDialog = (props: QuoteDialogProps) => {
-    const { quoteId, setSelectedQuoteId, setQuotes } = props;
+    const { quoteId, setSelectedQuoteId, setQuotes, homePage } = props;
     const { quote } = useGetQuoteById(String(quoteId));
     const [price, setPrice] = useState("");
     const [error, setError] = useState("");
@@ -61,8 +63,9 @@ const QuoteDialog = (props: QuoteDialogProps) => {
             {/* main body of popup */}
             <div className="fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10"
             onClick={() => {setSelectedQuoteId(-1)}}/>
-            <div className="absolute right-1/2 top-[10%] sm:top-10 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
-            rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6">
+            {/* As of now, the vertical positioning is hard-coded due to layout difficulties. In the long term, a more flexible solution should be employed */}
+            <div className={`absolute right-1/2 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
+            rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6 ` + clsx({'top-[550px] sm:top-[400px]': homePage, 'top-24 sm:top-16': !homePage})}>
                 <button className='absolute right-6 top-5' onClick={() => {props.setSelectedQuoteId(-1)}}>
                 <CloseBtnSvg className='close-btn-svg'/>
                 </button>

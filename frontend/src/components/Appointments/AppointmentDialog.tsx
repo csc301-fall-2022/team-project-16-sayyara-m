@@ -80,10 +80,12 @@ const formatDateStrings = (startDate: Date, endDate: Date): FormatededDates => {
 interface Props {
     id: string,
     setSelectedAptId: Dispatch<SetStateAction<string>>,
-    isShopOwner: boolean
+    isShopOwner: boolean,
+    homePage: boolean
 }
 function AppointmentDialog(props: Props) {
     const isShopOwner: boolean = props.isShopOwner;
+    const homePage: boolean = props.homePage;
     const { appointment } = useGetAppointmentById(props.id);
     // States for animation control
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -128,8 +130,9 @@ function AppointmentDialog(props: Props) {
         <div className='fixed top-0 left-0 h-full w-full bg-black opacity-20 z-10'
         onClick={() => {props.setSelectedAptId("")}}/>
         {/* The actual dialog box */}
-        <div className='absolute right-1/2 top-24 sm:top-16 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
-        rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6'>
+        {/* As of now, the vertical positioning is hard-coded due to layout difficulties. In the long term, a more flexible solution should be employed */}
+        <div className={`absolute right-1/2 translate-x-1/2 min-w-[340px] max-w-[700px] w-[95%] sm:w-2/3 md:w-3/5 lg:w-1/2 xl:w-2/5 2xl:w-1/3 bg-gray-100
+        rounded-md px-6 py-2 border border-gray-400 shadow-lg z-20 mb-6 ` + clsx({'top-[550px] sm:top-[400px]': homePage, 'top-24 sm:top-16': !homePage})}>
             <button className='absolute right-6 top-5'
             onClick={() => {props.setSelectedAptId("")}}>
                 <CloseBtnSvg className='close-btn-svg'/>
