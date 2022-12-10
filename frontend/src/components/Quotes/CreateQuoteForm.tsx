@@ -3,6 +3,7 @@ import { API_ROOT, carModels } from "src/utilities/constants";
 import { Calendar } from "@mantine/dates";
 import { APIError, Quote, Service } from "src/utilities/interfaces";
 import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
+import {MuiTelInput} from "mui-tel-input";
 
 interface FormData {
     firstName: string,
@@ -27,7 +28,7 @@ interface QuoteFormProps {
 }
 
 const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
-    const { vehicleOwner, setVehicleOwner } = useVehicleOwner();
+    const {vehicleOwner, setVehicleOwner} = useVehicleOwner();
     const initialForm: FormData = {
         firstName: "",
         lastName: "",
@@ -47,14 +48,18 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
     console.log(formData);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
-        const newFormData: FormData = { ...formData, [changing]: e.target.value };
+        const newFormData: FormData = {...formData, [changing]: e.target.value};
         setFormData(newFormData);
     }
     const CarMakeDropdown = () => {
         // create drop down with all car makes
         return (
             <div>
-                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+                <select value={formData.vehicleMake} onChange={e => setFormData({
+                    ...formData,
+                    vehicleMake: e.target.value,
+                    vehicleModel: "Choose a Model"
+                })} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {Object.keys(carModels).map((make) => {
                         return (
@@ -65,17 +70,21 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
             </div>
         )
     }
+
     interface YearDropDownProps {
         start: number,
         currentYear: number
     }
+
     const YearDropDown = ({start, currentYear}: YearDropDownProps) => {
         let options: JSX.Element[] = [];
-        for(let i = start; i <= currentYear; i++){
+        for (let i = start; i <= currentYear; i++) {
             options.push(<option key={i} value={i}>{i}</option>)
-        };
+        }
+
         return (
-            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})}
+                    className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
@@ -89,7 +98,8 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         })
         return (
             <div>
-                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+                <select value={formData.vehicleModel}
+                        onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {modelOptions}
                 </select>
@@ -98,7 +108,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
     }
     const ServiceTypeDropDown = () => {
         const options = services.map(service => {
-            if (service.defaultPrice === null){
+            if (service.defaultPrice === null) {
                 return (
                     <option value={service.name}>{service.name}</option>
                 )
@@ -107,14 +117,15 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         })
         options.push(<option value="Other">Other</option>);
         return (
-            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}
+                    className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
         )
     }
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         const sendToServer = {
             "shopId": shopId,
             "vehicleOwner": {
@@ -140,10 +151,10 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
             },
             body: JSON.stringify(sendToServer)
         })
-        if(res.ok){
+        if (res.ok) {
             const data: Quote = await res.json();
             setServerError("");
-            if(vehicleOwner === null){
+            if (vehicleOwner === null) {
                 setVehicleOwner(`${data.vehicleOwner.id}`);
             }
             setVisibility(false);
@@ -194,30 +205,25 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                     />
                 </div>
                 <label>Phone Number: </label>
-                <div>
-                    <input
-                        className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                        type="text"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleChange}
-                    />
+                <div className={"mb-4"}>
+                    <MuiTelInput className='col-span-2 shadow-sm' fullWidth value={formData.phoneNumber}
+                                 onChange={(phoneNumber) => setFormData({...formData, phoneNumber})}
+                                 onlyCountries={['CA', 'US']} focusOnSelectCountry defaultCountry='CA'/>
                 </div>
                 <section className="flex justify-between">
                     <div>
                         <label>Vehicle Make: </label>
-                        <CarMakeDropdown />
+                        <CarMakeDropdown/>
                     </div>
                     <div>
                         <label>Vehicle Model: </label>
-                        <CarModelDropdown />
+                        <CarModelDropdown/>
                     </div>
                 </section>
                 <label>Vehicle Year: </label>
                 <div>
                     {/* {YearDropDown(1990, 2022)} */}
-                    <YearDropDown start={1990} currentYear={2022} />
+                    <YearDropDown start={1990} currentYear={2022}/>
                 </div>
                 <label>Vehicle VIN: </label>
                 <div>
@@ -243,7 +249,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                 </div>
                 <label className="">Service Type</label>
                 <div className="">
-                    <ServiceTypeDropDown />
+                    <ServiceTypeDropDown/>
                 </div>
 
                 {/* Calendar from Mantine */}
@@ -266,7 +272,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
                         className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
                         focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 h-48 text-start p-1"
                         value={formData.notes}
-                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        onChange={(e) => setFormData({...formData, notes: e.target.value})}
                         datatype="text"
                     />
                 </div>

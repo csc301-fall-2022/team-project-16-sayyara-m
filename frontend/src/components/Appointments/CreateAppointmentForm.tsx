@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { API_ROOT, carModels } from "src/utilities/constants";
 import { useVehicleOwner } from "src/utilities/hooks/useVehicleOwner";
 import { APIError, Appointment, Service } from "src/utilities/interfaces";
+import {MuiTelInput} from "mui-tel-input";
+
 interface FormData {
     firstName: string,
     lastName: string,
@@ -47,7 +49,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const changing = e.target.name;
-        const newFormData: FormData = { ...formData, [changing]: e.target.value };
+        const newFormData: FormData = {...formData, [changing]: e.target.value};
         setFormData(newFormData);
     }
     console.log(timeRange);
@@ -55,7 +57,11 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
         // create drop down with all car makes
         return (
             <div>
-                <select value={formData.vehicleMake} onChange={e => setFormData({...formData, vehicleMake: e.target.value, vehicleModel: "Choose a Model"})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+                <select value={formData.vehicleMake} onChange={e => setFormData({
+                    ...formData,
+                    vehicleMake: e.target.value,
+                    vehicleModel: "Choose a Model"
+                })} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {Object.keys(carModels).map((make) => {
                         return (
@@ -66,17 +72,21 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
             </div>
         )
     }
+
     interface YearDropDownProps {
         start: number,
         currentYear: number
     }
+
     const YearDropDown = ({start, currentYear}: YearDropDownProps) => {
         let options: JSX.Element[] = [];
-        for(let i = start; i <= currentYear; i++){
+        for (let i = start; i <= currentYear; i++) {
             options.push(<option key={i} value={i}>{i}</option>)
-        };
+        }
+
         return (
-            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            <select value={formData.vehicleYear} onChange={e => setFormData({...formData, vehicleYear: e.target.value})}
+                    className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
@@ -85,7 +95,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
     const ServiceTypeDropDown = () => {
         // change to display services with fixed costs
         const options: JSX.Element[] = services.map(service => {
-            if(service.name !== "Other" && service.defaultPrice !== null) {
+            if (service.name !== "Other" && service.defaultPrice !== null) {
                 return (
                     <option value={service.name}>{service.name}</option>
                 )
@@ -96,7 +106,8 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
         })
         options.push(<option value={""}></option>)
         return (
-            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+            <select value={formData.serviceType} onChange={e => setFormData({...formData, serviceType: e.target.value})}
+                    className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                 {options}
             </select>
@@ -110,7 +121,8 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
         })
         return (
             <div>
-                <select value={formData.vehicleModel} onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
+                <select value={formData.vehicleModel}
+                        onChange={e => setFormData({...formData, vehicleModel: e.target.value})} className='shadow-sm border border-gray-300 rounded text-gray-700 leading-tight
             focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 py-1'>
                     {modelOptions}
                 </select>
@@ -120,7 +132,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
     const handleAppointmentSubmit = async () => {
         // handle case where vehicle owner id exists in local storage
         const servicePrice = services.find(service => service.name === formData.serviceType)?.defaultPrice
-        if(servicePrice === null) return;
+        if (servicePrice === null) return;
         let reqBody: any = {
             shopId: shopId,
             startTime: timeRange[0].toISOString(),
@@ -128,7 +140,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
             serviceName: formData.serviceType,
             price: servicePrice
         }
-        if(vehicleOwner && day && timeRange){
+        if (vehicleOwner && day && timeRange) {
 
             const res = await fetch(`${API_ROOT}/vehicleOwner/${vehicleOwner}/appointments`, {
                 method: "POST",
@@ -137,7 +149,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
                 },
                 body: JSON.stringify(reqBody)
             })
-            if(res.ok){
+            if (res.ok) {
                 console.log("Appointment successfully createed");
                 setVisibility(false);
                 return;
@@ -146,8 +158,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
             const error: APIError = await res.json();
             console.log(error.message);
             setError(error.message);
-        }
-        else {
+        } else {
             const vOwner = {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -169,7 +180,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
                 },
                 body: JSON.stringify(reqBody)
             })
-            if(res.ok){
+            if (res.ok) {
                 console.log("Appointment successfully createed");
                 const data: Appointment = await res.json();
                 setVisibility(false);
@@ -183,6 +194,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
         }
         return;
     }
+
     return (
         <div className="flex justify-center mb-8">
             <form className="grid grid-cols-1 gap-1 w-[400px]">
@@ -223,31 +235,28 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
                             onChange={handleChange}
                         />
                     </div>
-                    <label>Phone Number: </label>
-                    <div>
-                        <input
-                            className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-blue-500 focus:shadow-outline hover:border-gray-700"
-                            type="text"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                        />
+                    <label className='mt-1 font-semibold'>
+                        Phone Number
+                    </label>
+                    <div className={"mb-4"}>
+                        <MuiTelInput className='col-span-2 shadow-sm' fullWidth value={formData.phoneNumber}
+                                     onChange={(phoneNumber) => setFormData({...formData, phoneNumber: phoneNumber})}
+                                     onlyCountries={['CA', 'US']} focusOnSelectCountry defaultCountry='CA'/>
                     </div>
                     <section className="flex justify-between">
                         <div>
                             <label>Vehicle Make: </label>
-                            <CarMakeDropdown />
+                            <CarMakeDropdown/>
                         </div>
                         <div>
                             <label>Vehicle Model: </label>
-                            <CarModelDropdown />
+                            <CarModelDropdown/>
                         </div>
                     </section>
                     <label>Vehicle Year: </label>
                     <div>
                         {/* {YearDropDown(1990, 2022)} */}
-                        <YearDropDown start={1990} currentYear={2022} />
+                        <YearDropDown start={1990} currentYear={2022}/>
                     </div>
                     <label>Vehicle VIN: </label>
                     <div>
@@ -274,14 +283,15 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
                 </div>
                 <label className="">Service Type</label>
                 <div className="">
-                    <ServiceTypeDropDown />
+                    <ServiceTypeDropDown/>
                 </div>
 
                 {/* Choose date and time of appointment */}
                 <div className="text-xl text-blue-800 sm:text-2xl mt-3 mb-1">Choose a time that works</div>
                 <div>
-                    <DatePicker label="Appointment Date" excludeDate={date => date < new Date()} value={day} onChange={date => setDay(date)} />
-                    <TimeRangeInput format="12" label="Appointment Time" value={timeRange} onChange={setTimeRange}  />
+                    <DatePicker label="Appointment Date" excludeDate={date => date < new Date()} value={day}
+                                onChange={date => setDay(date)}/>
+                    <TimeRangeInput format="12" label="Appointment Time" value={timeRange} onChange={setTimeRange}/>
                 </div>
                 <label className="align-top">Additional Notes: </label>
                 <div>
@@ -289,7 +299,7 @@ const CreateAppointmentForm = ({setVisibility, services, shopId}: AppointmentFor
                         className="shadow-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight
                         focus:outline-blue-500 focus:shadow-outline hover:border-gray-700 h-48 text-start p-1"
                         value={formData.notes}
-                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        onChange={(e) => setFormData({...formData, notes: e.target.value})}
                         datatype="text"
                     />
                 </div>
