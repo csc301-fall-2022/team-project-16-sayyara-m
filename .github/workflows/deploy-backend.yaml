@@ -9,6 +9,7 @@ on:
       - 'backend/**'
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
