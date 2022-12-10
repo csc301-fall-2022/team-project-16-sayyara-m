@@ -154,7 +154,7 @@ const CreateQuoteForm = ({setVisibility, shopId, services}: QuoteFormProps) => {
         if (res.ok) {
             const data: Quote = await res.json();
             setServerError("");
-            if (vehicleOwner === null) {
+            if (!vehicleOwner) {
                 setVehicleOwner(`${data.vehicleOwner.id}`);
             }
             setVisibility(false);
