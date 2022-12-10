@@ -224,12 +224,16 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Shop"
         '404':
-          $ref: "#/components/responses/NotFound"
+          description: Shop associated with the given ID not found
+          content:
+            "*/*":
+              schema:
+                  "$ref": "#/components/schemas/DataNotFoundError"
 
 
 
   ############## SERVICES ##############
-  "/api/services":
+  "/api/services/{serviceId}":
     get:
       tags:
         - Services
@@ -257,27 +261,6 @@ paths:
             "application/json":
               schema:
                 $ref: "#/components/schemas/DataNotFoundError"
-    post:
-      tags:
-        - Services
-      summary: Create Service
-      description: Create a new service for the shop of the currently logged in shop owner
-      operationId: createService
-      security:
-        - bearerAuth: [ ]
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/Service"
-        required: true
-      responses:
-        '201':
-          description: Successfully created Service
-          content:
-            "application/json":
-              schema:
-                "$ref": "#/components/schemas/Service"
     delete:
       tags:
         - Services
@@ -307,6 +290,28 @@ paths:
             "application/json":
               schema:
                 $ref: "#/components/schemas/DataNotFoundError"
+  /api/services:
+    post:
+      tags:
+        - Services
+      summary: Create Service
+      description: Create a new service for the shop of the currently logged in shop owner
+      operationId: createService
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Service"
+        required: true
+      responses:
+        '201':
+          description: Successfully created Service
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Service"
 
 
 
@@ -923,7 +928,7 @@ components:
         quotes:
           type: array
           items:
-            "$ref": "#/components/schemas/Quote"
+            "$ref": "#/components/schemas/ResponseQuote"
         phoneNumber:
           type: string
         email:
